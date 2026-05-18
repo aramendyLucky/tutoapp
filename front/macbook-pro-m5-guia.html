@@ -1,0 +1,2755 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║  MACBOOK PRO M5 — GUÍA DEV COMPLETA · VERSIÓN VIVA CON AI                 ║
+  ║  Versión 2.0 — Mayo 2026                                                    ║
+  ║                                                                              ║
+  ║  CONTENIDO:                                                                 ║
+  ║   s0 — Bienvenida y setup inicial del M5                                   ║
+  ║   s1 — Atajos de teclado (Sistema, Ventanas, Texto, Finder, Terminal)      ║
+  ║   s2 — Spotlight Pro                                                        ║
+  ║   s3 — Mission Control & Spaces                                             ║
+  ║   s4 — Finder Avanzado                                                      ║
+  ║   s5 — Terminal & Zsh                                                       ║
+  ║   s6 — Usuarios, Permisos y Acceso a Archivos                              ║
+  ║   s7 — Seguridad: SIP, SSH, Firewall, Gatekeeper                           ║
+  ║   s8 — defaults write: customización avanzada del sistema                  ║
+  ║   s9 — Tips & Secretos para Developers                                     ║
+  ║                                                                              ║
+  ║  CAPACIDADES AI:                                                            ║
+  ║   💬 Chat       — preguntas sobre macOS                                    ║
+  ║   ⌨️  Shortcut  — describí una acción → AI da el atajo exacto             ║
+  ║   🔴 Fix        — describí un problema → solución paso a paso             ║
+  ║   📝 Generate   — genera scripts defaults write, automator, etc.          ║
+  ║   ➕ Add        — AI genera una nueva sección HTML                        ║
+  ║                                                                              ║
+  ║  FUNCIONES JS PRINCIPALES:                                                  ║
+  ║   setLang(l)        → toggle ES/EN, actualiza todos los .i18n             ║
+  ║   setTheme(t)       → dark / light / minimal                               ║
+  ║   togglePanel()     → abre/cierra panel AI                                 ║
+  ║   setMode(m)        → cambia modo AI                                       ║
+  ║   callClaude(...)   → fetch streaming a API Anthropic                     ║
+  ║   copyCode(id)      → copia bloque de código                               ║
+  ║   explainCode(id)   → AI explica el bloque seleccionado                   ║
+  ║   findShortcut(q)   → AI busca el atajo para la acción descrita           ║
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="es" data-theme="dark" data-lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MacBook Pro M5 — Guía Dev Completa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════
+       VARIABLES — 3 TEMAS
+    ═══════════════════════════════════════════════ */
+    [data-theme="dark"] {
+      --bg:#090c16;--bg2:#101622;--bg3:#171f32;--bg4:#1e2840;
+      --border:#202c46;--border2:#2a3a58;
+      --text:#dde6f8;--text2:#7888b4;--text3:#384e72;
+      --acc:#e879f9;    /* violeta/magenta — color distintivo de esta guía */
+      --acc2:#5b8af5;   /* azul */
+      --acc3:#38d9a9;   /* verde agua */
+      --gold:#f5c842;--red:#ff4d6d;--green:#40d080;
+      --blue:#4cc8ff;--orange:#ff9f50;--purple:#c084fc;
+      --panel-bg:rgba(9,12,22,.97);
+      --panel-bd:rgba(232,121,249,.18);
+      --hero:linear-gradient(135deg,#1a0c2e 0%,#090c16 55%,#0a0e22 100%);
+      --kbd-bg:#1e2840;--kbd-bd:#3a4a68;--kbd-text:#9ab0d0;
+    }
+    [data-theme="light"] {
+      --bg:#f5f4ff;--bg2:#ffffff;--bg3:#edeeff;--bg4:#e3e4f8;
+      --border:#ccd0f0;--border2:#b0b6e0;
+      --text:#1a1c40;--text2:#484c88;--text3:#8088c0;
+      --acc:#9a30d8;--acc2:#3a60e0;--acc3:#0d9c76;
+      --gold:#b88800;--red:#e03050;--green:#1a9050;
+      --blue:#1870c0;--orange:#d07020;--purple:#7040c0;
+      --panel-bg:rgba(245,244,255,.98);
+      --panel-bd:rgba(154,48,216,.25);
+      --hero:linear-gradient(135deg,#f0d8ff 0%,#f5f4ff 55%,#d8e8ff 100%);
+      --kbd-bg:#e8e8f8;--kbd-bd:#b0b0e0;--kbd-text:#484c88;
+    }
+    [data-theme="minimal"] {
+      --bg:#ece8dc;--bg2:#f8f4e8;--bg3:#e4deca;--bg4:#d8d0b8;
+      --border:#c8bc98;--border2:#b8aa80;
+      --text:#241c08;--text2:#584428;--text3:#988870;
+      --acc:#7848b0;--acc2:#3858a8;--acc3:#3a7820;
+      --gold:#a07010;--red:#b82010;--green:#3a7010;
+      --blue:#1040a0;--orange:#b85018;--purple:#7848b0;
+      --panel-bg:rgba(236,232,220,.98);
+      --panel-bd:rgba(120,72,176,.25);
+      --hero:linear-gradient(135deg,#e8d8f8 0%,#ece8dc 55%,#d8e8f0 100%);
+      --kbd-bg:#d8d0b8;--kbd-bd:#b0a880;--kbd-text:#584428;
+    }
+
+    /* ── RESET ──────────────────────────────────── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'DM Sans',system-ui,sans-serif;
+      background:var(--bg);color:var(--text);
+      font-size:15px;line-height:1.75;
+      transition:background .3s,color .3s;
+      background-image:radial-gradient(var(--border) 1px,transparent 1px);
+      background-size:28px 28px;
+    }
+
+    /* ── TOPBAR ─────────────────────────────────── */
+    .topbar{
+      position:fixed;top:0;left:0;right:0;z-index:500;
+      height:50px;background:var(--bg2);
+      border-bottom:1px solid var(--border);
+      display:flex;align-items:center;padding:0 16px;gap:10px;
+    }
+    .topbar-logo{
+      font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem;
+      color:var(--acc);white-space:nowrap;
+    }
+    .topbar-logo small{color:var(--text3);font-weight:400;font-size:.7rem;margin-left:6px}
+    .top-sep{flex:1}
+    /* ── TOGGLE DE IDIOMA CON COLORES DE BANDERA ──────────────
+       Cada botón tiene gradiente inspirado en la bandera del idioma:
+       ES → rojo/amarillo (España/Argentina)
+       EN → azul/rojo (UK/USA)
+       El botón inactivo se muestra en gris sutil.
+       El activo muestra el gradiente completo con texto blanco.
+    ──────────────────────────────────────────────────────────── */
+    .lang-btns {
+      display: flex; border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0,0,0,.2);
+    }
+    /* Estado base: gris apagado */
+    .lang-btn {
+      padding: 4px 13px; font-size: 11.5px; font-weight: 800;
+      border: none; background: var(--bg3); cursor: pointer;
+      color: var(--text3); font-family: 'Syne', sans-serif;
+      transition: all .25s; letter-spacing: .04em;
+      position: relative; display: flex; align-items: center; gap: 5px;
+    }
+    .lang-btn:hover { color: var(--text); background: var(--bg4); }
+    /* ES activo: gradiente rojo-amarillo (bandera España/Argentina) */
+    .lang-btn[data-lang="es"].on {
+      background: linear-gradient(135deg, #c60b1e 0%, #c60b1e 35%, #ffc400 65%, #ffc400 100%);
+      color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+    /* EN activo: gradiente azul-rojo (bandera UK/USA) */
+    .lang-btn[data-lang="en"].on {
+      background: linear-gradient(135deg, #012169 0%, #012169 40%, #C8102E 70%, #C8102E 100%);
+      color: #fff; text-shadow: 0 1px 3px rgba(0,0,0,.4);
+    }
+    /* Separador vertical entre los dos botones */
+    .lang-btn:first-child { border-right: 1px solid var(--border); }
+    .theme-btns{display:flex;gap:4px}
+    .tbtn{
+      border:1px solid var(--border);background:transparent;
+      padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;
+      color:var(--text3);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;
+    }
+    .tbtn:hover{color:var(--text)}
+    .tbtn.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+    .ai-open-btn{
+      display:flex;align-items:center;gap:6px;
+      background:linear-gradient(135deg,var(--acc2),var(--acc));
+      color:#fff;border:none;padding:5px 14px;border-radius:8px;
+      font-size:12px;font-weight:700;cursor:pointer;
+      font-family:'DM Sans',sans-serif;white-space:nowrap;
+    }
+    .ai-open-btn:hover{opacity:.85}
+    .pulse{width:7px;height:7px;border-radius:50%;background:#fff;animation:pulse 1.8s infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.65)}}
+
+    /* ── SHORTCUT FINDER (buscador de atajos en topbar) ─ */
+    /* Pequeña caja de búsqueda que llama a la AI para encontrar atajos */
+    .shortcut-finder{
+      display:flex;align-items:center;gap:6px;
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:8px;padding:3px 10px;
+    }
+    .shortcut-finder input{
+      background:transparent;border:none;outline:none;
+      font-size:12px;color:var(--text);width:160px;
+      font-family:'DM Sans',sans-serif;
+    }
+    .shortcut-finder input::placeholder{color:var(--text3)}
+    .shortcut-finder-btn{
+      background:transparent;border:none;cursor:pointer;
+      font-size:14px;padding:0;line-height:1;
+    }
+
+    /* ── LAYOUT ─────────────────────────────────── */
+    .layout{
+      display:flex;padding-top:50px;min-height:100vh;
+      transition:margin-right .35s cubic-bezier(.4,0,.2,1);
+    }
+    .layout.panel-open{margin-right:400px}
+
+    /* ── SIDEBAR ────────────────────────────────── */
+    .sidebar{
+      width:248px;min-width:248px;
+      background:var(--bg2);border-right:1px solid var(--border);
+      position:sticky;top:50px;height:calc(100vh - 50px);
+      overflow-y:auto;padding:16px 10px 24px;
+      scrollbar-width:thin;
+    }
+    .nav-head{
+      font-size:9px;font-weight:700;letter-spacing:.18em;
+      text-transform:uppercase;color:var(--text3);
+      padding:0 8px;margin:14px 0 5px;
+    }
+    .nav-a{
+      display:flex;align-items:center;gap:7px;
+      padding:5px 8px;border-radius:7px;font-size:12.5px;
+      color:var(--text2);text-decoration:none;
+      transition:all .15s;border-left:2px solid transparent;
+    }
+    .nav-a:hover{background:rgba(232,121,249,.07);color:var(--text);border-left-color:var(--acc)}
+    .nav-a.sub{padding-left:22px;font-size:11.5px}
+    /* Ícono circular de sección */
+    .sec-ico{
+      width:20px;height:20px;border-radius:5px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:11px;
+    }
+    .s-sep{height:1px;background:var(--border);margin:7px 8px}
+    /* Acciones rápidas de AI en sidebar */
+    .ai-action-link{
+      display:flex;align-items:center;gap:7px;
+      padding:5px 8px;border-radius:7px;font-size:12px;
+      color:var(--text3);cursor:pointer;
+      transition:all .15s;
+    }
+    .ai-action-link:hover{background:rgba(232,121,249,.1);color:var(--acc)}
+
+    /* ── CONTENIDO ──────────────────────────────── */
+    .content{flex:1;max-width:920px;margin:0 auto;padding:38px 44px 120px}
+    @media(max-width:900px){.content{padding:22px 16px 100px}}
+
+    /* ── HERO ───────────────────────────────────── */
+    .hero{
+      background:var(--hero);border:1px solid var(--border);
+      border-radius:20px;padding:44px;margin-bottom:48px;
+      position:relative;overflow:hidden;
+    }
+    .hero::after{
+      content:'';position:absolute;top:-60px;right:-60px;
+      width:250px;height:250px;
+      background:radial-gradient(circle,rgba(232,121,249,.1) 0%,transparent 70%);
+      border-radius:50%;pointer-events:none;
+    }
+    .hero-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(232,121,249,.1);border:1px solid rgba(232,121,249,.2);
+      border-radius:100px;padding:3px 12px;
+      font-size:10px;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--acc);margin-bottom:14px;
+    }
+    .hero h1{
+      font-family:'Syne',sans-serif;font-size:2.5rem;
+      font-weight:800;line-height:1.15;margin-bottom:12px;
+    }
+    .hero h1 em{font-style:normal;color:var(--acc)}
+    .hero p{color:var(--text2);font-size:.97rem;max-width:560px}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+    .htag{
+      font-size:12px;font-weight:600;padding:5px 12px;
+      border-radius:8px;border:1px solid var(--border);
+      color:var(--text2);cursor:pointer;transition:all .2s;
+    }
+    .htag:hover{border-color:var(--acc);color:var(--acc);background:rgba(232,121,249,.05)}
+    .htag.ai{border-color:rgba(91,138,245,.4);color:var(--acc2);background:rgba(91,138,245,.07)}
+    .htag.ai:hover{background:rgba(91,138,245,.15)}
+
+    /* ── CABECERA DE SECCIÓN ────────────────────── */
+    .sec-head{
+      display:flex;align-items:center;gap:14px;
+      margin-bottom:22px;padding-bottom:14px;
+      border-bottom:1px solid var(--border);
+    }
+    .sec-head-icon{
+      width:42px;height:42px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;font-size:20px;
+    }
+    .sec-head h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800}
+    .sec-head p{font-size:.87rem;color:var(--text2);margin-top:2px}
+    section{margin-bottom:56px}
+    /* Botón mejorar con AI en cabeceras */
+    .improve-btn{
+      margin-left:auto;flex-shrink:0;
+      display:flex;align-items:center;gap:5px;
+      background:rgba(91,138,245,.1);border:1px solid rgba(91,138,245,.25);
+      color:var(--acc2);border-radius:8px;padding:5px 11px;
+      font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;
+      font-family:'DM Sans',sans-serif;white-space:nowrap;
+    }
+    .improve-btn:hover{background:rgba(91,138,245,.2)}
+
+    /* ── TECLAS (kbd) ───────────────────────────── */
+    /* Estilo de teclas físicas del teclado */
+    kbd{
+      display:inline-flex;align-items:center;justify-content:center;
+      background:var(--kbd-bg);border:1px solid var(--kbd-bd);
+      border-radius:5px;padding:2px 7px;
+      font-size:.78rem;font-family:'JetBrains Mono',monospace;
+      color:var(--kbd-text);box-shadow:0 2px 0 var(--kbd-bd);
+      line-height:1.4;white-space:nowrap;
+    }
+
+    /* ── GRIDS DE ATAJOS ────────────────────────── */
+    /* Grid de tarjetas de atajos: 2 columnas en desktop */
+    .shortcuts-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:10px;margin-top:14px;
+    }
+    /* Tarjeta individual de atajo */
+    .sc-card{
+      display:flex;align-items:center;justify-content:space-between;
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:10px;padding:10px 14px;gap:10px;
+      transition:border-color .2s;
+    }
+    .sc-card:hover{border-color:var(--acc)}
+    .sc-desc{font-size:.87rem;color:var(--text2);flex:1}
+    .sc-keys{display:flex;align-items:center;gap:3px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+
+    /* ── SUBSECCIÓN ─────────────────────────────── */
+    .subsec{margin-bottom:28px}
+    .subsec h3{
+      font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;
+      margin-bottom:14px;display:flex;align-items:center;gap:8px;
+    }
+
+    /* ── BLOQUES DE CÓDIGO CON TOOLBAR ──────────── */
+    .code-wrap{position:relative;margin:14px 0}
+    .code-toolbar{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:6px 12px;background:var(--bg4);
+      border:1px solid var(--border);border-bottom:none;
+      border-radius:11px 11px 0 0;
+    }
+    .code-lang-badge{
+      font-size:9px;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--text3);
+      font-family:'JetBrains Mono',monospace;
+    }
+    .code-btns{display:flex;gap:5px}
+    .code-btn{
+      font-size:10px;font-weight:700;padding:2px 9px;
+      border-radius:5px;border:1px solid var(--border);
+      background:var(--bg3);color:var(--text3);
+      cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
+    }
+    .code-btn:hover{border-color:var(--acc);color:var(--acc)}
+    .code-btn.explain{border-color:rgba(91,138,245,.3);color:var(--acc2)}
+    .code-btn.explain:hover{background:rgba(91,138,245,.1)}
+    .has-toolbar pre{border-radius:0 0 11px 11px}
+    pre{
+      background:var(--bg3);border:1px solid var(--border);
+      border-radius:11px;padding:16px 18px;overflow-x:auto;
+    }
+    pre code{font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.8;color:var(--text)}
+    code{
+      font-family:'JetBrains Mono',monospace;font-size:.8em;
+      background:var(--bg3);padding:2px 6px;border-radius:4px;color:var(--acc);
+    }
+    pre code{background:none;padding:0}
+
+    /* ── TARJETAS MINI ──────────────────────────── */
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+    .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+    @media(max-width:700px){.g2,.g3,.shortcuts-grid{grid-template-columns:1fr}}
+    .card{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:12px;padding:18px;margin-bottom:14px;
+    }
+    .card:hover{border-color:var(--acc)}
+    .mini-card{
+      background:var(--bg2);border:1px solid var(--border);
+      border-radius:11px;padding:14px 16px;
+    }
+    .mini-card h4{font-size:.9rem;font-weight:700;margin-bottom:5px}
+    .mini-card p{font-size:.82rem;color:var(--text2);margin:0}
+
+    /* ── CALLOUTS ───────────────────────────────── */
+    .callout{
+      border-radius:10px;padding:13px 17px;
+      margin:12px 0;display:flex;gap:12px;font-size:.9rem;
+    }
+    .callout-ico{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+    .callout.tip{background:rgba(64,208,128,.08);border-left:3px solid var(--green)}
+    .callout.info{background:rgba(76,200,255,.08);border-left:3px solid var(--blue)}
+    .callout.warn{background:rgba(245,200,66,.08);border-left:3px solid var(--gold)}
+    .callout.danger{background:rgba(255,77,109,.08);border-left:3px solid var(--red)}
+
+    /* ── TABLA ──────────────────────────────────── */
+    .tbl-wrap{overflow-x:auto;border-radius:11px;border:1px solid var(--border)}
+    table{width:100%;border-collapse:collapse;font-size:.86rem}
+    th{
+      background:var(--bg3);padding:10px 14px;text-align:left;
+      font-size:9.5px;font-weight:800;text-transform:uppercase;
+      letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border);
+    }
+    td{padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(232,121,249,.03)}
+
+    /* ── PASOS ──────────────────────────────────── */
+    .steps{counter-reset:stp}
+    .step{display:flex;gap:16px;margin-bottom:20px}
+    .step-n{
+      width:30px;height:30px;border-radius:50%;
+      background:var(--acc);color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;font-size:.8rem;flex-shrink:0;
+    }
+    .step-b h4{font-size:.93rem;font-weight:700;margin-bottom:5px}
+    .step-b p{font-size:.87rem;color:var(--text2)}
+
+    /* ════════════════════════════════════════════
+       PANEL AI
+    ════════════════════════════════════════════ */
+    .ai-panel{
+      position:fixed;top:50px;right:0;
+      width:400px;height:calc(100vh - 50px);
+      background:var(--panel-bg);border-left:1px solid var(--panel-bd);
+      display:flex;flex-direction:column;
+      transform:translateX(100%);
+      transition:transform .35s cubic-bezier(.4,0,.2,1);
+      z-index:400;box-shadow:-8px 0 40px rgba(0,0,0,.35);
+    }
+    .ai-panel.open{transform:translateX(0)}
+    .ai-head{
+      padding:14px 16px;border-bottom:1px solid var(--border);
+      display:flex;align-items:center;gap:10px;flex-shrink:0;
+    }
+    .ai-head-icon{
+      width:34px;height:34px;border-radius:10px;
+      background:linear-gradient(135deg,var(--acc2),var(--acc));
+      display:flex;align-items:center;justify-content:center;font-size:16px;
+    }
+    .ai-head-title{font-family:'Syne',sans-serif;font-weight:800;font-size:.95rem}
+    .ai-head-sub{font-size:10px;color:var(--text3)}
+    .ai-close{
+      margin-left:auto;background:transparent;border:none;
+      color:var(--text3);font-size:1.1rem;cursor:pointer;
+      padding:4px 7px;border-radius:6px;transition:color .2s;
+    }
+    .ai-close:hover{color:var(--text)}
+    .ai-modes{
+      display:flex;padding:8px 12px;gap:5px;
+      border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;
+    }
+    .ai-mode-btn{
+      flex-shrink:0;padding:5px 10px;border-radius:7px;
+      border:1px solid var(--border);background:transparent;
+      font-size:10.5px;font-weight:700;color:var(--text2);
+      cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;
+    }
+    .ai-mode-btn.active{background:var(--acc);color:#fff;border-color:var(--acc)}
+    .ai-mode-btn:hover:not(.active){border-color:var(--acc);color:var(--acc)}
+    .ai-msgs{
+      flex:1;overflow-y:auto;padding:13px;
+      display:flex;flex-direction:column;gap:11px;scrollbar-width:thin;
+    }
+    .msg-user{
+      align-self:flex-end;background:var(--acc2);
+      color:#fff;padding:9px 13px;border-radius:12px 12px 3px 12px;
+      font-size:.87rem;max-width:86%;line-height:1.5;
+    }
+    .msg-ai{
+      align-self:flex-start;background:var(--bg3);border:1px solid var(--border);
+      padding:10px 14px;border-radius:12px 12px 12px 3px;
+      font-size:.87rem;max-width:94%;line-height:1.65;color:var(--text);
+    }
+    .msg-ai strong{color:var(--acc)}
+    .msg-ai code{font-size:.8em;background:var(--bg4)}
+    .msg-ai kbd{font-size:.8em}
+    .msg-typing{
+      display:flex;gap:4px;align-items:center;
+      padding:10px 14px;color:var(--text3);font-size:.85rem;
+    }
+    .dots span{
+      display:inline-block;width:5px;height:5px;
+      border-radius:50%;background:var(--acc);animation:bounce 1.2s infinite;
+    }
+    .dots span:nth-child(2){animation-delay:.2s}
+    .dots span:nth-child(3){animation-delay:.4s}
+    @keyframes bounce{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
+    .ai-footer{padding:11px 13px;border-top:1px solid var(--border);flex-shrink:0}
+    .ai-ctx{
+      font-size:10px;color:var(--text3);margin-bottom:7px;
+      padding:6px 10px;background:var(--bg3);
+      border-radius:6px;border:1px solid var(--border);
+    }
+    .ai-ctx strong{color:var(--acc)}
+    .ai-input-row{display:flex;gap:7px}
+    .ai-input{
+      flex:1;background:var(--bg3);border:1px solid var(--border);
+      border-radius:9px;padding:9px 12px;color:var(--text);
+      font-size:.87rem;font-family:'DM Sans',sans-serif;
+      resize:none;max-height:110px;outline:none;transition:border-color .2s;
+    }
+    .ai-input:focus{border-color:var(--acc)}
+    .ai-send{
+      background:linear-gradient(135deg,var(--acc2),var(--acc));
+      border:none;border-radius:9px;padding:9px 14px;
+      color:#fff;font-size:1rem;cursor:pointer;transition:opacity .2s;flex-shrink:0;
+    }
+    .ai-send:disabled{opacity:.4;cursor:not-allowed}
+
+    /* ── OVERLAYS ───────────────────────────────── */
+    .overlay{display:none;position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.3);backdrop-filter:blur(2px)}
+    .overlay.show{display:block}
+    .toast{
+      position:fixed;bottom:22px;left:50%;
+      transform:translateX(-50%) translateY(70px);
+      background:var(--acc);color:#fff;
+      padding:9px 20px;border-radius:100px;
+      font-size:.86rem;font-weight:700;z-index:1000;
+      transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s;
+      opacity:0;pointer-events:none;
+    }
+    .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+    /* ── SYNTAX COLORS ──────────────────────────── */
+    .c{color:var(--text3);font-style:italic}
+    .s{color:var(--green)}
+    .k{color:var(--blue)}
+    .n{color:var(--gold)}
+    .cmd{color:var(--acc3)}
+
+    /* ── UTILITARIOS ────────────────────────────── */
+    h3{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:11px}
+    h4{font-size:.93rem;font-weight:700;margin-bottom:7px}
+    p{margin-bottom:11px}
+    ul,ol{padding-left:20px;margin-bottom:11px;color:var(--text2);font-size:.9rem}
+    li{margin-bottom:4px}
+    strong{color:var(--text)}
+    hr{border:none;border-top:1px solid var(--border);margin:26px 0}
+    .mt{margin-top:14px}
+  
+    /* ── API KEY MANAGER CSS ──────────────────────────────────────── */
+    .ak-overlay{display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+    .ak-overlay.show{display:flex}
+    .ak-modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:32px 36px;max-width:430px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+    .ak-modal h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .ak-modal p{font-size:.88rem;color:var(--text2);margin-bottom:14px;line-height:1.6}
+    .ak-link{display:inline-flex;align-items:center;gap:5px;font-size:.84rem;color:var(--acc);margin-bottom:16px;font-weight:600;text-decoration:none}
+    .ak-link:hover{text-decoration:underline}
+    .ak-row{display:flex;gap:8px;margin-bottom:12px}
+    .ak-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:10px 14px;color:var(--text);font-size:.85rem;font-family:'JetBrains Mono',monospace;outline:none;transition:border-color .2s}
+    .ak-input:focus{border-color:var(--acc)}
+    .ak-save{background:linear-gradient(135deg,var(--acc2,#5b8af5),var(--acc));color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:.87rem;font-weight:700;cursor:pointer;white-space:nowrap}
+    .ak-note{font-size:.8rem;color:var(--text3);padding:9px 12px;background:var(--bg3);border-radius:8px;line-height:1.55}
+    .ak-note strong{color:var(--text2)}
+    .ak-skip{display:block;margin-top:12px;text-align:center;font-size:.8rem;color:var(--text3);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif}
+    .ak-skip:hover{color:var(--text2)}
+    .ak-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;cursor:pointer;transition:all .2s;border:1px solid var(--border);color:var(--text3);font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .ak-badge.set{border-color:var(--green,#40d080);color:var(--green,#40d080)}
+      
+    /* ── PROVIDER SELECTOR ──────────────────────────────────────────
+       Barra de selección de proveedor AI en el panel.
+       Cada botón tiene el color del proveedor.
+       El activo se resalta con background sólido.
+    ─────────────────────────────────────────────────────────────────*/
+    .prov-bar {
+      display: flex; gap: 5px; padding: 8px 12px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+      background: var(--bg3);
+    }
+    .prov-btn {
+      flex: 1; min-width: 70px; padding: 5px 6px;
+      border-radius: 7px; border: 1px solid var(--border);
+      background: var(--bg2); font-size: 10px; font-weight: 700;
+      cursor: pointer; transition: all .2s; color: var(--text3);
+      font-family: 'DM Sans', sans-serif; text-align: center;
+      white-space: nowrap;
+    }
+    .prov-btn:hover { border-color: var(--acc); color: var(--text); }
+    .prov-btn.active { color: #fff; border-color: transparent; }
+    /* Colores únicos por proveedor */
+    .prov-btn[data-prov="puter"].active  { background: #1a8cff; }
+    .prov-btn[data-prov="gemini"].active { background: #1a7fd4; }
+    .prov-btn[data-prov="grok"].active   { background: #222; }
+    .prov-btn[data-prov="claude"].active { background: #c96442; }
+    .prov-btn[data-prov="ollama"].active { background: #3a8a3a; }
+    /* Badge FREE en los botones gratuitos */
+    .prov-badge {
+      display: inline-block; font-size: 8px; padding: 0px 4px;
+      border-radius: 3px; background: rgba(64,208,128,.2);
+      color: var(--green, #40d080); margin-left: 2px;
+      vertical-align: middle; font-weight: 800;
+    }
+    /* Input de key (se muestra solo cuando el proveedor lo necesita) */
+    .key-row {
+      display: none; gap: 6px; padding: 7px 12px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+      align-items: center;
+    }
+    .key-row.show { display: flex; }
+    .key-input {
+      flex: 1; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 7px; padding: 6px 10px; color: var(--text);
+      font-size: .8rem; font-family: 'JetBrains Mono', monospace;
+      outline: none; transition: border-color .2s;
+    }
+    .key-input:focus { border-color: var(--acc); }
+    .key-save-btn {
+      background: var(--acc); color: var(--bg); border: none;
+      border-radius: 7px; padding: 6px 12px; font-size: 11px;
+      font-weight: 700; cursor: pointer; white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .key-link {
+      font-size: 10px; color: var(--text3); white-space: nowrap;
+      text-decoration: none;
+    }
+    .key-link:hover { color: var(--acc); }
+
+  </style>
+<script src="https://js.puter.com/v2/"></script>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo">
+    MacBook Pro M5
+    <small class="i18n" data-es="Guía Dev Completa" data-en="Complete Dev Guide">Guía Dev Completa</small>
+  </div>
+  <div class="top-sep"></div>
+  <!-- Buscador de atajos en la topbar — AI-powered -->
+  <div class="shortcut-finder">
+    <span>⌨️</span>
+    <input type="text" id="shortcut-input"
+      class="i18n"
+      data-es="Buscar atajo... (ej: captura pantalla)"
+      data-en="Find shortcut... (ex: screenshot)"
+      placeholder="Buscar atajo..."
+      onkeydown="if(event.key==='Enter')findShortcut()">
+    <button class="shortcut-finder-btn" onclick="findShortcut()" title="Buscar">🔍</button>
+  </div>
+  <!-- Toggle de idioma con colores de bandera
+       data-lang="es/en" permite que el CSS aplique el gradiente correcto
+       onclick setLang() actualiza todos los textos .i18n del documento -->
+  <div class="lang-btns">
+    <button class="lang-btn on" data-lang="es" onclick="setLang('es')" title="Español">🇪🇸 ES</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')" title="English">🇺🇸 EN</button>
+  </div>
+  <div class="theme-btns">
+    <button class="tbtn on" onclick="setTheme('dark')">◑ Dark</button>
+    <button class="tbtn" onclick="setTheme('light')">☀ Light</button>
+    <button class="tbtn" onclick="setTheme('minimal')">🌿 Min</button>
+  </div>
+  <button class="ai-open-btn" onclick="togglePanel()">
+    <div class="pulse"></div>
+    🤖 <span class="i18n" data-es="Asistente AI" data-en="AI Assistant">Asistente AI</span>
+  </button>
+</header>
+
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+<div class="toast" id="toast">✓</div>
+
+<!-- LAYOUT -->
+<div class="layout" id="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-head">Secciones</div>
+    <a href="#s0" class="nav-a">
+      <span class="sec-ico" style="background:rgba(232,121,249,.15)">🍎</span>
+      <span class="i18n" data-es="Bienvenida M5" data-en="Welcome M5">Bienvenida M5</span>
+    </a>
+    <a href="#s1" class="nav-a">
+      <span class="sec-ico" style="background:rgba(91,138,245,.15)">⌨️</span>
+      <span class="i18n" data-es="Atajos Teclado" data-en="Keyboard Shortcuts">Atajos Teclado</span>
+    </a>
+    <a href="#s1-sistema" class="nav-a sub">↳ <span class="i18n" data-es="Sistema" data-en="System">Sistema</span></a>
+    <a href="#s1-ventanas" class="nav-a sub">↳ <span class="i18n" data-es="Ventanas" data-en="Windows">Ventanas</span></a>
+    <a href="#s1-texto" class="nav-a sub">↳ <span class="i18n" data-es="Texto" data-en="Text">Texto</span></a>
+    <a href="#s1-finder" class="nav-a sub">↳ Finder</a>
+    <a href="#s1-terminal" class="nav-a sub">↳ Terminal</a>
+    <a href="#s2" class="nav-a">
+      <span class="sec-ico" style="background:rgba(76,200,255,.15)">🔍</span>
+      Spotlight Pro
+    </a>
+    <a href="#s3" class="nav-a">
+      <span class="sec-ico" style="background:rgba(64,208,128,.15)">🖥</span>
+      Mission Control
+    </a>
+    <a href="#s4" class="nav-a">
+      <span class="sec-ico" style="background:rgba(255,159,80,.15)">📂</span>
+      <span class="i18n" data-es="Finder Avanzado" data-en="Advanced Finder">Finder Avanzado</span>
+    </a>
+    <a href="#s5" class="nav-a">
+      <span class="sec-ico" style="background:rgba(56,217,169,.15)">💻</span>
+      Terminal &amp; Zsh
+    </a>
+    <a href="#s6" class="nav-a">
+      <span class="sec-ico" style="background:rgba(255,77,109,.15)">👥</span>
+      <span class="i18n" data-es="Usuarios & Permisos" data-en="Users & Permissions">Usuarios &amp; Permisos</span>
+    </a>
+    <a href="#s7" class="nav-a">
+      <span class="sec-ico" style="background:rgba(245,200,66,.15)">🔐</span>
+      <span class="i18n" data-es="Seguridad" data-en="Security">Seguridad</span>
+    </a>
+    <a href="#s8" class="nav-a">
+      <span class="sec-ico" style="background:rgba(192,132,252,.15)">⚙️</span>
+      defaults write
+    </a>
+    <a href="#s9" class="nav-a">
+      <span class="sec-ico" style="background:rgba(232,121,249,.15)">🤫</span>
+      Tips &amp; <span class="i18n" data-es="Secretos" data-en="Secrets">Secretos</span>
+    </a>
+    <div id="sidebar-extra"></div>
+
+    <div class="s-sep"></div>
+    <div class="nav-head">AI <span class="i18n" data-es="Acciones" data-en="Actions">Acciones</span></div>
+    <div class="ai-action-link" onclick="openMode('shortcut')">
+      ⌨️ <span class="i18n" data-es="Buscar atajo" data-en="Find shortcut">Buscar atajo</span>
+    </div>
+    <div class="ai-action-link" onclick="openMode('fix')">
+      🔴 <span class="i18n" data-es="Resolver problema" data-en="Fix problem">Resolver problema</span>
+    </div>
+    <div class="ai-action-link" onclick="openMode('generate')">
+      📝 <span class="i18n" data-es="Generar script" data-en="Generate script">Generar script</span>
+    </div>
+    <div class="ai-action-link" onclick="openMode('add-section')">
+      ➕ <span class="i18n" data-es="Agregar sección" data-en="Add section">Agregar sección</span>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-badge">
+        <span class="i18n" data-es="Guía Viva · AI Integrada · Mayo 2026" data-en="Living Guide · AI Integrated · May 2026">Guía Viva · AI Integrada · Mayo 2026</span>
+      </div>
+      <h1>
+        <em>MacBook Pro M5</em><br>
+        <span class="i18n" data-es="Guía Dev Completa" data-en="Complete Dev Guide">Guía Dev Completa</span>
+      </h1>
+      <p class="i18n" data-es="Atajos, Terminal, Finder, permisos, seguridad y secretos del sistema. Búsqueda de atajos con AI integrada — escribí qué querés hacer y te damos el shortcut exacto." data-en="Shortcuts, Terminal, Finder, permissions, security and system secrets. AI-powered shortcut finder — type what you want to do and get the exact shortcut.">
+        Atajos, Terminal, Finder, permisos, seguridad y secretos del sistema. Búsqueda de atajos con AI integrada.
+      </p>
+      <div class="hero-tags">
+        <div class="htag" onclick="openAndAsk('shortcut', currentLang==='es'?'¿Cuál es el atajo para capturar solo una ventana?':'What shortcut captures only one window?')">⌨️ <span class="i18n" data-es="Buscar atajo" data-en="Find shortcut">Buscar atajo</span></div>
+        <div class="htag" onclick="openAndAsk('fix', currentLang==='es'?'No puedo acceder a archivos de otro usuario, me dice Permission denied':'I cannot access files from another user, getting Permission denied')">🔴 <span class="i18n" data-es="Permission denied" data-en="Permission denied">Permission denied</span></div>
+        <div class="htag ai" onclick="openMode('generate')">📝 <span class="i18n" data-es="Generar defaults write" data-en="Generate defaults write">Generar defaults write</span></div>
+        <div class="htag ai" onclick="openMode('add-section')">➕ <span class="i18n" data-es="Nueva sección" data-en="New section">Nueva sección</span></div>
+        <div class="htag" onclick="openAndAsk('chat', currentLang==='es'?'¿Cuáles son los 5 tips de productividad más importantes para developers en Mac?':'What are the 5 most important productivity tips for developers on Mac?')">💡 Top 5 Tips</div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         S0 — BIENVENIDA AL M5
+    ═══════════════════════════════════════════ -->
+    <section id="s0">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(232,121,249,.12)">🍎</div>
+        <div>
+          <h2 class="i18n" data-es="Bienvenido al MacBook Pro M5" data-en="Welcome to MacBook Pro M5">Bienvenido al MacBook Pro M5</h2>
+          <p class="i18n" data-es="Lo primero que hacer al encenderlo por primera vez" data-en="First steps when turning it on for the first time">Lo primero que hacer al encenderlo por primera vez</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s0','Bienvenida M5')">✨</button>
+      </div>
+
+      <div class="g2">
+        <div class="mini-card">
+          <h4>🏎 <span class="i18n" data-es="Qué hay de nuevo en M5" data-en="What's new in M5">Qué hay de nuevo en M5</span></h4>
+          <p class="i18n" data-es="CPU hasta 4x más rápida que Intel. 307 GB/s de ancho de banda de memoria. Neural Engine de 38 billones de ops/s. Batería de hasta 24h." data-en="CPU up to 4x faster than Intel. 307 GB/s memory bandwidth. 38 trillion ops/s Neural Engine. Up to 24h battery.">CPU hasta 4x más rápida que Intel. 307 GB/s de ancho de banda de memoria. Neural Engine de 38 billones de ops/s.</p>
+        </div>
+        <div class="mini-card">
+          <h4>⚙️ <span class="i18n" data-es="Setup inicial recomendado" data-en="Recommended initial setup">Setup inicial recomendado</span></h4>
+          <p class="i18n" data-es="Activar FileVault, desactivar iCloud Drive para proyectos, habilitar Firewall, configurar hot corners, ajustar trackpad." data-en="Enable FileVault, disable iCloud Drive for projects, enable Firewall, configure hot corners, adjust trackpad.">Activar FileVault, desactivar iCloud Drive para proyectos, habilitar Firewall, configurar hot corners.</p>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">⚡</div>
+        <div class="i18n" data-es="Verificá que estás en Apple Silicon: abrí Terminal y escribí `uname -m`. Debe decir `arm64`. Si dice `x86_64`, estás corriendo bajo Rosetta." data-en="Verify you're on Apple Silicon: open Terminal and type `uname -m`. It should say `arm64`. If it says `x86_64`, you're running under Rosetta.">Verificá que estás en Apple Silicon: abrí Terminal → <code>uname -m</code> → debe decir <code>arm64</code>.</div>
+      </div>
+
+      <h3 class="mt" id="s0-setup">⚙️ <span class="i18n" data-es="Configuración Inicial del Sistema" data-en="Initial System Configuration">Configuración Inicial del Sistema</span></h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">System Settings · <span class="i18n" data-es="dónde encontrar" data-en="where to find">dónde encontrar</span></span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-setup-init')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+            <button class="code-btn explain" onclick="explainCode('code-setup-init')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+          </div>
+        </div>
+        <pre id="code-setup-init"><code><span class="c"># Estas configuraciones están en System Settings (⚙️)</span>
+
+<span class="c">── General ──────────────────────────────────────────────────</span>
+Software Update → Automáticas ON (pero "Install App Updates" manual)
+AirDrop & Handoff → ON (conectividad con iPhone/iPad)
+
+<span class="c">── Privacy & Security ───────────────────────────────────────</span>
+FileVault → Turn On...     <span class="c"># cifrado completo del disco</span>
+Firewall  → ON             <span class="c"># bloquear conexiones no autorizadas</span>
+Full Disk Access → dar permiso a Terminal.app
+
+<span class="c">── Trackpad ─────────────────────────────────────────────────</span>
+Tracking Speed → Fast (7-8/10)
+Tap to Click → ON          <span class="c"># clickear sin presionar</span>
+Three finger drag → ON     <span class="c"># Accessibility → Motor → Trackpad</span>
+
+<span class="c">── Keyboard ─────────────────────────────────────────────────</span>
+Key Repeat Rate → Fast     <span class="c"># teclas más responsivas</span>
+Delay Until Repeat → Short
+
+<span class="c">── Mission Control ──────────────────────────────────────────</span>
+Hot Corners → BL: Desktop, BR: Mission Control, TR: Screensaver
+
+<span class="c">── Dock ─────────────────────────────────────────────────────</span>
+Size → Pequeño
+Magnification → Medium
+Minimize using → Scale Effect  <span class="c"># más rápido que Genie</span>
+Show recent apps in Dock → OFF</code></pre>
+      </div>
+    
+
+<div class="subsec">
+  <h4>🚀 <span data-es="Optimización para Desarrolladores" data-en="Developer Optimization">Optimización para Desarrolladores</span></h4>
+  <p class="i18n" data-es="Aprovechá al máximo tu M5 con estas optimizaciones clave para el desarrollo." data-en="Maximize your M5's potential with these key developer optimizations.">Aprovechá al máximo tu M5 con estas optimizaciones clave para el desarrollo.</p>
+</div>
+
+<div class="shortcuts-grid">
+  <div class="mini-card">
+    <h4>💻 <span class="i18n" data-es="Homebrew (Gestor de Paquetes)" data-en="Homebrew (Package Manager)">Homebrew (Gestor de Paquetes)</span></h4>
+    <p class="i18n" data-es="Instalar herramientas esenciales: `brew install wget git node yarn python3 ...`" data-en="Install essential tools: `brew install wget git node yarn python3 ...`">Instalar herramientas esenciales: `brew install wget git node yarn python3 ...`</p>
+  </div>
+  <div class="mini-card">
+    <h4>📦 <span class="i18n" data-es="Gestión de Entornos Virtuales" data-en="Virtual Environment Management">Gestión de Entornos Virtuales</span></h4>
+    <p class="i18n" data-es="Usa `venv` para Python o `nvm` para Node.js. Aislamiento de dependencias." data-en="Use `venv` for Python or `nvm` for Node.js. Dependency isolation.">Usa `venv` para Python o `nvm` para Node.js. Aislamiento de dependencias.</p>
+  </div>
+  <div class="mini-card">
+    <h4>🗄️ <span class="i18n" data-es="Configuración de Dock" data-en="Dock Configuration">Configuración de Dock</span></h4>
+    <p class="i18n" data-es="Mantén tu Dock limpio. Agregá apps de desarrollo y el Monitor de Actividad." data-en="Keep your Dock clean. Add development apps and Activity Monitor.">Mantén tu Dock limpio. Agregá apps de desarrollo y el Monitor de Actividad.</p>
+  </div>
+  <div class="mini-card">
+    <h4>💡 <span class="i18n" data-es="Gestos del Trackpad Personalizados" data-en="Custom Trackpad Gestures">Gestos del Trackpad Personalizados</span></h4>
+    <p class="i18n" data-es="Configurá gestos para Mission Control, App Exposé y Launchpad para mayor fluidez." data-en="Configure gestures for Mission Control, App Exposé, and Launchpad for smoother workflow.">Configurá gestos para Mission Control, App Exposé y Launchpad para mayor fluidez.</p>
+  </div>
+</div>
+
+<div class="callout info">
+  <div class="callout-ico">ℹ️</div>
+  <div class="i18n" data-es="Para una experiencia de desarrollo óptima, considera instalar XCode desde la App Store. Incluye las herramientas de línea de comandos de Apple." data-en="For an optimal development experience, consider installing XCode from the App Store. It includes Apple's command-line tools.">Para una experiencia de desarrollo óptima, considera instalar XCode desde la App Store. Incluye las herramientas de línea de comandos de Apple.</div>
+</div>
+
+
+
+<div class="subsec">
+  <div class="subsec-header">
+    <h4 class="i18n" data-es="Personalización y Eficiencia" data-en="Personalization and Efficiency">Personalización y Eficiencia</h4>
+  </div>
+  <div class="shortcuts-grid">
+    <div class="mini-card">
+      <kbd class="kbd">System Settings</kbd>
+      <p class="i18n" data-es="<strong>Dock & Menu Bar:</strong> Ajusta el tamaño y la magnificación del Dock para un acceso rápido a tus aplicaciones. La 'Magnificación' puede ser útil para identificar iconos pequeños." data-en="<strong>Dock & Menu Bar:</strong> Adjust Dock size and magnification for quick app access. 'Magnification' can help identify small icons."><strong>Dock & Menu Bar:</strong> Ajusta el tamaño y la magnificación del Dock para un acceso rápido a tus aplicaciones. La 'Magnificación' puede ser útil para identificar iconos pequeños.</p>
+    </div>
+    <div class="mini-card">
+      <kbd class="kbd">System Settings</kbd>
+      <p class="i18n" data-es="<strong>Desktop & Dock:</strong> Configura 'Hot Corners' (Esquinas de acceso rápido) para activar Mission Control, mostrar el escritorio, o iniciar el salvapantallas con el ratón, mejorando la navegación." data-en="<strong>Desktop & Dock:</strong> Configure 'Hot Corners' to activate Mission Control, show desktop, or start the screensaver with your mouse, enhancing navigation."><strong>Desktop & Dock:</strong> Configura 'Hot Corners' (Esquinas de acceso rápido) para activar Mission Control, mostrar el escritorio, o iniciar el salvapantallas con el ratón, mejorando la navegación.</p>
+    </div>
+    <div class="mini-card">
+      <kbd class="kbd">System Settings</kbd>
+      <p class="i18n" data-es="<strong>Accessibility → Pointer Control → Trackpad Options:</strong> Habilita 'Drag with three fingers' (Arrastrar con tres dedos) para una manipulación de elementos más fluida y ergonómica." data-en="<strong>Accessibility → Pointer Control → Trackpad Options:</strong> Enable 'Drag with three fingers' for smoother and more ergonomic item manipulation."><strong>Accessibility → Pointer Control → Trackpad Options:</strong> Habilita 'Arrastrar con tres dedos' para una manipulación de elementos más fluida y ergonómica.</p>
+    </div>
+    <div class="mini-card">
+      <kbd class="kbd">System Settings</kbd>
+      <p class="i18n" data-es="<strong>Keyboard → Keyboard Shortcuts:</strong> Revisa y personaliza los atajos de teclado para acelerar tus flujos de trabajo. Considera asignar atajos para aplicaciones o funciones usadas frecuentemente." data-en="<strong>Keyboard → Keyboard Shortcuts:</strong> Review and customize keyboard shortcuts to speed up your workflows. Consider assigning shortcuts for frequently used apps or functions."><strong>Keyboard → Keyboard Shortcuts:</strong> Revisa y personaliza los atajos de teclado para acelerar tus flujos de trabajo. Considera asignar atajos para aplicaciones o funciones usadas frecuentemente.</p>
+    </div>
+  </div>
+</div>
+
+</section>
+
+    <!-- ═══════════════════════════════════════════
+         S1 — ATAJOS DE TECLADO
+    ═══════════════════════════════════════════ -->
+    <section id="s1">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(91,138,245,.12)">⌨️</div>
+        <div>
+          <h2 class="i18n" data-es="Atajos de Teclado" data-en="Keyboard Shortcuts">Atajos de Teclado</h2>
+          <p class="i18n" data-es="Más de 80 atajos que todo developer debería saber" data-en="80+ shortcuts every developer should know">Más de 80 atajos que todo developer debería saber</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s1','Atajos de Teclado')">✨</button>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">⌨️</div>
+        <div><strong class="i18n" data-es="Símbolos del teclado Mac:" data-en="Mac keyboard symbols:">Símbolos del teclado Mac:</strong>
+          <kbd>⌘</kbd> Cmd &nbsp;
+          <kbd>⌥</kbd> Option/Alt &nbsp;
+          <kbd>⇧</kbd> Shift &nbsp;
+          <kbd>⌃</kbd> Control &nbsp;
+          <kbd>fn</kbd> Function &nbsp;
+          <kbd>⌫</kbd> Delete/Backspace
+        </div>
+      </div>
+
+      <!-- SISTEMA -->
+      <div class="subsec" id="s1-sistema">
+        <h3>🍎 <span class="i18n" data-es="Sistema" data-en="System">Sistema</span></h3>
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc" data-es="Spotlight / Búsqueda" data-en="Spotlight / Search">Spotlight</span><div class="sc-keys"><kbd>⌘</kbd><kbd>Space</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Force Quit app congelada" data-en="Force quit frozen app">Force Quit</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⌥</kbd><kbd>Esc</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Preferencias del Sistema" data-en="System Settings">System Settings</span><div class="sc-keys"><kbd>⌘</kbd><kbd>,</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Bloquear pantalla" data-en="Lock screen">Lock screen</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⌃</kbd><kbd>Q</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Apagar / Reiniciar / Suspender" data-en="Shutdown / Restart / Sleep">Shutdown menu</span><div class="sc-keys"><kbd>⌃</kbd><kbd>Eject</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Suspender display" data-en="Sleep display">Sleep display</span><div class="sc-keys"><kbd>⌃</kbd><kbd>⇧</kbd><kbd>Eject</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Emoji &amp; Símbolos" data-en="Emoji &amp; Symbols">Emoji picker</span><div class="sc-keys"><kbd>⌃</kbd><kbd>⌘</kbd><kbd>Space</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Selector de apps abiertas" data-en="App switcher">App switcher</span><div class="sc-keys"><kbd>⌘</kbd><kbd>Tab</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Cerrar app completamente" data-en="Quit app">Quit app</span><div class="sc-keys"><kbd>⌘</kbd><kbd>Q</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Ocultar ventana actual" data-en="Hide current window">Hide window</span><div class="sc-keys"><kbd>⌘</kbd><kbd>H</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Minimizar a Dock" data-en="Minimize to Dock">Minimize</span><div class="sc-keys"><kbd>⌘</kbd><kbd>M</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Nueva pestaña (apps compatibles)" data-en="New tab">New tab</span><div class="sc-keys"><kbd>⌘</kbd><kbd>T</kbd></div></div>
+        </div>
+      </div>
+
+      <!-- VENTANAS -->
+      <div class="subsec" id="s1-ventanas">
+        <h3>🪟 <span class="i18n" data-es="Ventanas y Espacios" data-en="Windows and Spaces">Ventanas y Espacios</span></h3>
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc" data-es="Mission Control (todas las ventanas)" data-en="Mission Control">Mission Control</span><div class="sc-keys"><kbd>⌃</kbd><kbd>↑</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Mostrar escritorio" data-en="Show desktop">Show desktop</span><div class="sc-keys"><kbd>fn</kbd><kbd>F11</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Cambiar de Space →" data-en="Switch Space →">Next Space</span><div class="sc-keys"><kbd>⌃</kbd><kbd>→</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Cambiar de Space ←" data-en="Switch Space ←">Prev Space</span><div class="sc-keys"><kbd>⌃</kbd><kbd>←</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Ir al Space 1-9" data-en="Go to Space 1-9">Space 1–9</span><div class="sc-keys"><kbd>⌃</kbd><kbd>1-9</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Mover ventana a Space anterior" data-en="Move window to prev Space">Move to prev</span><div class="sc-keys"><kbd>⌃</kbd><kbd>⇧</kbd><kbd>←</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Split View (dos apps lado a lado)" data-en="Split View">Split View</span><div class="sc-keys"><kbd>⌃ hold</kbd> <span style="font-size:.8rem">green btn</span></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Ventana completa / Full Screen" data-en="Full Screen">Full Screen</span><div class="sc-keys"><kbd>⌃</kbd><kbd>⌘</kbd><kbd>F</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Centrar ventana (Rectangle app)" data-en="Center window">Center window</span><div class="sc-keys"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>C</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Mitad izquierda (Rectangle)" data-en="Left half">Left half</span><div class="sc-keys"><kbd>⌃</kbd><kbd>⌥</kbd><kbd>←</kbd></div></div>
+        </div>
+      </div>
+
+      <!-- TEXTO -->
+      <div class="subsec" id="s1-texto">
+        <h3>✏️ <span class="i18n" data-es="Edición de Texto" data-en="Text Editing">Edición de Texto</span></h3>
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc" data-es="Inicio de línea" data-en="Beginning of line">Line start</span><div class="sc-keys"><kbd>⌘</kbd><kbd>←</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Fin de línea" data-en="End of line">Line end</span><div class="sc-keys"><kbd>⌘</kbd><kbd>→</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Palabra anterior/siguiente" data-en="Prev/next word">Word jump</span><div class="sc-keys"><kbd>⌥</kbd><kbd>←/→</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Borrar palabra completa" data-en="Delete whole word">Delete word</span><div class="sc-keys"><kbd>⌥</kbd><kbd>⌫</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Borrar hasta inicio de línea" data-en="Delete to line start">Delete line</span><div class="sc-keys"><kbd>⌃</kbd><kbd>K</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Seleccionar hasta inicio/fin" data-en="Select to start/end">Select to end</span><div class="sc-keys"><kbd>⇧</kbd><kbd>⌘</kbd><kbd>↑/↓</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Seleccionar palabra" data-en="Select word">Select word</span><div class="sc-keys"><kbd>⌥ dbl</kbd><span style="font-size:.8rem">click</span></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Dictar texto (voz)" data-en="Dictate text">Dictate</span><div class="sc-keys"><kbd>fn fn</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Buscar y reemplazar" data-en="Find and replace">Find &amp; replace</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⌥</kbd><kbd>F</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Verificar ortografía" data-en="Spell check">Spell check</span><div class="sc-keys"><kbd>⌘</kbd><kbd>:</kbd></div></div>
+        </div>
+      </div>
+
+      <!-- FINDER -->
+      <div class="subsec" id="s1-finder">
+        <h3>📂 Finder</h3>
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc" data-es="Abrir Finder" data-en="Open Finder">Open Finder</span><div class="sc-keys"><kbd>⌘</kbd><kbd>N</kbd> <span style="font-size:.8rem">en Finder</span></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Nueva carpeta" data-en="New folder">New folder</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>N</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Ir a la carpeta..." data-en="Go to folder...">Go to folder</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>G</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Ver archivos ocultos" data-en="Show hidden files">Hidden files</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>.</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Mover a Papelera" data-en="Move to Trash">Move to Trash</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⌫</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Vaciar papelera sin confirmación" data-en="Empty trash no confirm">Empty trash</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>⌫</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Vista de iconos" data-en="Icon view">Icon view</span><div class="sc-keys"><kbd>⌘</kbd><kbd>1</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Vista de lista" data-en="List view">List view</span><div class="sc-keys"><kbd>⌘</kbd><kbd>2</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Vista de columnas" data-en="Column view">Column view</span><div class="sc-keys"><kbd>⌘</kbd><kbd>3</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Vista de galería" data-en="Gallery view">Gallery view</span><div class="sc-keys"><kbd>⌘</kbd><kbd>4</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Obtener información del archivo" data-en="Get file info">Get Info</span><div class="sc-keys"><kbd>⌘</kbd><kbd>I</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Comprimir / Archivar" data-en="Compress">Compress</span><div class="sc-keys"><kbd>clic derecho</kbd> → Compress</div></div>
+        </div>
+      </div>
+
+      <!-- SCREENSHOTS -->
+      <div class="subsec" id="s1-screenshots">
+        <h3>📸 Screenshots</h3>
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc" data-es="Captura pantalla completa" data-en="Full screen capture">Full screen</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>3</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Captura de área seleccionada" data-en="Selected area capture">Area capture</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Captura de ventana específica" data-en="Window capture">Window capture</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>4</kbd> <kbd>Space</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Panel de capturas y grabación" data-en="Screenshot panel">Screenshot panel</span><div class="sc-keys"><kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Captura al portapapeles" data-en="Capture to clipboard">To clipboard</span><div class="sc-keys"><kbd>⌃</kbd> + cualquier captura</div></div>
+        </div>
+      </div>
+
+      <!-- TERMINAL -->
+      <div class="subsec" id="s1-terminal">
+        <h3>🔧 Terminal / Zsh</h3>
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc">Ctrl + C</span><div class="sc-keys"><kbd>⌃</kbd><kbd>C</kbd> <span style="font-size:.8rem">interrumpir proceso</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Ctrl + Z</span><div class="sc-keys"><kbd>⌃</kbd><kbd>Z</kbd> <span style="font-size:.8rem">suspender proceso</span></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Inicio de línea de comando" data-en="Command line start">Line start</span><div class="sc-keys"><kbd>⌃</kbd><kbd>A</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Fin de línea de comando" data-en="Command line end">Line end</span><div class="sc-keys"><kbd>⌃</kbd><kbd>E</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Limpiar terminal" data-en="Clear terminal">Clear</span><div class="sc-keys"><kbd>⌃</kbd><kbd>L</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Historial anterior" data-en="Previous command">History prev</span><div class="sc-keys"><kbd>⌃</kbd><kbd>P</kbd> <span style="font-size:.8rem">o ↑</span></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Buscar en historial" data-en="Search history">Search history</span><div class="sc-keys"><kbd>⌃</kbd><kbd>R</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Borrar hasta inicio de línea" data-en="Delete to line start">Delete left</span><div class="sc-keys"><kbd>⌃</kbd><kbd>U</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Borrar hasta fin de línea" data-en="Delete to line end">Delete right</span><div class="sc-keys"><kbd>⌃</kbd><kbd>K</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Abrir iTerm2" data-en="Open iTerm2">Open iTerm2</span><div class="sc-keys"><kbd>⌘</kbd><kbd>Space</kbd> → iterm</div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Nueva pestaña en iTerm" data-en="New iTerm tab">New tab iTerm</span><div class="sc-keys"><kbd>⌘</kbd><kbd>T</kbd></div></div>
+          <div class="sc-card"><span class="sc-desc" data-es="Split horizontal en iTerm" data-en="Horizontal split iTerm">Split H</span><div class="sc-keys"><kbd>⌘</kbd><kbd>D</kbd></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         S2 — SPOTLIGHT PRO
+    ═══════════════════════════════════════════ -->
+    <section id="s2">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(76,200,255,.12)">🔍</div>
+        <div>
+          <h2>Spotlight Pro</h2>
+          <p class="i18n" data-es="Mucho más que una búsqueda — es tu centro de comando" data-en="Much more than search — it's your command center">Mucho más que una búsqueda — es tu centro de comando</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s2','Spotlight Pro')">✨</button>
+      </div>
+      <div class="g2">
+        <div class="mini-card"><h4>🧮 <span class="i18n" data-es="Calculadora" data-en="Calculator">Calculadora</span></h4><p><span class="i18n" data-es="Escribí directamente: `45 * 1.21`, `sqrt(144)`, `100 USD in ARS`. Resultados instantáneos." data-en="Type directly: `45 * 1.21`, `sqrt(144)`, `100 USD in ARS`. Instant results.">Escribí: <code>45 * 1.21</code>, <code>sqrt(144)</code>, <code>100 USD in ARS</code></span></p></div>
+        <div class="mini-card"><h4>🌡 <span class="i18n" data-es="Unidades y Conversiones" data-en="Units and Conversions">Conversiones</span></h4><p><span class="i18n" data-es="`100 km to miles`, `5 kg to lbs`, `32 fahrenheit in celsius`. Conversión directa." data-en="`100 km to miles`, `5 kg to lbs`, `32 fahrenheit in celsius`. Direct conversion.">`100 km to miles`, `5 kg to lbs`, `32°F in celsius`</span></p></div>
+        <div class="mini-card"><h4>📚 <span class="i18n" data-es="Diccionario" data-en="Dictionary">Diccionario</span></h4><p><span class="i18n" data-es="Escribí cualquier palabra en inglés para ver su definición directamente en Spotlight." data-en="Type any English word to see its definition directly in Spotlight.">Escribí una palabra en inglés → definición instantánea</span></p></div>
+        <div class="mini-card"><h4>🚀 <span class="i18n" data-es="Abrir apps y archivos" data-en="Open apps and files">Apps y Archivos</span></h4><p><span class="i18n" data-es="Las primeras 2-3 letras del nombre. Cmd+Enter abre la carpeta contenedora." data-en="First 2-3 letters of the name. Cmd+Enter opens the containing folder.">2-3 letras del nombre. <kbd>⌘</kbd><kbd>↵</kbd> abre la carpeta</span></p></div>
+        <div class="mini-card"><h4>📅 <span class="i18n" data-es="Fechas y Horas" data-en="Dates and Times">Fechas</span></h4><p><code>what time is it in tokyo</code><br><code>days until christmas</code></p></div>
+        <div class="mini-card"><h4>⚡ <span class="i18n" data-es="Truco Pro" data-en="Pro Trick">Truco Pro</span></h4><p><span class="i18n" data-es="Cmd+Space, escribí el nombre de un contacto. Podés llamar, enviar mail o mensaje directamente." data-en="Cmd+Space, type a contact name. You can call, email or message directly."><kbd>⌘</kbd>+Space → nombre de contacto → llamar/mail directo</span></p></div>
+      </div>
+    
+
+<p>test</p>
+
+</section>
+
+    <!-- ═══════════════════════════════════════════
+         S3 — MISSION CONTROL & SPACES
+    ═══════════════════════════════════════════ -->
+    <section id="s3">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(64,208,128,.12)">🖥</div>
+        <div>
+          <h2>Mission Control &amp; Spaces</h2>
+          <p class="i18n" data-es="Múltiples escritorios virtuales para máxima productividad" data-en="Multiple virtual desktops for maximum productivity">Múltiples escritorios virtuales para máxima productividad</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s3','Mission Control')">✨</button>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">💡</div>
+        <div class="i18n" data-es="Setup recomendado para developers: Space 1 = Terminal, Space 2 = Editor (Cursor/VS Code), Space 3 = Browser, Space 4 = Slack/comunicación, Space 5 = Docker/herramientas." data-en="Recommended developer setup: Space 1 = Terminal, Space 2 = Editor, Space 3 = Browser, Space 4 = Slack, Space 5 = Docker/tools.">Setup recomendado: <strong>Space 1</strong> = Terminal · <strong>Space 2</strong> = Editor · <strong>Space 3</strong> = Browser · <strong>Space 4</strong> = Slack · <strong>Space 5</strong> = Docker</div>
+      </div>
+
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · spaces setup</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-spaces')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+            <button class="code-btn explain" onclick="explainCode('code-spaces')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+          </div>
+        </div>
+        <pre id="code-spaces"><code><span class="c"># Asignar apps a Spaces específicos automáticamente:</span>
+<span class="c"># Clic derecho en el ícono del Dock → Options → Assign to → Desktop 2</span>
+
+<span class="c"># Activar switching rápido con Ctrl+número:</span>
+<span class="c"># System Settings → Keyboard → Shortcuts → Mission Control</span>
+<span class="c"># Activar: "Switch to Desktop 1-9" → Ctrl+1 ... Ctrl+9</span>
+
+<span class="c"># Tip: deshabilitar "Automatically rearrange Spaces" para orden fijo</span>
+<span class="c"># System Settings → Desktop & Dock → Mission Control → uncheck</span>
+
+<span class="c"># Crear un nuevo Space rápido:</span>
+<span class="c"># Ctrl+↑ (Mission Control) → clic en "+" esquina superior derecha</span></code></pre>
+      </div>
+    
+
+<div class="subsec">
+        <h3 class="i18n" data-es="Trucos de Mission Control para Developers" data-en="Mission Control Tricks for Developers">Trucos de Mission Control para Developers</h3>
+        <div class="shortcuts-grid">
+          <div class="mini-card">
+            <div class="mini-card-title">Navegar entre Spaces con Teclado</div>
+            <div class="mini-card-content">
+              <p>Usa <kbd>Ctrl</kbd> + <kbd>&larr;</kbd> / <kbd>&rarr;</kbd> para moverte entre tus espacios de trabajo (Spaces) de forma fluida sin interrumpir tu flujo.</p>
+            </div>
+          </div>
+          <div class="mini-card">
+            <div class="mini-card-title">Arrastrar Ventanas entre Spaces</div>
+            <div class="mini-card-content">
+              <p>Entra en Mission Control (<kbd>Ctrl</kbd> + <kbd>&uarr;</kbd>), haz clic y arrastra cualquier ventana de un Space a otro en la vista superior.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</section>
+
+    <!-- ═══════════════════════════════════════════
+         S4 — FINDER AVANZADO
+    ═══════════════════════════════════════════ -->
+    <section id="s4">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(255,159,80,.12)">📂</div>
+        <div>
+          <h2 class="i18n" data-es="Finder Avanzado" data-en="Advanced Finder">Finder Avanzado</h2>
+          <p class="i18n" data-es="Trucos que la mayoría no conoce" data-en="Tricks most people don't know">Trucos que la mayoría no conoce</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s4','Finder Avanzado')">✨</button>
+      </div>
+      <div class="g2">
+        <div class="mini-card"><h4>👁 <span class="i18n" data-es="Quick Look" data-en="Quick Look">Quick Look</span></h4><p><span class="i18n" data-es="Seleccioná un archivo → presioná Espacio para previsualizar sin abrir. Funciona para imágenes, PDFs, videos, código, Markdown." data-en="Select a file → press Space to preview without opening. Works for images, PDFs, videos, code, Markdown.">Seleccioná → <kbd>Espacio</kbd> para previsualizar. Funciona con imágenes, PDFs, código, Markdown.</span></p></div>
+        <div class="mini-card"><h4>🔗 <span class="i18n" data-es="Copiar ruta del archivo" data-en="Copy file path">Copiar ruta</span></h4><p><span class="i18n" data-es="Seleccioná archivo → Cmd+Opt+C copia la ruta completa. También: arrastrá el archivo a la terminal para obtener la ruta." data-en="Select file → Cmd+Opt+C copies the full path. Also: drag the file to terminal to get the path."><kbd>⌘</kbd><kbd>⌥</kbd><kbd>C</kbd> copia la ruta completa. O arrastrá al Terminal.</span></p></div>
+        <div class="mini-card"><h4>🏷 Tags</h4><p><span class="i18n" data-es="Clic derecho → Tag para etiquetar archivos. Después buscá por tag en Spotlight. Ideal para organizar proyectos." data-en="Right-click → Tag to label files. Then search by tag in Spotlight. Great for organizing projects.">Clic derecho → Tag. Buscalos en Spotlight. Ideal para organizar proyectos.</span></p></div>
+        <div class="mini-card"><h4>🔍 Smart Folders</h4><p><span class="i18n" data-es="File → New Smart Folder. Guardá búsquedas frecuentes como carpetas virtuales (ej: archivos modificados hoy)." data-en="File → New Smart Folder. Save frequent searches as virtual folders (e.g. files modified today).">File → New Smart Folder. Guardá búsquedas como carpetas virtuales.</span></p></div>
+      </div>
+    
+
+<div class="g2">
+  <div class="mini-card"><h4>⬆️ Volver al padre</h4><p>Seleccioná una carpeta → apretá la tecla `Comando` + la flecha hacia arriba para subir un nivel en la jerarquía.</p></div>
+  <div class="mini-card"><h4>📝 Barra de ruta</h4><p>Hacé clic derecho en la barra superior (donde se ve la ruta) para ver la jerarquía y navegar rápidamente entre carpetas.</p></div>
+</div>
+
+</section>
+
+    <!-- ═══════════════════════════════════════════
+         S5 — TERMINAL & ZSH
+    ═══════════════════════════════════════════ -->
+    <section id="s5">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(56,217,169,.12)">💻</div>
+        <div>
+          <h2>Terminal &amp; Zsh</h2>
+          <p class="i18n" data-es="Comandos esenciales y trucos para developers en macOS" data-en="Essential commands and tricks for developers on macOS">Comandos esenciales y trucos para developers en macOS</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s5','Terminal Zsh')">✨</button>
+      </div>
+
+      <div class="subsec" id="s5-nav">
+        <h3>📁 <span class="i18n" data-es="Navegación y Archivos" data-en="Navigation and Files">Navegación y Archivos</span></h3>
+        <div class="code-wrap has-toolbar">
+          <div class="code-toolbar">
+            <span class="code-lang-badge">bash · navigation</span>
+            <div class="code-btns">
+              <button class="code-btn" onclick="copyCode('code-nav')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+              <button class="code-btn explain" onclick="explainCode('code-nav')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+            </div>
+          </div>
+          <pre id="code-nav"><code><span class="c"># Navegación rápida</span>
+<span class="cmd">cd -</span>              <span class="c"># volver al directorio anterior</span>
+<span class="cmd">cd ~</span>              <span class="c"># ir a home</span>
+<span class="cmd">ls -la</span>            <span class="c"># listar con ocultos y permisos</span>
+<span class="cmd">eza --icons -la</span>   <span class="c"># ls moderno (si tenés eza instalado)</span>
+<span class="cmd">tree -L 2</span>         <span class="c"># árbol de directorios 2 niveles</span>
+
+<span class="c"># Buscar archivos (rápido)</span>
+<span class="cmd">fd nombre.py</span>      <span class="c"># buscar por nombre (más rápido que find)</span>
+<span class="cmd">rg "texto"</span>        <span class="c"># buscar contenido en archivos (ripgrep)</span>
+<span class="cmd">fzf</span>               <span class="c"># fuzzy finder interactivo</span>
+
+<span class="c"># Operaciones de archivos</span>
+<span class="cmd">cp -r origen/ destino/</span>    <span class="c"># copiar carpeta completa</span>
+<span class="cmd">mv archivo.txt nuevo.txt</span>  <span class="c"># mover/renombrar</span>
+<span class="cmd">rm -rf carpeta/</span>           <span class="c"># eliminar carpeta (cuidado!)</span>
+<span class="cmd">pbcopy < archivo.txt</span>      <span class="c"># copiar contenido al portapapeles</span>
+<span class="cmd">pbpaste > archivo.txt</span>     <span class="c"># pegar portapapeles a archivo</span>
+<span class="cmd">open .</span>                    <span class="c"># abrir carpeta actual en Finder</span>
+<span class="cmd">open -a "VS Code" .</span>       <span class="c"># abrir con app específica</span></code></pre>
+        </div>
+      </div>
+
+      <div class="subsec" id="s5-system">
+        <h3>⚙️ <span class="i18n" data-es="Sistema y Procesos" data-en="System and Processes">Sistema y Procesos</span></h3>
+        <div class="code-wrap has-toolbar">
+          <div class="code-toolbar">
+            <span class="code-lang-badge">bash · system</span>
+            <div class="code-btns">
+              <button class="code-btn" onclick="copyCode('code-system')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+              <button class="code-btn explain" onclick="explainCode('code-system')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+            </div>
+          </div>
+          <pre id="code-system"><code><span class="c"># Información del sistema</span>
+<span class="cmd">uname -m</span>              <span class="c"># → arm64 (Apple Silicon)</span>
+<span class="cmd">sw_vers</span>               <span class="c"># versión de macOS</span>
+<span class="cmd">system_profiler SPHardwareDataType</span>  <span class="c"># info detallada de hardware</span>
+<span class="cmd">sysctl -n machdep.cpu.brand_string</span>  <span class="c"># modelo del CPU</span>
+
+<span class="c"># Procesos y rendimiento</span>
+<span class="cmd">top</span>                   <span class="c"># monitor de procesos (q para salir)</span>
+<span class="cmd">htop</span>                  <span class="c"># versión visual mejorada de top</span>
+<span class="cmd">ps aux | grep node</span>   <span class="c"># buscar proceso específico</span>
+<span class="cmd">kill -9 PID</span>           <span class="c"># forzar cierre por PID</span>
+<span class="cmd">pkill -f "nombre"</span>     <span class="c"># cerrar proceso por nombre</span>
+<span class="cmd">lsof -i :3000</span>         <span class="c"># ver qué usa el puerto 3000</span>
+<span class="cmd">kill $(lsof -t -i:3000)</span>  <span class="c"># liberar puerto 3000</span>
+
+<span class="c"># Disco y memoria</span>
+<span class="cmd">df -h</span>                 <span class="c"># espacio en disco</span>
+<span class="cmd">du -sh */</span>             <span class="c"># tamaño de cada carpeta</span>
+<span class="cmd">du -sh * | sort -h</span>   <span class="c"># ordenado por tamaño</span></code></pre>
+        </div>
+      </div>
+
+      <div class="subsec" id="s5-mac">
+        <h3>🍎 <span class="i18n" data-es="Comandos exclusivos macOS" data-en="macOS-exclusive commands">Comandos exclusivos macOS</span></h3>
+        <div class="code-wrap has-toolbar">
+          <div class="code-toolbar">
+            <span class="code-lang-badge">bash · macos only</span>
+            <div class="code-btns">
+              <button class="code-btn" onclick="copyCode('code-macos')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+              <button class="code-btn explain" onclick="explainCode('code-macos')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+            </div>
+          </div>
+          <pre id="code-macos"><code><span class="c"># Portapapeles</span>
+<span class="cmd">pbcopy</span>    <span class="c"># copiar stdin al portapapeles</span>
+<span class="cmd">pbpaste</span>   <span class="c"># pegar desde portapapeles a stdout</span>
+<span class="cmd">echo</span> <span class="s">"texto"</span> | <span class="cmd">pbcopy</span>      <span class="c"># copiar texto al clipboard</span>
+<span class="cmd">cat archivo.json</span> | <span class="cmd">pbcopy</span> <span class="c"># copiar archivo al clipboard</span>
+
+<span class="c"># Abrir aplicaciones</span>
+<span class="cmd">open -a "Safari"</span> https://google.com
+<span class="cmd">open -a "Preview"</span> imagen.png
+<span class="cmd">open /Applications/</span>         <span class="c"># abrir carpeta de apps</span>
+
+<span class="c"># Servicios de sistema</span>
+<span class="cmd">launchctl list</span>               <span class="c"># servicios activos</span>
+<span class="cmd">sudo launchctl load /Library/LaunchDaemons/com.ejemplo.plist</span>
+
+<span class="c"># Notificaciones desde terminal</span>
+<span class="cmd">osascript -e</span> <span class="s">'display notification "Build listo!" with title "Terminal"'</span>
+
+<span class="c"># Airport (WiFi desde terminal)</span>
+<span class="cmd">networksetup -getairportnetwork en0</span>   <span class="c"># red WiFi actual</span>
+<span class="cmd">networksetup -listallnetworkservices</span>  <span class="c"># interfaces de red</span>
+<span class="cmd">ipconfig getifaddr en0</span>               <span class="c"># IP local</span>
+<span class="cmd">curl ifconfig.me</span>                     <span class="c"># IP pública</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         S6 — USUARIOS, PERMISOS Y ACCESO
+    ═══════════════════════════════════════════ -->
+    <section id="s6">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(255,77,109,.12)">👥</div>
+        <div>
+          <h2 class="i18n" data-es="Usuarios, Permisos y Acceso" data-en="Users, Permissions and Access">Usuarios, Permisos y Acceso</h2>
+          <p class="i18n" data-es="Incluyendo la solución al Permission denied entre usuarios" data-en="Including the fix for Permission denied between users">Incluyendo la solución al Permission denied entre usuarios</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s6','Usuarios y Permisos')">✨</button>
+      </div>
+
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · users &amp; permissions</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-perms')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+            <button class="code-btn explain" onclick="explainCode('code-perms')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+          </div>
+        </div>
+        <pre id="code-perms"><code><span class="c">━━━ INFORMACIÓN DE USUARIOS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">whoami</span>                  <span class="c"># usuario actual</span>
+<span class="cmd">id</span>                      <span class="c"># UID, GID y grupos del usuario</span>
+<span class="cmd">who</span>                     <span class="c"># usuarios conectados ahora</span>
+<span class="cmd">dscl . list /Users</span>     <span class="c"># todos los usuarios del sistema</span>
+<span class="cmd">dscl . read /Users/nombre</span> <span class="c"># info de un usuario específico</span>
+
+<span class="c">━━━ CHMOD — PERMISOS DE ARCHIVOS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Formato: chmod [who][op][permissions] archivo</span>
+<span class="c"># who: u=user, g=group, o=others, a=all</span>
+<span class="c"># permissions: r=4(read), w=2(write), x=1(execute)</span>
+<span class="cmd">chmod 755 script.sh</span>      <span class="c"># rwxr-xr-x (ejecutable para todos)</span>
+<span class="cmd">chmod 644 archivo.txt</span>   <span class="c"># rw-r--r-- (lectura pública)</span>
+<span class="cmd">chmod 600 .env</span>          <span class="c"># rw------- (solo el dueño)</span>
+<span class="cmd">chmod +x script.sh</span>      <span class="c"># agregar permisos de ejecución</span>
+<span class="cmd">chmod -R 755 carpeta/</span>   <span class="c"># aplicar recursivamente</span>
+
+<span class="c">━━━ CHOWN — CAMBIAR PROPIETARIO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">chown usuario archivo.txt</span>
+<span class="cmd">chown usuario:grupo archivo.txt</span>
+<span class="cmd">sudo chown -R $(whoami) /carpeta/</span>  <span class="c"># tomar propiedad recursiva</span>
+
+<span class="c">━━━ ACL — LISTAS DE CONTROL DE ACCESO ━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">ls -le archivo.txt</span>       <span class="c"># ver permisos ACL extendidos</span>
+<span class="cmd">chmod +a "usuario allow read" archivo.txt</span></code></pre>
+      </div>
+
+      <!-- Solución al problema de acceso entre usuarios -->
+      <div class="callout danger" style="margin-top:18px">
+        <div class="callout-ico">🚨</div>
+        <div>
+          <strong class="i18n" data-es="Problema: Permission denied al acceder a archivos de otro usuario" data-en="Problem: Permission denied when accessing another user's files">Problema: Permission denied al acceder a archivos de otro usuario</strong>
+        </div>
+      </div>
+
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · fix permission denied</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-perm-fix')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+            <button class="code-btn explain" onclick="explainCode('code-perm-fix')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+          </div>
+        </div>
+        <pre id="code-perm-fix"><code><span class="c">━━━ SOLUCIÓN 1: Copiar archivos del otro usuario (recomendado) ━━</span>
+<span class="cmd">sudo cp -r</span> /Users/otro-usuario/proyecto/ ~/mi-proyecto/
+<span class="cmd">sudo chown -R</span> <span class="cmd">$(whoami)</span> ~/mi-proyecto/
+<span class="c"># Ahora tenés los archivos con tus propios permisos</span>
+
+<span class="c">━━━ SOLUCIÓN 2: Full Disk Access para Terminal ━━━━━━━━━━━━━━━━━</span>
+<span class="c"># System Settings → Privacy & Security → Full Disk Access</span>
+<span class="c"># Agregar Terminal.app (y/o iTerm2)</span>
+<span class="c"># Esto permite a Terminal leer archivos de otros usuarios</span>
+
+<span class="c">━━━ SOLUCIÓN 3: Compartir carpeta específica entre usuarios ━━━━</span>
+<span class="c"># En el otro usuario: crear carpeta en /Users/Shared/</span>
+<span class="cmd">mkdir -p</span> /Users/Shared/proyecto-compartido
+<span class="cmd">cp -r</span> ~/proyecto/ /Users/Shared/proyecto-compartido/
+<span class="cmd">chmod -R 755</span> /Users/Shared/proyecto-compartido/
+
+<span class="c">━━━ SOLUCIÓN 4: Agregar tu usuario al grupo del otro ━━━━━━━━━━━</span>
+<span class="cmd">sudo dseditgroup -o edit -a</span> <span class="s">tu-usuario</span> -t user <span class="s">grupo-del-otro</span>
+
+<span class="c">━━━ DIAGNÓSTICO: Ver por qué está denegado ━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">ls -la</span> /Users/otro-usuario/     <span class="c"># ver permisos del home</span>
+<span class="cmd">ls -le</span> /Users/otro-usuario/proyecto/ <span class="c"># ver ACLs extendidos</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         S7 — SEGURIDAD
+    ═══════════════════════════════════════════ -->
+    <section id="s7">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(245,200,66,.12)">🔐</div>
+        <div>
+          <h2 class="i18n" data-es="Seguridad: SIP, SSH, Firewall" data-en="Security: SIP, SSH, Firewall">Seguridad: SIP, SSH, Firewall</h2>
+          <p class="i18n" data-es="Configuración de seguridad esencial para developers" data-en="Essential security configuration for developers">Configuración de seguridad esencial para developers</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s7','Seguridad')">✨</button>
+      </div>
+
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · security</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-sec')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+            <button class="code-btn explain" onclick="explainCode('code-sec')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+          </div>
+        </div>
+        <pre id="code-sec"><code><span class="c">━━━ SIP (System Integrity Protection) ━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">csrutil status</span>    <span class="c"># → "enabled" es lo correcto y seguro</span>
+<span class="c"># NO deshabilitar SIP salvo que sepas exactamente qué hacés</span>
+
+<span class="c">━━━ SSH ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Generar clave SSH (ed25519 es el estándar moderno)</span>
+<span class="cmd">ssh-keygen -t ed25519 -C</span> <span class="s">"tu@email.com"</span>
+<span class="cmd">cat ~/.ssh/id_ed25519.pub</span>   <span class="c"># mostrar clave pública</span>
+
+<span class="c"># Agregar al agente SSH (se reinicia solo con macOS Keychain)</span>
+<span class="cmd">eval "$(ssh-agent -s)"</span>
+<span class="cmd">ssh-add --apple-use-keychain ~/.ssh/id_ed25519</span>
+
+<span class="c"># Configuración de múltiples hosts SSH</span>
+<span class="c"># Crear ~/.ssh/config:</span>
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+
+Host mi-servidor
+  HostName 192.168.1.100
+  User deploy
+  IdentityFile ~/.ssh/deploy_key
+  Port 2222
+
+<span class="c">━━━ FIREWALL ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">sudo /usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate</span>
+<span class="cmd">sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on</span>
+
+<span class="c">━━━ GATEKEEPER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">spctl --status</span>   <span class="c"># → assessments enabled</span>
+<span class="c"># Para abrir app no firmada (una sola vez):</span>
+<span class="cmd">sudo xattr -rd com.apple.quarantine</span> /Applications/LaApp.app</code></pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         S8 — DEFAULTS WRITE (PERSONALIZACIÓN)
+    ═══════════════════════════════════════════ -->
+    <section id="s8">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(192,132,252,.12)">⚙️</div>
+        <div>
+          <h2>defaults write</h2>
+          <p class="i18n" data-es="Personalización avanzada del sistema que no está en Settings" data-en="Advanced system customization not available in Settings">Personalización avanzada que no está en Settings</p>
+        </div>
+        <div style="display:flex;gap:6px;margin-left:auto">
+          <button class="improve-btn" onclick="openAndAsk('generate', currentLang==='es'?'Generá un script de defaults write completo para optimizar Mac para developers: dock rápido, Finder avanzado, screenshots en carpeta, deshabilitar animaciones innecesarias':'Generate a complete defaults write script to optimize Mac for developers: fast dock, advanced Finder, screenshots in folder, disable unnecessary animations')">📝 <span class="i18n" data-es="Generar script" data-en="Generate script">Generar script</span></button>
+          <button class="improve-btn" onclick="openImprove('s8','defaults write')">✨</button>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-ico">⚠️</div>
+        <div class="i18n" data-es="Algunos cambios requieren reiniciar el Dock o el Finder (comandos incluidos). Siempre podés revertir borrando el valor con `defaults delete`." data-en="Some changes require restarting the Dock or Finder (commands included). You can always revert by deleting the value with `defaults delete`.">Algunos cambios requieren reiniciar Dock/Finder. Podés revertir con <code>defaults delete</code>.</div>
+      </div>
+
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · defaults write</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-defaults')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+            <button class="code-btn explain" onclick="explainCode('code-defaults')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+          </div>
+        </div>
+        <pre id="code-defaults"><code><span class="c">━━━ DOCK ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Velocidad de animación del Dock (0 = instantáneo)</span>
+<span class="cmd">defaults write com.apple.dock autohide-delay</span> -float <span class="n">0</span>
+<span class="cmd">defaults write com.apple.dock autohide-time-modifier</span> -float <span class="n">0.3</span>
+
+<span class="c"># Reducir tamaño de iconos de carpetas en el Dock</span>
+<span class="cmd">defaults write com.apple.dock showhidden</span> -bool <span class="k">true</span>
+
+<span class="c"># Deshabilitar "bounce" de iconos al abrir</span>
+<span class="cmd">defaults write com.apple.dock launchanim</span> -bool <span class="k">false</span>
+
+<span class="cmd">killall Dock</span>  <span class="c"># aplicar cambios del Dock</span>
+
+<span class="c">━━━ FINDER ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Mostrar archivos ocultos por defecto</span>
+<span class="cmd">defaults write com.apple.finder AppleShowAllFiles</span> -bool <span class="k">true</span>
+
+<span class="c"># Mostrar extensiones de archivos siempre</span>
+<span class="cmd">defaults write NSGlobalDomain AppleShowAllExtensions</span> -bool <span class="k">true</span>
+
+<span class="c"># Vista de lista por defecto en Finder</span>
+<span class="cmd">defaults write com.apple.finder FXPreferredViewStyle</span> -string <span class="s">"Nlsv"</span>
+
+<span class="c"># Mostrar ruta completa en el título del Finder</span>
+<span class="cmd">defaults write com.apple.finder _FXShowPosixPathInTitle</span> -bool <span class="k">true</span>
+
+<span class="c"># Deshabilitar advertencia al cambiar extensión</span>
+<span class="cmd">defaults write com.apple.finder FXEnableExtensionChangeWarning</span> -bool <span class="k">false</span>
+
+<span class="cmd">killall Finder</span>  <span class="c"># aplicar cambios del Finder</span>
+
+<span class="c">━━━ SCREENSHOTS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Cambiar carpeta de destino de screenshots</span>
+<span class="cmd">defaults write com.apple.screencapture location</span> ~/Desktop/Screenshots
+<span class="cmd">mkdir -p</span> ~/Desktop/Screenshots
+
+<span class="c"># Desactivar sombra en capturas de ventana</span>
+<span class="cmd">defaults write com.apple.screencapture disable-shadow</span> -bool <span class="k">true</span>
+
+<span class="c">━━━ TECLADO Y TRACKPAD ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Repetición de teclas más rápida (dev workflow)</span>
+<span class="cmd">defaults write NSGlobalDomain KeyRepeat</span> -int <span class="n">2</span>
+<span class="cmd">defaults write NSGlobalDomain InitialKeyRepeat</span> -int <span class="n">15</span>
+
+<span class="c"># Deshabilitar auto-corrección (molesta al codear)</span>
+<span class="cmd">defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled</span> -bool <span class="k">false</span>
+<span class="cmd">defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled</span> -bool <span class="k">false</span>
+<span class="cmd">defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled</span> -bool <span class="k">false</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         S9 — TIPS & SECRETOS
+    ═══════════════════════════════════════════ -->
+    <section id="s9">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(232,121,249,.12)">🤫</div>
+        <div>
+          <h2>Tips &amp; <span class="i18n" data-es="Secretos para Developers" data-en="Secrets for Developers">Secretos para Developers</span></h2>
+          <p class="i18n" data-es="Lo que los devs con más experiencia en Mac saben" data-en="What experienced Mac developers know">Lo que los devs con más experiencia en Mac saben</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s9','Tips y Secretos')">✨</button>
+      </div>
+
+      <div class="g2">
+        <div class="mini-card">
+          <h4>🔧 <span class="i18n" data-es="Rectangle — gestor de ventanas" data-en="Rectangle — window manager">Rectangle</span></h4>
+          <p class="i18n" data-es="La app más importante para productividad. Gratis, open source. Atajos para mover ventanas a mitades, tercios y esquinas." data-en="The most important productivity app. Free, open source. Shortcuts to move windows to halves, thirds and corners.">La app más importante para productividad. <code>brew install --cask rectangle</code></p>
+        </div>
+        <div class="mini-card">
+          <h4>🎨 Raycast</h4>
+          <p class="i18n" data-es="Reemplazá Spotlight con Raycast: busca apps, abre URLs, controla música, tiene extensiones para GitHub, Jira, Slack." data-en="Replace Spotlight with Raycast: search apps, open URLs, control music, extensions for GitHub, Jira, Slack.">Reemplazá Spotlight. <code>brew install --cask raycast</code></p>
+        </div>
+        <div class="mini-card">
+          <h4>📋 Maccy</h4>
+          <p class="i18n" data-es="Portapapeles con historial: guarda los últimos 200 items copiados. Abre con Cmd+Shift+V. Gratis y open source." data-en="Clipboard with history: saves last 200 copied items. Open with Cmd+Shift+V. Free and open source.">Historial de portapapeles. <code>brew install --cask maccy</code></p>
+        </div>
+        <div class="mini-card">
+          <h4>🖱 AltTab</h4>
+          <p class="i18n" data-es="Selector de ventanas como Windows: muestra miniaturas de TODAS las ventanas abiertas, no solo las apps." data-en="Window switcher like Windows: shows thumbnails of ALL open windows, not just apps.">Selector de ventanas estilo Windows. <code>brew install --cask alt-tab</code></p>
+        </div>
+        <div class="mini-card">
+          <h4>⚡ Secretos del Terminal</h4>
+          <p class="i18n" data-es="Arrastrá un archivo del Finder al Terminal para obtener su ruta completa. Arrastrá una carpeta para hacer cd a ella." data-en="Drag a file from Finder to Terminal to get its full path. Drag a folder to cd to it.">Arrastrá archivo al Terminal → obtener ruta. Arrastrá carpeta → hace cd</p>
+        </div>
+        <div class="mini-card">
+          <h4>🔍 <span class="i18n" data-es="Buscar en archivos con Quick Look" data-en="Search in files with Quick Look">Quick Look + Text</span></h4>
+          <p class="i18n" data-es="Con Quick Look abierto (Espacio), podés seleccionar y copiar texto de PDFs, código y documentos sin abrir la app." data-en="With Quick Look open (Space), you can select and copy text from PDFs, code and documents without opening the app.">Con Quick Look abierto podés seleccionar y copiar texto de PDFs y código sin abrir la app.</p>
+        </div>
+        <div class="mini-card">
+          <h4>🌐 <span class="i18n" data-es="NetworkQuality — test de red" data-en="NetworkQuality — network test">NetworkQuality</span></h4>
+          <p><code>networkQuality</code> <span class="i18n" data-es="en Terminal — mide upload, download y responsiveness simultáneamente (solo macOS 12+)." data-en="in Terminal — measures upload, download and responsiveness simultaneously (macOS 12+ only).">en Terminal → mide upload, download y responsiveness a la vez</span></p>
+        </div>
+        <div class="mini-card">
+          <h4>🎥 <span class="i18n" data-es="Grabar pantalla nativo" data-en="Native screen recording">Screen Recording</span></h4>
+          <p><kbd>⌘</kbd><kbd>⇧</kbd><kbd>5</kbd> → <span class="i18n" data-es="grabar pantalla completa o área. Sin instalar nada. Cmd+Shift+6 graba la Touch Bar si la tenés." data-en="record full screen or area. No install needed. Cmd+Shift+6 records the Touch Bar if you have one.">grabar pantalla completa o área. Sin instalar nada.</span></p>
+        </div>
+      </div>
+
+      <div class="callout tip" style="margin-top:18px">
+        <div class="callout-ico">🚀</div>
+        <div>
+          <strong class="i18n" data-es="Stack de productividad recomendado para Mac M5:" data-en="Recommended productivity stack for Mac M5:">Stack de productividad recomendado para Mac M5:</strong>
+          <br>
+          <span class="i18n" data-es="Raycast (Spotlight++), Rectangle (ventanas), Maccy (portapapeles), AltTab (selector ventanas), iTerm2 (terminal), Cursor/VS Code (editor). Todo gratis o casi." data-en="Raycast (Spotlight++), Rectangle (windows), Maccy (clipboard), AltTab (window switcher), iTerm2 (terminal), Cursor/VS Code (editor). All free or nearly.">Raycast · Rectangle · Maccy · AltTab · iTerm2 · Cursor/VS Code — todo gratis o casi</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zona para secciones agregadas por AI -->
+    <div id="ai-added-sections"></div>
+
+    <div style="text-align:center;padding:28px 0;color:var(--text3);font-size:.82rem;border-top:1px solid var(--border);margin-top:28px">
+      MacBook Pro M5 <span class="i18n" data-es="Guía Dev Completa" data-en="Complete Dev Guide">Guía Dev Completa</span> v2.0 · <span class="i18n" data-es="Guía Viva con AI" data-en="Living Guide with AI">Guía Viva con AI</span> · Mayo 2026
+    </div>
+  </main>
+</div>
+
+<!-- PANEL AI — 5 MODOS ESPECÍFICOS PARA ESTA GUÍA:
+     💬 Chat       — preguntas sobre macOS / atajos / tools
+     ⌨️ Shortcut  — describí acción → recibís el atajo exacto
+     🔴 Fix        — describí problema → solución paso a paso
+     📝 Generate  — genera defaults write, scripts, configs macOS
+     ➕ Add       — agrega nueva sección HTML a la guía -->
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-head">
+    <div class="ai-head-icon">🤖</div>
+    <div>
+      <div class="ai-head-title i18n" data-es="Asistente AI" data-en="AI Assistant">Asistente AI</div>
+      <div class="ai-head-sub">MacBook Pro M5 · 5 modos</div>
+    </div>
+    <button class="ai-close" onclick="togglePanel()">✕</button>
+  </div>
+  <div class="ai-modes">
+    <button class="ai-mode-btn active" onclick="setMode('chat')" id="mode-chat">💬 Chat</button>
+    <button class="ai-mode-btn" onclick="setMode('shortcut')" id="mode-shortcut">⌨️ Atajo</button>
+    <button class="ai-mode-btn" onclick="setMode('fix')" id="mode-fix">🔴 Fix</button>
+    <button class="ai-mode-btn" onclick="setMode('generate')" id="mode-generate">📝 Generate</button>
+    <button class="ai-mode-btn" onclick="setMode('add-section')" id="mode-add-section">➕ <span class="i18n" data-es="Sección" data-en="Section">Sección</span></button>
+  </div>
+
+    <!-- ── BARRA DE PROVEEDORES AI ─────────────────────────────────────
+         Puter = default gratis, sin key. Gemini = gratis con key de AI Studio.
+         Grok = barato $0.20/M. Claude = quienes tienen key. Ollama = offline.
+    ──────────────────────────────────────────────────────────────────── -->
+    <div class="prov-bar" id="provBar">
+      <button class="prov-btn active" data-prov="puter" onclick="setProvider('puter')" title="Gratis, sin key, funciona ya">
+        🌟 Puter <span class="prov-badge">FREE</span>
+      </button>
+      <button class="prov-btn" data-prov="gemini" onclick="setProvider('gemini')" title="Key gratis en aistudio.google.com">
+        💎 Gemini <span class="prov-badge">FREE</span>
+      </button>
+      <button class="prov-btn" data-prov="grok" onclick="setProvider('grok')" title="$0.20/M tokens xAI">
+        ⚡ Grok
+      </button>
+      <button class="prov-btn" data-prov="claude" onclick="setProvider('claude')" title="Anthropic Claude">
+        🤖 Claude
+      </button>
+      <button class="prov-btn" data-prov="ollama" onclick="setProvider('ollama')" title="100% local offline">
+        🦙 Ollama <span class="prov-badge">FREE</span>
+      </button>
+    </div>
+    <div class="key-row" id="keyRow">
+      <input type="password" class="key-input" id="provKeyInput"
+        placeholder="Pegá tu API key..." onkeydown="if(event.key==='Enter')saveProvKey()">
+      <button class="key-save-btn" onclick="saveProvKey()">✓ Guardar</button>
+      <a class="key-link" id="keyLink" href="#" target="_blank" rel="noopener">Obtener →</a>
+    </div>
+  <div class="ai-msgs" id="aiMsgs">
+    <div class="msg-ai">
+      <strong class="i18n" data-es="¡Hola!" data-en="Hi!">¡Hola!</strong> <span class="i18n" data-es="Soy tu asistente AI para el MacBook M5. Puedo:" data-en="I'm your AI assistant for MacBook M5. I can:">Soy tu asistente AI para el MacBook M5. Puedo:</span><br><br>
+      ⌨️ <strong class="i18n" data-es="Atajo" data-en="Shortcut">Atajo</strong> — <span class="i18n" data-es="describí qué querés hacer → te doy el shortcut exacto" data-en="describe what you want to do → I give you the exact shortcut">describí qué querés hacer → te doy el shortcut exacto</span><br>
+      🔴 <strong>Fix</strong> — <span class="i18n" data-es="describí el problema → solución paso a paso" data-en="describe the problem → step-by-step solution">describí el problema → solución paso a paso</span><br>
+      📝 <strong>Generate</strong> — <span class="i18n" data-es="generá defaults write, scripts, configs macOS" data-en="generate defaults write, scripts, macOS configs">generá defaults write, scripts, configs macOS</span><br>
+      ➕ <strong class="i18n" data-es="Sección" data-en="Section">Sección</strong> — <span class="i18n" data-es="describí y agrego la sección a la guía" data-en="describe and I'll add the section to the guide">describí y agrego la sección a la guía</span><br><br>
+      <span class="i18n" data-es="¿Qué necesitás?" data-en="What do you need?">¿Qué necesitás?</span>
+    </div>
+  </div>
+  <div class="ai-footer">
+    <div class="ai-ctx" id="ai-ctx-label">
+      <strong>Chat:</strong> <span class="i18n" data-es="Preguntá sobre macOS, atajos o herramientas" data-en="Ask about macOS, shortcuts or tools">Preguntá sobre macOS, atajos o herramientas</span>
+    </div>
+    <div class="ai-input-row">
+      <textarea class="ai-input" id="aiInput" rows="2"
+        placeholder="Escribí tu mensaje..."
+        onkeydown="handleKey(event)"></textarea>
+      <button class="ai-send" id="aiSend" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── ESTADO ──────────────────────────────────────────────── */
+let currentLang = 'es';
+let currentMode = 'chat';
+let panelOpen   = false;
+let activeSection = null;
+
+/* ─── IDIOMA ──────────────────────────────────────────────── */
+function setLang(l) {
+  currentLang = l;
+  document.documentElement.setAttribute('data-lang', l);
+  try { localStorage.setItem('guide-lang', l); } catch(e) {}
+
+  // Actualizar todos los textos .i18n
+  document.querySelectorAll('.i18n').forEach(el => {
+    const v = el.dataset[l];
+    if (v !== undefined) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = v;
+      else el.textContent = v;
+    }
+  });
+
+  // Actualizar <title>
+  const t = document.querySelector('title');
+  if (t && t.dataset[l]) t.textContent = t.dataset[l];
+
+  // Actualizar botones de idioma:
+  // El botón activo usa la clase .on que activa el gradiente de bandera
+  // Se busca por data-lang="es/en" en lugar de por textContent
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('on', b.dataset.lang === l);
+  });
+
+  // Actualizar contexto del modo AI
+  updateModeCtx();
+
+  // Actualizar placeholder del shortcut finder en topbar
+  const sf = document.getElementById('shortcut-input');
+  if (sf) sf.placeholder = l === 'es' ? 'Buscar atajo... (ej: captura pantalla)' : 'Find shortcut... (ex: screenshot)';
+}
+
+/* ─── TEMAS ───────────────────────────────────────────────── */
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('guide-theme', t); } catch(e) {}
+  document.querySelectorAll('.tbtn').forEach(b => b.classList.toggle('on', b.textContent.toLowerCase().includes(t)));
+}
+
+/* ─── PANEL ───────────────────────────────────────────────── */
+function togglePanel() {
+  panelOpen = !panelOpen;
+  document.getElementById('aiPanel').classList.toggle('open', panelOpen);
+  document.getElementById('overlay').classList.toggle('show', panelOpen);
+  document.getElementById('layout').classList.toggle('panel-open', panelOpen);
+}
+function openMode(mode) {
+  if (!panelOpen) togglePanel();
+  setMode(mode);
+  setTimeout(() => document.getElementById('aiInput').focus(), 200);
+}
+function openAndAsk(mode, msg) {
+  openMode(mode);
+  if (!msg) return;
+  setTimeout(() => { document.getElementById('aiInput').value = msg; sendMessage(); }, 250);
+}
+function openImprove(sid, name) {
+  openMode('chat');
+  const sectionEl = document.getElementById(sid);
+  let sectionHtml = '';
+  if (sectionEl) {
+    const clone = sectionEl.cloneNode(true);
+    clone.querySelector('.sec-head')?.remove();
+    sectionHtml = clone.innerHTML.trim().slice(0, 4000);
+  }
+  // Capturar primer elemento real como ejemplo de estilo para la AI
+  const firstReal = [...(sectionEl?.children || [])].find(el => !el.classList.contains('sec-head'));
+  const styleExample = firstReal ? firstReal.outerHTML.slice(0, 800) : '';
+  activeSection = { id: sid, name, html: sectionHtml, example: styleExample };
+  document.getElementById('ai-ctx-label').innerHTML =
+    currentLang === 'es'
+      ? `<strong>Agregar:</strong> Sección "<strong style="color:var(--acc)">${name}</strong>" — describí qué querés agregar`
+      : `<strong>Add to:</strong> Section "<strong style="color:var(--acc)">${name}</strong>" — describe what to add`;
+  document.getElementById('aiInput').placeholder = currentLang === 'es'
+    ? `¿Qué querés agregar a "${name}"?`
+    : `What do you want to add to "${name}"?`;
+  document.getElementById('aiInput').focus();
+}
+
+/* ─── BUSCADOR DE ATAJOS EN TOPBAR ───────────────────────── */
+/* findShortcut(): toma el texto del input de la topbar y
+   abre el panel AI en modo shortcut con esa consulta */
+function findShortcut() {
+  const input = document.getElementById('shortcut-input');
+  const q = input.value.trim();
+  if (!q) { openMode('shortcut'); return; }
+  input.value = '';
+  const prompt = currentLang === 'es'
+    ? `¿Cuál es el atajo de teclado para: ${q}?`
+    : `What is the keyboard shortcut for: ${q}?`;
+  openAndAsk('shortcut', prompt);
+}
+
+/* ─── MODOS AI ────────────────────────────────────────────── */
+const GUIDE_CTX = `MacBook Pro M5 Guide 2026. Key sections:
+- Keyboard shortcuts: System (Cmd+Space=Spotlight, Cmd+Opt+Esc=ForceQuit), Windows (Ctrl+Up=MissionControl, Ctrl+arrows=Spaces), Text editing (Cmd+arrows=line, Opt+arrows=word), Finder (Cmd+Shift+.=hidden files, Cmd+Shift+G=GoToFolder), Screenshots (Cmd+Shift+3/4/5), Terminal shortcuts
+- Spotlight: calculator, unit conversions, dictionary, contacts
+- Mission Control & Spaces: virtual desktops
+- Terminal: navigation, system commands, macOS-exclusive (pbcopy/pbpaste, open, osascript, networkQuality, launchctl)
+- Users & Permissions: chmod, chown, ACLs, Permission denied fix (sudo cp + chown, Full Disk Access in Terminal, /Users/Shared/)
+- Security: SIP (csrutil), SSH (ed25519), Firewall, Gatekeeper (xattr)
+- defaults write: Dock speed, Finder hidden files, screenshots folder, keyboard repeat speed, auto-correct disable
+- Recommended apps: Rectangle, Raycast, Maccy, AltTab`;
+
+const MODE_CFG = {
+  'chat':        { es:'<strong>Chat:</strong> Preguntá sobre macOS, atajos, tools o el sistema', en:'<strong>Chat:</strong> Ask about macOS, shortcuts, tools or the system', ph_es:'¿Cuáles son los atajos más importantes para un developer?', ph_en:'What are the most important shortcuts for a developer?' },
+  'shortcut':    { es:'<strong>⌨️ Atajo:</strong> Describí la acción que querés hacer → te doy el atajo exacto', en:'<strong>⌨️ Shortcut:</strong> Describe the action you want to do → I give you the exact shortcut', ph_es:'Ej: "capturar solo una parte de la pantalla"', ph_en:'Ex: "capture only part of the screen"' },
+  'fix':         { es:'<strong>🔴 Fix:</strong> Describí el problema → solución paso a paso con comandos', en:'<strong>🔴 Fix:</strong> Describe the problem → step-by-step solution with commands', ph_es:'Ej: "Permission denied al acceder a /Users/otro-usuario"', ph_en:'Ex: "Permission denied accessing /Users/another-user"' },
+  'generate':    { es:'<strong>📝 Generate:</strong> Describí qué personalización querés → genero el script defaults write o bash', en:'<strong>📝 Generate:</strong> Describe the customization you want → I generate the defaults write or bash script', ph_es:'Ej: "optimizar Dock y Finder para developer"', ph_en:'Ex: "optimize Dock and Finder for developer"' },
+  'add-section': { es:'<strong>➕ Sección:</strong> Describí el tema y lo agrego como sección nueva a la guía', en:'<strong>➕ Section:</strong> Describe the topic and I\'ll add it as a new section to the guide', ph_es:'Ej: "sección sobre Homebrew Cask apps esenciales"', ph_en:'Ex: "section about essential Homebrew Cask apps"' }
+};
+
+const SYS_PROMPTS = {
+  'chat': (l) => `You are an expert macOS developer assistant. Respond in ${l==='es'?'Spanish':'English'}. 
+Concise (max 200 words). Use **bold** for emphasis, \`code\` for commands, kbd-style for shortcuts like Cmd+Shift+3.
+${GUIDE_CTX}`,
+  'shortcut': (l) => `You are a macOS keyboard shortcut expert.
+When given an action, provide the EXACT keyboard shortcut(s) in ${l==='es'?'Spanish':'English'}.
+Format: **Action name**: Cmd+Shift+X — explanation
+If multiple shortcuts exist for similar actions, list them all.
+Use proper Mac symbols: ⌘ (Cmd), ⌥ (Option), ⇧ (Shift), ⌃ (Control), fn.
+Be precise and concise. Max 150 words. ${GUIDE_CTX}`,
+  'fix': (l) => `You are a macOS troubleshooting expert.
+Respond in ${l==='es'?'Spanish':'English'} with:
+1. **Causa:** why it happened
+2. **Solución rápida / Quick fix:** exact commands
+3. **Solución completa / Full solution:** step by step
+4. **Prevención / Prevention:** how to avoid it
+Include ready-to-run commands. Max 250 words. ${GUIDE_CTX}`,
+  'generate': (l) => `You are a macOS defaults write and shell script expert.
+Generate a clean, well-commented script in ${l==='es'?'Spanish comments':'English comments'}.
+Include: the exact commands, comments explaining each one, and restart commands (killall Dock, killall Finder) where needed.
+Format as a ready-to-paste bash script. Max 80 lines. ${GUIDE_CTX}`,
+  'add-section': (l) => `Generate an HTML section for a macOS developer guide.
+Return ONLY valid HTML, no markdown, no explanations.
+Use this structure:
+
+<section id="s-SLUG">
+  <div class="sec-head">
+    <div class="sec-head-icon" style="background:rgba(COLOR,.12)">EMOJI</div>
+    <div>
+      <h2>TITLE</h2>
+      <p>SHORT DESCRIPTION (${l==='es'?'in Spanish':'in English'})</p>
+    </div>
+    <button class="improve-btn" onclick="openImprove('s-SLUG','TITLE')">✨</button>
+  </div>
+  CONTENT (use .g2 grids, .mini-card, .code-wrap with toolbar, .callout, .shortcuts-grid as appropriate)
+</section>
+
+RETURN ONLY HTML. Accurate, practical content.`
+};
+
+function setMode(m) {
+  currentMode = m;
+  document.querySelectorAll('.ai-mode-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('mode-'+m);
+  if (btn) btn.classList.add('active');
+  updateModeCtx();
+}
+function updateModeCtx() {
+  const cfg = MODE_CFG[currentMode];
+  if (!cfg) return;
+  document.getElementById('ai-ctx-label').innerHTML = cfg[currentLang] || cfg['es'];
+  const input = document.getElementById('aiInput');
+  input.placeholder = cfg['ph_'+currentLang] || cfg['ph_es'];
+}
+
+/* ─── EXPLAIN CODE ────────────────────────────────────────── */
+function explainCode(codeId) {
+  const el = document.getElementById(codeId);
+  if (!el) return;
+  const txt = el.textContent.trim();
+  const prompt = currentLang === 'es'
+    ? `Explicá este código/comandos línea a línea:\n\n${txt}`
+    : `Explain this code/commands line by line:\n\n${txt}`;
+  openAndAsk('chat', prompt);
+}
+
+/* ─── COPY CODE ───────────────────────────────────────────── */
+function copyCode(codeId) {
+  const el = document.getElementById(codeId);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    showToast(currentLang === 'es' ? '✓ Copiado' : '✓ Copied');
+  });
+}
+
+/* ─── CLAUDE API ──────────────────────────────────────────── */
+
+/* ════════════════════════════════════════════════════════════════════
+   API KEY MANAGER
+   ─────────────────────────────────────────────────────────────────
+   getApiKey()     → retorna la key guardada o ''
+   saveApiKey()    → guarda la key del input modal
+   buildHeaders()  → construye headers correctos para Anthropic API
+   showApiModal()  → muestra el modal
+   updateApiStatus() → actualiza el badge en el topbar
+
+   HEADERS REQUERIDOS para llamadas directas desde browser:
+     anthropic-version: 2023-06-01
+     anthropic-dangerous-direct-browser-access: true
+     x-api-key: (si no está en Claude.ai)
+════════════════════════════════════════════════════════════════════ */
+function getApiKey() {
+  try { return localStorage.getItem('guide-api-key') || ''; } catch(e) { return ''; }
+}
+function saveApiKey() {
+  const inp = document.getElementById('akKeyInput');
+  const key = inp ? inp.value.trim() : '';
+  if (!key || !key.startsWith('sk-')) {
+    if (inp) { inp.style.borderColor = 'var(--red, #ff4d6d)'; inp.focus(); }
+    return;
+  }
+  try { localStorage.setItem('guide-api-key', key); } catch(e) {}
+  updateApiStatus();
+  document.getElementById('akOverlay').classList.remove('show');
+  // Reintentar el mensaje que falló si existe
+  if (window._pendingMsg) {
+    document.getElementById('aiInput').value = window._pendingMsg;
+    window._pendingMsg = null;
+    setTimeout(sendMessage, 100);
+  }
+}
+function showApiModal(msg) {
+  window._pendingMsg = msg || null;
+  document.getElementById('akOverlay').classList.add('show');
+  setTimeout(() => { const i = document.getElementById('akKeyInput'); if(i) i.focus(); }, 120);
+}
+function buildHeaders() {
+  const key = getApiKey();
+  const h = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
+  if (key) h['x-api-key'] = key;
+  return h;
+}
+function updateApiStatus() {
+  const b = document.getElementById('akStatus');
+  if (!b) return;
+  const k = getApiKey();
+  b.textContent = k ? '🔑 Key ✓' : '🔑 Key';
+  b.classList.toggle('set', !!k);
+  b.title = k ? 'API Key configurada — click para cambiar' : 'Configurar API Key de Anthropic';
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   SISTEMA MULTI-PROVEEDOR
+   ─────────────────────────────────────────────────────────────────
+   5 proveedores soportados:
+   
+   puter   → Puter.js + Gemini 3 Flash  (GRATIS, sin API key, sin cuenta)
+   gemini  → Google Gemini 2.5 Flash    (GRATIS con key de aistudio.google.com)
+   grok    → xAI Grok 4.1 Fast          ($0.20/M — console.x.ai)
+   claude  → Anthropic Claude Sonnet    (console.anthropic.com)
+   ollama  → Ollama local               (localhost:11434, completamente offline)
+   
+   callAI(prompt, system, onToken, onDone) — función unificada que
+   enruta al proveedor activo automáticamente.
+═══════════════════════════════════════════════════════════════════ */
+
+// Estado del proveedor activo
+let activeProvider = 'puter';
+
+// Configuración de cada proveedor
+const PROVIDERS = {
+  puter: {
+    name: 'Puter + Gemini',
+    free: true,
+    needsKey: false,
+    model: 'gemini-2.5-flash-lite',
+    note: '✓ Gratis · Sin configuración'
+  },
+  gemini: {
+    name: 'Google Gemini',
+    free: true,
+    needsKey: true,
+    storageKey: 'key-gemini',
+    placeholder: 'AIzaSy...',
+    keyUrl: 'https://aistudio.google.com',
+    model: 'gemini-2.5-flash',
+    note: 'Key gratis en aistudio.google.com (sin tarjeta)'
+  },
+  grok: {
+    name: 'xAI Grok',
+    free: false,
+    needsKey: true,
+    storageKey: 'key-grok',
+    placeholder: 'xai-...',
+    keyUrl: 'https://console.x.ai',
+    model: 'grok-4.1-fast',
+    note: '$0.20/M tokens — console.x.ai'
+  },
+  claude: {
+    name: 'Anthropic Claude',
+    free: false,
+    needsKey: true,
+    storageKey: 'key-claude',
+    placeholder: 'sk-ant-...',
+    keyUrl: 'https://console.anthropic.com/settings/keys',
+    model: 'claude-sonnet-4-20250514',
+    note: 'console.anthropic.com'
+  },
+  ollama: {
+    name: 'Ollama Local',
+    free: true,
+    needsKey: false,
+    model: 'qwen2.5-coder:7b',
+    note: '100% offline · ollama.com'
+  }
+};
+
+/* setProvider(id): cambia el proveedor activo y actualiza la UI */
+function setProvider(id) {
+  activeProvider = id;
+  const cfg = PROVIDERS[id];
+
+  // Actualizar botones
+  document.querySelectorAll('.prov-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.prov === id);
+  });
+
+  // Mostrar/ocultar fila de key
+  const keyRow  = document.getElementById('keyRow');
+  const keyInp  = document.getElementById('provKeyInput');
+  const keyLink = document.getElementById('keyLink');
+
+  if (cfg.needsKey) {
+    keyRow.classList.add('show');
+    keyInp.placeholder = cfg.placeholder || 'API Key...';
+    // Cargar key guardada si existe
+    const saved = getProvKey(id);
+    keyInp.value = saved ? '••••••••' : '';
+    if (keyLink) { keyLink.href = cfg.keyUrl || '#'; keyLink.textContent = 'Obtener gratis →'; }
+  } else {
+    keyRow.classList.remove('show');
+  }
+
+  // Actualizar contexto del panel
+  updateModeCtx ? updateModeCtx() : updateModeContext && updateModeContext();
+
+  // Mostrar nota en el panel
+  showProviderNote(cfg);
+
+  try { localStorage.setItem('active-provider', id); } catch(e) {}
+}
+
+/* showProviderNote: muestra un mensaje informativo sobre el proveedor */
+function showProviderNote(cfg) {
+  const msgs = document.getElementById('aiMsgs');
+  if (!msgs) return;
+  const note = document.createElement('div');
+  note.style.cssText = `
+    font-size:.8rem;color:var(--text3);padding:6px 12px;
+    background:var(--bg3);border-radius:8px;
+    border:1px solid var(--border);margin:2px 0;text-align:center;`;
+  note.textContent = `${cfg.name} · ${cfg.note}`;
+  msgs.appendChild(note);
+  msgs.scrollTop = msgs.scrollHeight;
+  // Auto-eliminar después de 4 segundos
+  setTimeout(() => { if (note.parentNode) note.parentNode.removeChild(note); }, 4000);
+}
+
+/* getProvKey / saveProvKey: manejo de keys por proveedor */
+function getProvKey(provId) {
+  const key = PROVIDERS[provId]?.storageKey;
+  if (!key) return '';
+  try { return localStorage.getItem(key) || ''; } catch(e) { return ''; }
+}
+
+function saveProvKey() {
+  const cfg = PROVIDERS[activeProvider];
+  if (!cfg?.needsKey) return;
+  const inp = document.getElementById('provKeyInput');
+  const val = inp?.value?.trim();
+  if (!val || val === '••••••••') return;
+  try { localStorage.setItem(cfg.storageKey, val); } catch(e) {}
+  inp.value = '••••••••';
+  showToast ? showToast('✓ Key guardada') : showFlash && showFlash('✓ Key guardada');
+}
+
+/* ─── callAI() — función unificada ──────────────────────────────────
+   Enruta la llamada al proveedor activo.
+   Todos los proveedores llaman onToken(text) por cada fragmento
+   y onDone() al terminar.
+──────────────────────────────────────────────────────────────────── */
+async function callAI(userMsg, systemPrompt, onToken, onDone) {
+  switch (activeProvider) {
+    case 'puter':   return callPuter(userMsg, systemPrompt, onToken, onDone);
+    case 'gemini':  return callGemini(userMsg, systemPrompt, onToken, onDone);
+    case 'grok':    return callGrok(userMsg, systemPrompt, onToken, onDone);
+    case 'claude':  return callClaude(userMsg, systemPrompt, onToken, onDone);
+    case 'ollama':  return callOllama(userMsg, systemPrompt, onToken, onDone);
+    default:        return callPuter(userMsg, systemPrompt, onToken, onDone);
+  }
+}
+
+/* ─── 1. PUTER.JS (GRATIS, SIN KEY) — con fallback automático de modelos ──
+   Intenta modelos en orden. Si falla por modelo no encontrado, prueba el siguiente.
+──────────────────────────────────────────────────────────────────────────── */
+const PUTER_FALLBACK_MODELS = ['gemini-2.5-flash-lite', 'claude-sonnet-4-5', 'gpt-4o-mini', 'gpt-4o'];
+
+async function _puterChat(messages, model, onToken, onDone) {
+  try {
+    const resp = await puter.ai.chat(messages, { model, stream: true });
+    for await (const chunk of resp) {
+      const delta = chunk?.choices?.[0]?.delta?.content || chunk?.text || '';
+      if (delta) onToken(delta);
+    }
+    onDone();
+  } catch (streamErr) {
+    if (streamErr.message?.includes('stream') || streamErr.message?.includes('iterator')) {
+      const resp2 = await puter.ai.chat(messages, { model });
+      const text = resp2?.message?.content?.[0]?.text || resp2?.content?.[0]?.text
+                || resp2?.choices?.[0]?.message?.content || String(resp2);
+      for (let i = 0; i < text.length; i += 3) { onToken(text.slice(i, i + 3)); await new Promise(r => setTimeout(r, 8)); }
+      onDone();
+    } else { throw streamErr; }
+  }
+}
+
+async function callPuter(userMsg, systemPrompt, onToken, onDone) {
+  if (!window.puter) throw new Error('Puter.js no cargó. Verificá tu conexión a internet.');
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+  const modelsToTry = [PROVIDERS.puter.model, ...PUTER_FALLBACK_MODELS.filter(m => m !== PROVIDERS.puter.model)];
+  let lastError;
+  for (const model of modelsToTry) {
+    try { await _puterChat(messages, model, onToken, onDone); PROVIDERS.puter.model = model; return; }
+    catch (err) {
+      const msg = (err.message || '').toLowerCase();
+      if (msg.includes('not found') || msg.includes('model') || msg.includes('invalid') || msg.includes('unsupported')) { lastError = err; continue; }
+      throw err;
+    }
+  }
+  throw lastError || new Error('Ningún modelo de Puter.js disponible. Intentá más tarde.');
+}
+
+/* ─── 2. GEMINI DIRECTO (GRATIS CON KEY DE AISTUDIO) ────────────────
+   Key gratuita en aistudio.google.com — sin tarjeta de crédito.
+   La key va como query param en la URL — sin headers especiales.
+   No tiene problemas de CORS.
+──────────────────────────────────────────────────────────────────── */
+async function callGemini(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('gemini');
+  if (!key) throw new Error('__NEEDS_KEY_gemini__');
+
+  const model = PROVIDERS.gemini.model;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${key}&alt=sse`;
+
+  const body = {
+    contents: [{ role: 'user', parts: [{ text: userMsg }] }],
+    generationConfig: { maxOutputTokens: 1000 }
+  };
+  if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error('Gemini error ' + resp.status + ': ' + err.slice(0, 120));
+  }
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      try {
+        const j = JSON.parse(line.slice(6));
+        const text = j.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) onToken(text);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── 3. GROK (xAI) — API compatible con OpenAI ────────────────────
+   Modelo: grok-4.1-fast → $0.20/M input, $0.50/M output
+   Key en: console.x.ai
+──────────────────────────────────────────────────────────────────── */
+async function callGrok(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('grok');
+  if (!key) throw new Error('__NEEDS_KEY_grok__');
+
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+
+  const resp = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`
+    },
+    body: JSON.stringify({ model: 'grok-4.1-fast', messages, stream: true })
+  });
+
+  if (!resp.ok) throw new Error('Grok error ' + resp.status);
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+      try {
+        const j = JSON.parse(line.slice(6));
+        const delta = j.choices?.[0]?.delta?.content;
+        if (delta) onToken(delta);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── 4. CLAUDE (Anthropic) — versión actualizada ───────────────────
+   Mantiene compatibilidad con el sistema anterior.
+   Requiere header anthropic-dangerous-direct-browser-access: true
+──────────────────────────────────────────────────────────────────── */
+async function callClaude(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('claude');
+  const headers = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
+  if (key) headers['x-api-key'] = key;
+
+  let resp;
+  try {
+    resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000, stream: true,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMsg }]
+      })
+    });
+  } catch(e) { throw new Error('__NETWORK__'); }
+
+  if (resp.status === 401 || resp.status === 403) throw new Error('__NEEDS_KEY_claude__');
+  if (!resp.ok) throw new Error('Claude error ' + resp.status);
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      try {
+        const j = JSON.parse(line.slice(6));
+        if (j.type === 'content_block_delta' && j.delta?.text) onToken(j.delta.text);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── 5. OLLAMA LOCAL ($0, offline) ─────────────────────────────────
+   Requiere Ollama corriendo: brew install --cask ollama-app
+   Modelo por defecto: qwen2.5-coder:7b
+   Sin autenticación — corre en localhost:11434
+──────────────────────────────────────────────────────────────────── */
+async function callOllama(userMsg, systemPrompt, onToken, onDone) {
+  const model = PROVIDERS.ollama.model;
+  let resp;
+  try {
+    resp = await fetch('http://localhost:11434/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model,
+        stream: true,
+        messages: [
+          ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+          { role: 'user', content: userMsg }
+        ]
+      })
+    });
+  } catch(e) {
+    throw new Error('No se pudo conectar con Ollama. ¿Está corriendo? Ejecutá: open -a Ollama');
+  }
+
+  if (!resp.ok) throw new Error('Ollama error ' + resp.status);
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n').filter(Boolean);
+    buf = '';
+    for (const line of lines) {
+      try {
+        const j = JSON.parse(line);
+        if (j.message?.content) onToken(j.message.content);
+        if (j.done) { onDone(); return; }
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── ERROR HANDLER PARA NEEDS_KEY ──────────────────────────────────
+   Detecta errores de __NEEDS_KEY_xxx__ y muestra el input correcto.
+──────────────────────────────────────────────────────────────────── */
+function handleAIError(err, aiBubble) {
+  const m = err.message || '';
+  if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
+    const provId = m.replace('__NEEDS_KEY_', '').replace('__NETWORK__', activeProvider);
+    const cfg = PROVIDERS[provId] || PROVIDERS[activeProvider];
+    aiBubble.innerHTML = `
+      <span style="color:var(--red, #ff4d6d)">⚠ Necesitás configurar una API Key</span><br><br>
+      <span style="font-size:.84rem;color:var(--text2)">
+        ${cfg.note || ''}<br><br>
+        <button onclick="setProvider('${provId}')" style="
+          background:var(--acc);color:var(--bg, #080d18);border:none;
+          padding:6px 14px;border-radius:7px;font-size:12px;
+          font-weight:700;cursor:pointer;margin-right:6px;">
+          Configurar key
+        </button>
+        ${cfg.keyUrl ? `<a href="${cfg.keyUrl}" target="_blank" style="font-size:11px;color:var(--text3)">Obtener gratis →</a>` : ''}
+        <br><br>
+        <em style="font-size:.78rem;color:var(--text3)">O cambiá a 🌟 Puter — 100% gratis, sin key</em>
+      </span>`;
+  } else {
+    aiBubble.innerHTML = `<span style="color:var(--red, #ff4d6d)">⚠ ${m || 'Error desconocido'}</span>`;
+  }
+}
+
+
+/* ─── CLAUDE LEGACY (usado via callAI) ─── */
+async function callClaude(userMsg, systemPrompt, onToken, onDone) {
+  let resp;
+  try {
+    resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: buildHeaders(),
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1000, stream:true,
+      system:systemPrompt,
+      messages:[{role:'user',content:userMsg}]
+    })
+  });
+  } catch (_fetchErr) {
+    throw new Error('__NETWORK__');
+  }
+  
+  if (!resp.ok) throw new Error('API '+resp.status);
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const {done,value} = await reader.read();
+    if (done) break;
+    buf += dec.decode(value,{stream:true});
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      const data = line.slice(6);
+      if (data==='[DONE]') continue;
+      try {
+        const j = JSON.parse(data);
+        if (j.type==='content_block_delta'&&j.delta?.text) onToken(j.delta.text);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── SEND MESSAGE ────────────────────────────────────────── */
+async function sendMessage() {
+  const input = document.getElementById('aiInput');
+  const raw = input.value.trim();
+  if (!raw) return;
+  input.value = '';
+  document.getElementById('aiSend').disabled = true;
+  const msgs = document.getElementById('aiMsgs');
+
+  // Burbuja usuario
+  const ub = document.createElement('div');
+  ub.className = 'msg-user';
+  ub.textContent = raw.length > 200 ? raw.slice(0,200)+'…' : raw;
+  msgs.appendChild(ub);
+
+  // Loader
+  const typing = document.createElement('div');
+  typing.className = 'msg-typing';
+  typing.innerHTML = '<div class="dots"><span></span><span></span><span></span></div> AI...';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  const aiBubble = document.createElement('div');
+  aiBubble.className = 'msg-ai';
+  let full = '';
+  // Capturar activeSection localmente antes de la llamada async
+  const _capturedSection = activeSection;
+
+  let sys = SYS_PROMPTS[currentMode](currentLang);
+  let prompt = raw;
+
+  // Si hay sección activa, sobreescribir prompt y system para modo agregar
+  if (_capturedSection) {
+    sys = currentLang === 'es'
+      ? `Sos un experto en macOS para desarrolladores.
+TAREA: Generar HTML nuevo para AGREGAR al final de una sección de una guía interactiva.
+
+COMPONENTES DISPONIBLES — usá EXACTAMENTE estas estructuras:
+
+Grid de mini-cards (2 columnas):
+<div class="g2">
+  <div class="mini-card"><h4>🔧 Título</h4><p style="font-size:.82rem">Descripción concisa y útil.</p></div>
+  <div class="mini-card"><h4>⚡ Título</h4><p style="font-size:.82rem">Descripción concisa y útil.</p></div>
+</div>
+
+Callout informativo:
+<div class="callout tip"><div class="callout-ico">💡</div><div><strong>Pro tip:</strong> Texto del consejo.</div></div>
+<div class="callout info"><div class="callout-ico">ℹ️</div><div><strong>Nota:</strong> Texto informativo.</div></div>
+<div class="callout warn"><div class="callout-ico">⚠️</div><div><strong>Atención:</strong> Texto de aviso.</div></div>
+
+Subsección con atajos de teclado:
+<div class="subsec">
+  <h3>⌨️ Título subsección</h3>
+  <div class="shortcuts-grid">
+    <div class="sc-card"><span class="sc-desc">Descripción del atajo</span><span class="sc-keys"><kbd>⌘</kbd><kbd>K</kbd></span></div>
+  </div>
+</div>
+
+Subsección con grid:
+<div class="subsec"><h3>🔍 Título</h3><div class="g2">...</div></div>
+
+REGLAS:
+- NO repetir contenido ya existente en la sección
+- NO usar <section>, <h1>, <h2> ni .sec-head
+- Devolvé SOLO HTML puro, sin markdown, sin explicaciones, sin backticks`
+      : `You are a macOS developer expert. Generate HTML to ADD to a guide section. Use these exact structures: <div class="g2"><div class="mini-card"><h4>Title</h4><p>Text</p></div></div> or callouts: <div class="callout tip"><div class="callout-ico">💡</div><div>Text</div></div>. Return ONLY pure HTML.`;
+    const exampleCtx = _capturedSection.example
+      ? `\n\nELEMENTO EXISTENTE DE REFERENCIA (imitá este estilo exacto):\n${_capturedSection.example}`
+      : '';
+    const secCtx = _capturedSection.html
+      ? `\n\nCONTENIDO ACTUAL (NO repetir):\n${_capturedSection.html}`
+      : '';
+    prompt = currentLang === 'es'
+      ? `Agregar contenido nuevo a la sección "${_capturedSection.name}". Instrucción: ${raw}${exampleCtx}${secCtx}`
+      : `Add new content to section "${_capturedSection.name}". Instruction: ${raw}${exampleCtx}${secCtx}`;
+  }
+
+  try {
+    await callAI(prompt, sys,
+      (token) => {
+        if (typing.parentNode) typing.replaceWith(aiBubble);
+        full += token;
+        if (currentMode === 'add-section') {
+          aiBubble.innerHTML = '<em style="color:var(--text3)">Generando sección...</em>';
+        } else if (currentMode === 'generate') {
+          aiBubble.innerHTML = `<pre style="font-family:'JetBrains Mono',monospace;font-size:.78rem;white-space:pre-wrap;overflow-x:auto;color:var(--text)">${escHtml(full)}</pre>`;
+        } else {
+          aiBubble.innerHTML = renderMd(full);
+        }
+        msgs.scrollTop = msgs.scrollHeight;
+      },
+      () => {
+        document.getElementById('aiSend').disabled = false;
+        if (currentMode === 'add-section') injectSection(full, aiBubble);
+        else if (currentMode === 'generate') addCopyBtn(full, aiBubble);
+        else if (_capturedSection) handleImproveResponse(full, aiBubble, _capturedSection);
+        activeSection = null;
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+    );
+  } catch(err) {
+    if (typing.parentNode) typing.replaceWith(aiBubble);
+        if (typing && typing.parentNode) typing.replaceWith(aiBubble);
+    handleAIError(err, aiBubble);
+    document.getElementById('aiSend').disabled = false;
+  }
+}
+
+/* ─── INJECT SECTION ─────────────────────────────────────── */
+function injectSection(htmlResp, bubble) {
+  let clean = htmlResp.replace(/```html\n?/gi,'').replace(/```\n?/g,'').trim();
+  if (!clean.includes('sec-head')) {
+    bubble.innerHTML = '<span style="color:var(--red)">⚠ No se pudo generar la sección.</span>';
+    return;
+  }
+  const container = document.getElementById('ai-added-sections');
+  const wrap = document.createElement('div');
+  wrap.innerHTML = clean;
+  const newSec = wrap.firstElementChild;
+  container.appendChild(newSec);
+
+  const h2 = newSec.querySelector('h2');
+  const name = h2 ? h2.textContent.trim() : 'Nueva sección';
+  const sideExtra = document.getElementById('sidebar-extra');
+  const link = document.createElement('a');
+  link.className = 'nav-a';
+  link.href = '#' + (newSec.id || '');
+  link.innerHTML = `<span class="sec-ico" style="background:rgba(232,121,249,.15)">✦</span>${name}`;
+  sideExtra.appendChild(link);
+
+  bubble.innerHTML = `✅ <strong>${name}</strong> ${currentLang==='es'?'agregada a la guía.':'added to the guide.'}`;
+  setTimeout(() => newSec.scrollIntoView({behavior:'smooth',block:'center'}), 300);
+  showToast('✦ ' + name);
+}
+
+/* ─── ADD COPY BUTTON (para scripts generados) ───────────── */
+function addCopyBtn(content, bubble) {
+  const btn = document.createElement('button');
+  btn.textContent = currentLang==='es' ? '📋 Copiar script' : '📋 Copy script';
+  btn.style.cssText = `margin-top:10px;background:var(--acc);color:#fff;border:none;
+    padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;
+    cursor:pointer;font-family:'DM Sans',sans-serif;display:block`;
+  btn.onclick = () => { navigator.clipboard.writeText(content); showToast('✓ Script copiado'); };
+  bubble.appendChild(btn);
+}
+
+/* ─── AGREGAR A SECCIÓN (improve) ────────────────────────── */
+let _pendingImproveHtml = '';
+
+function handleImproveResponse(response, bubble, section) {
+  const clean = response.replace(/```html\n?/gi, '').replace(/```\n?/g, '').trim();
+  _pendingImproveHtml = clean;
+  bubble.innerHTML = `
+    <div style="margin-bottom:8px;font-size:.82rem;color:var(--text2)">
+      ✦ Nuevo contenido para "<strong style="color:var(--acc)">${section.name}</strong>":
+    </div>
+    <div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;
+                margin-bottom:12px;font-size:.84rem;line-height:1.7;
+                max-height:240px;overflow-y:auto;border:1px solid var(--border)">
+      ${clean}
+    </div>
+    <button onclick="applyImprovement('${section.id}', this)"
+      style="background:var(--acc,#5b8af5);color:#fff;border:none;padding:7px 16px;
+             border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
+             font-family:'DM Sans',sans-serif">
+      ✦ Agregar a la sección
+    </button>`;
+}
+
+function applyImprovement(sectionId, btn) {
+  const sectionEl = document.getElementById(sectionId);
+  if (!sectionEl) { btn.textContent = '⚠ Sección no encontrada'; return; }
+  if (!_pendingImproveHtml) { btn.textContent = '⚠ Sin contenido'; return; }
+
+  const htmlToSave = _pendingImproveHtml;
+
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = htmlToSave;
+  const fragment = document.createDocumentFragment();
+  while (wrapper.firstChild) fragment.appendChild(wrapper.firstChild);
+  sectionEl.appendChild(fragment);
+  _pendingImproveHtml = '';
+
+  btn.textContent = '⏳ Guardando...';
+  btn.disabled = true;
+  setTimeout(() => sectionEl.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+
+  fetch('/api/save-section', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      filename: location.pathname.split('/').pop(),
+      sectionId,
+      htmlToAppend: htmlToSave
+    })
+  })
+  .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  .then(() => {
+    btn.textContent = '✓ Guardado en archivo';
+    btn.style.opacity = '.5';
+    showToast('✦ Guardado permanentemente');
+  })
+  .catch(() => {
+    btn.textContent = '✓ En DOM (sin backend)';
+    btn.style.opacity = '.5';
+  });
+}
+
+/* ─── HELPERS ─────────────────────────────────────────────── */
+function renderMd(t) {
+  return t
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>')
+    .replace(/\n/g,'<br>');
+}
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+function handleKey(e) {
+  if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+/* ─── INIT ─────────────────────────────────────────────────────────
+   Al cargar la página:
+   1. Restaurar tema guardado (o dark por defecto)
+   2. Detectar idioma: prioridad localStorage → luego navigator.language
+      Si el navegador NO está en español → aplicar inglés automáticamente
+      y mostrar una notificación discreta al usuario
+   3. Registrar el listener del shortcut finder
+─────────────────────────────────────────────────────────────────── */
+(function() {
+  // ── 1. Tema ──────────────────────────────────────────────────────
+  let theme = 'dark';
+  try { theme = localStorage.getItem('guide-theme') || 'dark'; } catch(e) {}
+  setTheme(theme);
+
+  // ── 2. Idioma ────────────────────────────────────────────────────
+  let lang = null;
+
+  // 2a. ¿Hay preferencia guardada en localStorage?
+  try { lang = localStorage.getItem('guide-lang'); } catch(e) {}
+
+  if (!lang) {
+    // 2b. Sin preferencia guardada → detectar idioma del navegador
+    //     navigator.language retorna ej: "en-US", "es-AR", "es", "fr-FR"
+    const browserLang = (navigator.language || navigator.userLanguage || 'es').toLowerCase();
+
+    // Si el idioma del navegador empieza con 'es' → español
+    // Cualquier otro idioma (en, fr, pt, etc.) → inglés
+    lang = browserLang.startsWith('es') ? 'es' : 'en';
+
+    // Si el navegador auto-seleccionó inglés, mostrar un toast informativo
+    if (lang === 'en') {
+      // Mostrar notificación después de que el DOM esté listo
+      setTimeout(() => {
+        showToast('🌐 Auto-detected: English');
+      }, 800);
+    }
+  }
+
+  setLang(lang);
+
+  // ── 3. Shortcut finder: Enter dispara la búsqueda AI ────────────
+  const sf = document.getElementById('shortcut-input');
+  if (sf) sf.addEventListener('keydown', e => { if (e.key === 'Enter') findShortcut(); });
+})();
+</script>
+
+<!-- API KEY MODAL: aparece cuando el fetch falla por falta de key -->
+<div class="ak-overlay" id="akOverlay">
+  <div class="ak-modal">
+    <h3>🔑 API Key de Anthropic</h3>
+    <p>Para usar el Asistente AI fuera de Claude.ai necesitás una API Key de Anthropic. Es gratis con $5 de crédito inicial (~500 conversaciones).</p>
+    <a class="ak-link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">↗ Obtener API key gratis en console.anthropic.com</a>
+    <div class="ak-row">
+      <input type="password" class="ak-input" id="akKeyInput" placeholder="sk-ant-api03-..." onkeydown="if(event.key==='Enter')saveApiKey()">
+      <button class="ak-save" onclick="saveApiKey()">Guardar</button>
+    </div>
+    <div class="ak-note">
+      <strong>🔒 Privacidad:</strong> La key se guarda solo en tu navegador (localStorage). No sale de tu dispositivo.<br><br>
+      <strong>💡 En Claude.ai:</strong> No necesitás key — el AI funciona sin configurar nada.
+    </div>
+    <button class="ak-skip" onclick="document.getElementById('akOverlay').classList.remove('show')">✕ Cerrar</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BACKEND INTEGRATION + UX ENHANCEMENTS
+════════════════════════════════════════════════════════════════════ -->
+<style>
+.reveal { opacity: 0; transform: translateY(28px); }
+.reveal.visible { opacity: 1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
+.topbar { transition: height .3s ease; }
+.topbar.scrolled { height: 44px !important; }
+.typing-dots { display: inline-flex; gap: 5px; align-items: center; padding: 10px 14px; }
+.typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); opacity: .4; animation: typingBounce 1.3s ease-in-out infinite; }
+.typing-dots span:nth-child(2) { animation-delay: .18s; }
+.typing-dots span:nth-child(3) { animation-delay: .36s; }
+@keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-8px); opacity: 1; } }
+.backend-badge { display: none; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--green, #40d080); background: rgba(64,208,128,.08); border: 1px solid rgba(64,208,128,.2); border-radius: 20px; padding: 3px 10px; margin: 6px 16px 0; }
+.backend-badge.show { display: flex; }
+.backend-badge::before { content: '●'; font-size: 8px; animation: beaconPulse 2.2s ease-in-out infinite; }
+@keyframes beaconPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+.shortcut-card { transition: transform .2s ease, box-shadow .2s ease !important; }
+.shortcut-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,.22) !important; }
+.section { position: relative; }
+.section::before { content: ''; position: absolute; left: -1px; top: 10%; bottom: 10%; width: 2px; background: linear-gradient(to bottom, transparent, var(--acc), transparent); opacity: 0; transition: opacity .4s; border-radius: 2px; }
+.section:hover::before { opacity: .4; }
+.ai-panel { transition: transform .38s cubic-bezier(.4,0,.2,1), opacity .32s ease !important; }
+</style>
+<script>
+let backendAvailable = false;
+const BACKEND_URL = 'http://localhost:8000';
+
+async function checkBackend() {
+  try {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 1800);
+    const resp = await fetch(`${BACKEND_URL}/api/health`, { signal: ctrl.signal, cache: 'no-store' });
+    clearTimeout(tid);
+    if (!resp.ok) return;
+    const data = await resp.json();
+    backendAvailable = true;
+    showBackendBadge(data.providers || {});
+    patchProvidersForBackend(data.providers || {});
+  } catch(e) {}
+}
+
+function showBackendBadge(providers) {
+  if (document.getElementById('backendBadge')) return;
+  const badge = document.createElement('div');
+  badge.id = 'backendBadge';
+  badge.className = 'backend-badge show';
+  badge.title = 'Backend local activo — API keys protegidas en .env';
+  const parts = ['Backend local'];
+  if (providers.claude) parts.push('Claude ✓');
+  if (providers.gemini) parts.push('Gemini ✓');
+  badge.textContent = parts.join(' · ');
+  const provBar = document.getElementById('provBar');
+  if (provBar) provBar.parentNode.insertBefore(badge, provBar.nextSibling);
+}
+
+function patchProvidersForBackend(providers) {
+  if (providers.claude && typeof callClaude === 'function') {
+    window.callClaude = async function(userMsg, systemPrompt, onToken, onDone) {
+      const body = { model: PROVIDERS?.claude?.model || 'claude-sonnet-4-20250514', max_tokens: 1200, stream: true, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] };
+      const resp = await fetch(`${BACKEND_URL}/api/claude`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!resp.ok) throw new Error('Claude proxy error ' + resp.status);
+      const reader = resp.body.getReader(); const dec = new TextDecoder(); let buf = '';
+      while (true) { const { done, value } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop(); for (const line of lines) { if (!line.startsWith('data: ')) continue; try { const j = JSON.parse(line.slice(6)); if (j.type === 'content_block_delta' && j.delta?.text) onToken(j.delta.text); } catch(e) {} } }
+      onDone();
+    };
+  }
+  if (providers.gemini && typeof callGemini === 'function') {
+    window.callGemini = async function(userMsg, systemPrompt, onToken, onDone) {
+      const body = { _model: PROVIDERS?.gemini?.model || 'gemini-2.5-flash', contents: [{ role: 'user', parts: [{ text: userMsg }] }], generationConfig: { maxOutputTokens: 1200 } };
+      if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+      const resp = await fetch(`${BACKEND_URL}/api/gemini`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      if (!resp.ok) throw new Error('Gemini proxy error ' + resp.status);
+      const reader = resp.body.getReader(); const dec = new TextDecoder(); let buf = '';
+      while (true) { const { done, value } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop(); for (const line of lines) { if (!line.startsWith('data: ')) continue; try { const j = JSON.parse(line.slice(6)); const t = j.candidates?.[0]?.content?.parts?.[0]?.text; if (t) onToken(t); } catch(e) {} } }
+      onDone();
+    };
+  }
+  if (typeof callOllama === 'function') {
+    window.callOllama = async function(userMsg, systemPrompt, onToken, onDone) {
+      const resp = await fetch(`${BACKEND_URL}/api/ollama`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: PROVIDERS?.ollama?.model || 'qwen2.5-coder:7b', stream: true, messages: [...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []), { role: 'user', content: userMsg }] }) });
+      if (!resp.ok) throw new Error('Ollama proxy error ' + resp.status);
+      const reader = resp.body.getReader(); const dec = new TextDecoder(); let buf = '';
+      while (true) { const { done, value } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true }); const lines = buf.split('\n').filter(Boolean); buf = ''; for (const line of lines) { try { const j = JSON.parse(line); if (j.message?.content) onToken(j.message.content); if (j.done) { onDone(); return; } } catch(e) {} } }
+      onDone();
+    };
+  }
+}
+
+function initScrollAnimations() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); } });
+  }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.section, .shortcut-card, .tip-card, .faq-item').forEach((el, i) => {
+    el.classList.add('reveal'); el.style.transitionDelay = (i % 4) * 0.05 + 's'; obs.observe(el);
+  });
+}
+
+function initTopbarShrink() {
+  const topbar = document.querySelector('.topbar');
+  if (!topbar) return;
+  window.addEventListener('scroll', () => topbar.classList.toggle('scrolled', window.scrollY > 50), { passive: true });
+}
+
+// ─── i18n COMPREHENSIVO ──────────────────────────────────────────────────
+const _i18n_MAC = {
+  es: {
+    aiBtn: '🤖 Asistente AI',
+    navHeads: ['Navegación','AI Acciones'],
+    heroBadge: 'Guía Viva · AI Integrada · Mayo 2026',
+    heroP: 'Atajos, Terminal, Finder, permisos, seguridad y secretos del sistema. Búsqueda de atajos con AI integrada.',
+    heroTags: ['⌨️ Buscar atajo','🔴 Resolver problema','📝 Generar script','➕ Agregar sección'],
+    secH2: ['Bienvenida al M5','Atajos de Teclado','Spotlight Pro','Mission Control','Finder Avanzado','Terminal & Zsh','Usuarios & Permisos','Seguridad','Personalización','Tips & Secretos'],
+    secDesc: ['Tu nuevo MacBook Pro M5 — primeros pasos','Los shortcuts que cambian todo','Buscar cualquier cosa al instante','Gestión de escritorios y ventanas','El Finder como nunca lo viste','Comandos y configuración avanzada','Permisos y usuarios múltiples','SIP, SSH, Firewall y privacidad','defaults write — personalización profunda','Los secretos que ningún tutorial cuenta'],
+    improveBtn: '✨ Mejorar sección',
+  },
+  en: {
+    aiBtn: '🤖 AI Assistant',
+    navHeads: ['Navigation','AI Actions'],
+    heroBadge: 'Living Guide · AI Integrated · May 2026',
+    heroP: 'Shortcuts, Terminal, Finder, permissions, security and system secrets. AI-powered shortcut finder — type what you want to do.',
+    heroTags: ['⌨️ Find shortcut','🔴 Fix problem','📝 Generate script','➕ Add section'],
+    secH2: ['Welcome to M5','Keyboard Shortcuts','Spotlight Pro','Mission Control','Advanced Finder','Terminal & Zsh','Users & Permissions','Security','Customization','Tips & Secrets'],
+    secDesc: ['Your new MacBook Pro M5 — first steps','The shortcuts that change everything','Find anything instantly','Desktop and window management','Finder like you never saw it','Advanced commands and configuration','Permissions and multiple users','SIP, SSH, Firewall and privacy','defaults write — deep customization','The secrets no tutorial ever tells'],
+    improveBtn: '✨ Improve section',
+  }
+};
+
+function applyI18nPatch(l) {
+  const t = _i18n_MAC[l] || _i18n_MAC.es;
+  const aiBtn = document.querySelector('.ai-open-btn, .ai-toggle-btn');
+  if (aiBtn) { const pulse = aiBtn.querySelector('.pulse,.ai-pulse'); aiBtn.textContent = t.aiBtn; if (pulse) aiBtn.prepend(pulse); }
+  document.querySelectorAll('.nav-head').forEach((h, i) => { if (t.navHeads[i]) h.textContent = t.navHeads[i]; });
+  const badge = document.querySelector('.hero-badge, .hero-chip');
+  if (badge) { const span = badge.querySelector('span.i18n'); if (span) span.textContent = t.heroBadge; else badge.textContent = t.heroBadge; }
+  const heroP = document.querySelector('.hero p.i18n, .hero > p:not(.hero-badge)');
+  if (heroP) heroP.textContent = t.heroP;
+  document.querySelectorAll('.hero .htag').forEach((tag, i) => { if (t.heroTags[i]) { const span = tag.querySelector('span.i18n'); if (span) span.textContent = t.heroTags[i].replace(/^[^\s]+\s/,''); else tag.textContent = t.heroTags[i]; } });
+  document.querySelectorAll('section .sec-head h2, section h2').forEach((h2, i) => { if (t.secH2[i]) h2.textContent = t.secH2[i]; });
+  document.querySelectorAll('section .sec-head p:not(.i18n)').forEach((p, i) => { if (t.secDesc[i]) p.textContent = t.secDesc[i]; });
+  document.querySelectorAll('.improve-btn').forEach(b => { b.textContent = t.improveBtn; });
+}
+
+(function() {
+  const _orig = window.setLang || (typeof setLang === 'function' ? setLang : null);
+  if (_orig) { window.setLang = function(l) { _orig(l); applyI18nPatch(l); }; }
+})();
+
+window.addEventListener('load', () => {
+  checkBackend(); initScrollAnimations(); initTopbarShrink();
+  const savedLang = localStorage.getItem('guide-lang');
+  if (savedLang && savedLang !== 'es') applyI18nPatch(savedLang);
+});
+</script>
+
+</body>
+</html>

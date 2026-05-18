@@ -1,0 +1,36 @@
+# ── .gitattributes ─────────────────────────────────────────────────────
+# QUE HACE: Le dice a git cómo manejar los saltos de línea entre Windows y Mac.
+#
+# POR QUE ES NECESARIO:
+# Windows usa CRLF (\r\n) como salto de línea.
+# Mac/Linux usa LF (\n).
+# Si git convierte start.sh a CRLF, el script falla en Mac con error:
+# "/bin/bash^M: bad interpreter" — el ^M es el \r invisible que rompe todo.
+#
+# REGLA: archivos .sh siempre con LF (Unix), .bat con CRLF (Windows)
+
+# Por defecto: git maneja los saltos de línea automáticamente
+* text=auto
+
+# Shell scripts (Mac/Linux) → SIEMPRE LF, aunque se editen en Windows
+*.sh text eol=lf
+
+# Batch scripts (Windows) → SIEMPRE CRLF
+*.bat text eol=crlf
+
+# HTML, CSS, JS, Python → LF (estándar de la industria)
+*.html text eol=lf
+*.css  text eol=lf
+*.js   text eol=lf
+*.py   text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.json text eol=lf
+
+# Binarios → sin conversión
+*.png  binary
+*.jpg  binary
+*.gif  binary
+*.ico  binary
+*.woff binary
+*.woff2 binary

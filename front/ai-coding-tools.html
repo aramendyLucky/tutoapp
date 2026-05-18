@@ -1,0 +1,2940 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  AI CODING TOOLS 2026 — GUÍA VIVA CON IA INTEGRADA                     ║
+  ║                                                                          ║
+  ║  CAPACIDADES DE AI EN ESTE ARCHIVO:                                     ║
+  ║   1. CHAT — Preguntá cualquier cosa sobre las herramientas              ║
+  ║   2. AGREGAR HERRAMIENTA — La AI genera la tarjeta completa             ║
+  ║   3. MEJORAR SECCIÓN — La AI reescribe cualquier sección                ║
+  ║                                                                          ║
+  ║  ARQUITECTURA:                                                           ║
+  ║   - callClaude(mode, prompt) → fetch a Anthropic API                   ║
+  ║   - Tres modos: 'chat' | 'add-tool' | 'improve-section'                ║
+  ║   - El system prompt incluye todo el contexto de la guía                ║
+  ║   - Respuestas en streaming para feedback inmediato                     ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Coding Tools 2026 — Guía Viva</title>
+  <!-- Fuentes: Syne (display futurista) + JetBrains Mono (código) + DM Sans (cuerpo) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       VARIABLES DE TEMA — 3 paletas completas
+    ═══════════════════════════════════════════════════════ */
+    [data-theme="dark"] {
+      --bg: #080b14; --bg2: #0f1320; --bg3: #161c2e; --bg4: #1e2640;
+      --border: #232d45; --border2: #2d3a58;
+      --text: #e2e8f8; --text2: #8b9ec4; --text3: #4a5a80;
+      --acc: #4de8c2;   /* verde agua neón */
+      --acc2: #6c63ff;  /* violeta */
+      --acc3: #ff6b9d;  /* rosa */
+      --gold: #f5c842;
+      --red: #ff5370; --green: #4de8a0; --blue: #42c5ff; --orange: #ff9f47;
+      --panel-bg: rgba(8, 11, 20, 0.97);
+      --panel-border: rgba(77, 232, 194, 0.2);
+      --glow: 0 0 30px rgba(77, 232, 194, 0.15);
+      --hero-bg: linear-gradient(135deg, #0d1729 0%, #080b14 60%, #0d0b1f 100%);
+    }
+    [data-theme="light"] {
+      --bg: #f5f7ff; --bg2: #ffffff; --bg3: #eef1fa; --bg4: #e3e8f5;
+      --border: #d0d8f0; --border2: #b8c4e0;
+      --text: #1a2040; --text2: #4a5a80; --text3: #8898c0;
+      --acc: #1a8fef; --acc2: #6c63ff; --acc3: #e8337a;
+      --gold: #c8940a;
+      --red: #e53560; --green: #1a9e60; --blue: #1a7abe; --orange: #d97010;
+      --panel-bg: rgba(245, 247, 255, 0.98);
+      --panel-border: rgba(26, 143, 239, 0.3);
+      --glow: 0 0 30px rgba(26, 143, 239, 0.1);
+      --hero-bg: linear-gradient(135deg, #dce8ff 0%, #f5f7ff 60%, #ede8ff 100%);
+    }
+    [data-theme="minimal"] {
+      --bg: #f0ead8; --bg2: #faf6eb; --bg3: #e8e0c8; --bg4: #ddd4b8;
+      --border: #c8b898; --border2: #b8a880;
+      --text: #281f10; --text2: #5c4a28; --text3: #9c8860;
+      --acc: #4e8a18; --acc2: #6e4ec8; --acc3: #c83870;
+      --gold: #a07810;
+      --red: #b83020; --green: #407810; --blue: #1858a0; --orange: #c06018;
+      --panel-bg: rgba(240, 234, 216, 0.98);
+      --panel-border: rgba(78, 138, 24, 0.3);
+      --glow: 0 0 20px rgba(78, 138, 24, 0.1);
+      --hero-bg: linear-gradient(135deg, #dce8b8 0%, #f0ead8 60%, #e8d8f0 100%);
+    }
+
+    /* ─── RESET Y BASE ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 15px; line-height: 1.7;
+      transition: background .3s, color .3s;
+      /* Patrón de puntos sutil en el fondo */
+      background-image: radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─── TOPBAR ─────────────────────────────────────────── */
+    /* Barra superior fija con logo, botones de tema y CTA de AI */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 52px; background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 20px; gap: 12px;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem;
+      color: var(--acc); letter-spacing: -.02em; white-space: nowrap;
+    }
+    .topbar-logo span { color: var(--text3); font-weight: 400; font-size: .75rem; }
+    .topbar-sep { flex: 1; }
+    /* Toggle de idioma ES/EN */
+    .lang-btns { display: flex; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .lang-btn { padding: 3px 11px; font-size: 11px; font-weight: 700; border: none; background: transparent; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; transition: all .2s; }
+    .lang-btn.on { color: #fff; }
+    .lang-btn[data-lang="es"].on { background: linear-gradient(135deg, #c60b1e 0%, #c60b1e 35%, #ffc400 65%, #ffc400 100%); text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+    .lang-btn[data-lang="en"].on { background: linear-gradient(135deg, #012169 0%, #012169 40%, #C8102E 70%, #C8102E 100%); text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+    .lang-btn:first-child { border-right: 1px solid var(--border); }
+    /* Toolbar de código */
+    .code-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: var(--bg4); border: 1px solid var(--border); border-bottom: none; border-radius: 11px 11px 0 0; }
+    .code-lang-lbl { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+    .code-btns-row { display: flex; gap: 5px; }
+    .code-action-btn { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg3); color: var(--text3); cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; }
+    .code-action-btn:hover { border-color: var(--acc); color: var(--acc); }
+    .code-action-btn.expl { border-color: rgba(108,99,255,.3); color: var(--acc2); }
+    .has-tb pre { border-radius: 0 0 11px 11px; }
+    /* Botones de tema en topbar */
+    .theme-btns { display: flex; gap: 4px; }
+    .tbtn {
+      border: 1px solid var(--border); background: transparent;
+      padding: 3px 10px; border-radius: 100px; font-size: 11px;
+      font-weight: 600; color: var(--text3); cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: all .2s;
+    }
+    .tbtn:hover { color: var(--text); border-color: var(--border2); }
+    .tbtn.on { background: var(--acc); color: #fff; border-color: var(--acc); }
+    /* Botón principal "Abrir AI" en la topbar */
+    .ai-toggle-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: linear-gradient(135deg, var(--acc2), var(--acc));
+      color: #fff; border: none; padding: 6px 16px; border-radius: 8px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; transition: opacity .2s;
+      white-space: nowrap;
+    }
+    .ai-toggle-btn:hover { opacity: .85; }
+    /* Punto pulsante que indica "AI activa" */
+    .ai-pulse {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #fff; animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.7); }
+    }
+
+    /* ─── LAYOUT PRINCIPAL ───────────────────────────────── */
+    .layout {
+      display: flex; padding-top: 52px;
+      min-height: 100vh;
+      transition: margin-right .35s cubic-bezier(.4,0,.2,1);
+    }
+    /* Cuando el panel AI está abierto, el contenido se corre a la izquierda */
+    .layout.panel-open { margin-right: 400px; }
+
+    /* ─── SIDEBAR ─────────────────────────────────────────── */
+    .sidebar {
+      width: 240px; min-width: 240px;
+      background: var(--bg2); border-right: 1px solid var(--border);
+      position: sticky; top: 52px; height: calc(100vh - 52px);
+      overflow-y: auto; padding: 20px 10px;
+      scrollbar-width: thin;
+    }
+    .nav-head {
+      font-size: 9px; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--text3);
+      padding: 0 8px; margin: 16px 0 5px;
+    }
+    .nav-head:first-child { margin-top: 0; }
+    .nav-a {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 8px; border-radius: 7px; font-size: 12.5px;
+      color: var(--text2); text-decoration: none;
+      transition: all .15s; border-left: 2px solid transparent;
+    }
+    .nav-a:hover { background: rgba(77,232,194,.08); color: var(--text); border-left-color: var(--acc); }
+    .nav-a.sub { padding-left: 22px; font-size: 11.5px; }
+    /* Badge de ranking de colores */
+    .rnk {
+      width: 18px; height: 18px; border-radius: 4px;
+      font-size: 9px; font-weight: 800; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    /* Divisor decorativo en sidebar */
+    .nav-sep { height: 1px; background: var(--border); margin: 8px 8px; }
+
+    /* ─── CONTENIDO PRINCIPAL ────────────────────────────── */
+    .content { flex: 1; max-width: 900px; margin: 0 auto; padding: 40px 40px 120px; }
+    @media (max-width: 900px) { .content { padding: 28px 18px 100px; } }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero {
+      background: var(--hero-bg); border: 1px solid var(--border);
+      border-radius: 20px; padding: 44px 44px 36px;
+      margin-bottom: 48px; position: relative; overflow: hidden;
+    }
+    /* Decoración: círculo neón top-right */
+    .hero::after {
+      content: ''; position: absolute; top: -60px; right: -60px;
+      width: 240px; height: 240px;
+      background: radial-gradient(circle, rgba(77,232,194,.12) 0%, transparent 70%);
+      border-radius: 50%; pointer-events: none;
+    }
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(77,232,194,.12); border: 1px solid rgba(77,232,194,.25);
+      border-radius: 100px; padding: 4px 12px;
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--acc); margin-bottom: 14px;
+    }
+    /* Punto pulsante en el chip del hero */
+    .hero-chip::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--acc); animation: pulse 2s infinite;
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif; font-size: 2.6rem;
+      font-weight: 800; line-height: 1.15; margin-bottom: 12px;
+    }
+    .hero h1 em { font-style: normal; color: var(--acc); }
+    .hero p { color: var(--text2); max-width: 560px; font-size: .97rem; }
+    /* Tags de capacidades AI del hero */
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .htag {
+      font-size: 12px; font-weight: 600; padding: 5px 12px;
+      border-radius: 8px; border: 1px solid var(--border);
+      color: var(--text2); cursor: pointer; transition: all .2s;
+    }
+    .htag:hover { border-color: var(--acc); color: var(--acc); background: rgba(77,232,194,.06); }
+    /* Etiqueta AI especial (distinta de los tags normales) */
+    .htag.ai-action {
+      border-color: rgba(108,99,255,.4); color: var(--acc2);
+      background: rgba(108,99,255,.08);
+    }
+    .htag.ai-action:hover { background: rgba(108,99,255,.15); }
+
+    /* ─── CABECERA DE SECCIÓN ────────────────────────────── */
+    .sec-head {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px; padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sec-icon {
+      width: 42px; height: 42px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .sec-head h2 {
+      font-family: 'Syne', sans-serif; font-size: 1.55rem; font-weight: 800;
+    }
+    .sec-head p { font-size: .88rem; color: var(--text2); margin-top: 2px; }
+    section { margin-bottom: 60px; }
+    /* Botón "Mejorar con AI" que aparece junto al título de sección */
+    .improve-btn {
+      margin-left: auto; flex-shrink: 0;
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(108,99,255,.12); border: 1px solid rgba(108,99,255,.3);
+      color: var(--acc2); border-radius: 8px; padding: 5px 12px;
+      font-size: 11px; font-weight: 700; cursor: pointer; transition: all .2s;
+      font-family: 'DM Sans', sans-serif; white-space: nowrap;
+    }
+    .improve-btn:hover { background: rgba(108,99,255,.22); }
+
+    /* ─── TARJETA DE HERRAMIENTA ─────────────────────────── */
+    /* Clase base para las 10 fichas del ranking */
+    .tool-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      margin-bottom: 24px; transition: border-color .25s, box-shadow .25s;
+    }
+    .tool-card:hover { border-color: var(--acc); box-shadow: var(--glow); }
+    .tc-head {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 22px 26px 18px; border-bottom: 1px solid var(--border);
+    }
+    /* Número de ranking grande con fondo de color */
+    .tc-rank {
+      width: 50px; height: 50px; border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 1.5rem;
+      font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .tc-info { flex: 1; }
+    .tc-info h3 {
+      font-family: 'Syne', sans-serif; font-size: 1.2rem;
+      font-weight: 800; margin-bottom: 2px;
+    }
+    .tc-info .tc-tag { font-size: .84rem; color: var(--text2); }
+    /* Contenedor de badges de tipo/plataforma/costo */
+    .tc-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
+    .chip {
+      font-size: 10px; font-weight: 700; padding: 2px 8px;
+      border-radius: 5px; text-transform: uppercase; letter-spacing: .05em;
+    }
+    .tc-body { padding: 20px 26px; }
+    /* Fila de métricas rápidas */
+    .tc-metrics {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 10px; margin-bottom: 16px;
+    }
+    .m-box {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 12px;
+    }
+    .m-label { font-size: 8.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--text3); }
+    .m-val { font-size: .95rem; font-weight: 800; margin-top: 2px; }
+    .m-sub { font-size: 10px; color: var(--text2); }
+    /* Grid pros/cons */
+    .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+    .pc-col h4 {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .1em; margin-bottom: 8px;
+    }
+    .pc-col ul { list-style: none; }
+    .pc-col li {
+      font-size: .85rem; color: var(--text2); padding: 3px 0;
+      display: flex; gap: 7px; align-items: flex-start;
+    }
+    .pros li::before { content: "✓"; color: var(--green); font-weight: 800; flex-shrink: 0; }
+    .cons li::before { content: "✗"; color: var(--red); font-weight: 800; flex-shrink: 0; }
+    /* Precios */
+    .price-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .pp {
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 100px; border: 1px solid var(--border); color: var(--text2);
+    }
+    .pp.free { border-color: var(--green); color: var(--green); }
+    .pp.paid { border-color: var(--acc); color: var(--acc); }
+
+    /* ─── CALLOUTS ───────────────────────────────────────── */
+    .callout {
+      border-radius: 10px; padding: 14px 18px;
+      margin: 14px 0; display: flex; gap: 12px; font-size: .9rem;
+    }
+    .callout-ico { font-size: 1.1rem; flex-shrink: 0; }
+    .callout.info { background: rgba(66,197,255,.08); border-left: 3px solid var(--blue); }
+    .callout.tip { background: rgba(77,232,160,.08); border-left: 3px solid var(--green); }
+    .callout.warn { background: rgba(245,200,66,.08); border-left: 3px solid var(--gold); }
+
+    /* ─── BLOQUES DE CÓDIGO ──────────────────────────────── */
+    pre {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px 18px; margin: 12px 0;
+      overflow-x: auto; position: relative;
+    }
+    pre code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8rem; line-height: 1.75; color: var(--text);
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace; font-size: .8em;
+      background: var(--bg3); padding: 2px 6px; border-radius: 4px; color: var(--acc);
+    }
+    pre code { background: none; padding: 0; }
+    .code-lang {
+      position: absolute; top: 8px; right: 12px;
+      font-size: 9px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--text3);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .c-comment { color: var(--text3); font-style: italic; }
+    .c-str { color: var(--green); }
+    .c-key { color: var(--blue); }
+    .c-num { color: var(--gold); }
+    .c-cmd { color: var(--acc); }
+
+    /* ─── PASOS ──────────────────────────────────────────── */
+    .steps { counter-reset: stp; }
+    .step { display: flex; gap: 18px; margin-bottom: 24px; }
+    .step-n {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--acc); color: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: .85rem; flex-shrink: 0;
+      counter-increment: stp;
+    }
+    .step-b h4 { font-size: .97rem; font-weight: 700; margin-bottom: 6px; }
+    .step-b p { font-size: .88rem; color: var(--text2); }
+
+    /* ─── TABLA ──────────────────────────────────────────── */
+    .tbl { width: 100%; border-collapse: collapse; font-size: .87rem; }
+    .tbl th {
+      background: var(--bg3); padding: 10px 14px;
+      text-align: left; font-size: 10px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--text3);
+      border-bottom: 1px solid var(--border);
+    }
+    .tbl td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .tbl tr:hover td { background: rgba(77,232,194,.03); }
+    .yes { color: var(--green); font-weight: 700; }
+    .no  { color: var(--red); }
+
+    /* ─── CARDS DE MODELOS / STACKS ──────────────────────── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .mini-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+    }
+    .mini-card h4 { font-size: .92rem; font-weight: 700; margin-bottom: 4px; }
+    .mini-card p { font-size: .82rem; color: var(--text2); }
+    .mini-card code { margin: 5px 0; display: inline-block; }
+
+    /* ─── TABLA RAM MODELOS OLLAMA ───────────────────────── */
+    .ram-tbl { width: 100%; border-collapse: collapse; font-size: .86rem; margin: 14px 0; }
+    .ram-tbl th {
+      background: var(--bg3); padding: 9px 12px;
+      text-align: left; font-size: 9.5px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: .08em; color: var(--text3);
+      border-bottom: 1px solid var(--border);
+    }
+    .ram-tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .rbadge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 100px; background: var(--bg4); }
+
+    /* ─── FAQ ────────────────────────────────────────────── */
+    .faq-item {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 11px; padding: 18px 22px; margin-bottom: 12px;
+    }
+    .faq-q { font-weight: 700; font-size: .95rem; margin-bottom: 7px; }
+    .faq-a { font-size: .88rem; color: var(--text2); }
+
+    /* ─── ZONA DONDE SE INYECTAN HERRAMIENTAS NUEVAS ─────── */
+    /* Esta sección recibe las tarjetas generadas por AI */
+    #ai-added-tools { transition: all .4s; }
+    #ai-added-tools:not(:empty) {
+      border-top: 1px dashed rgba(77,232,194,.3);
+      padding-top: 20px; margin-top: -4px;
+    }
+
+    /* ═══════════════════════════════════════════════════════
+       PANEL AI — Panel lateral derecho deslizable
+       Contiene el chat y todos los controles de AI
+    ═══════════════════════════════════════════════════════ */
+    .ai-panel {
+      position: fixed; top: 52px; right: 0;
+      width: 400px; height: calc(100vh - 52px);
+      background: var(--panel-bg);
+      border-left: 1px solid var(--panel-border);
+      display: flex; flex-direction: column;
+      transform: translateX(100%);           /* Empieza oculto */
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      z-index: 400;
+      box-shadow: -8px 0 40px rgba(0,0,0,.3);
+    }
+    /* Clase .open activa el panel (añadida por JS) */
+    .ai-panel.open { transform: translateX(0); }
+
+    /* Cabecera del panel AI */
+    .ai-head {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .ai-head-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--acc2), var(--acc));
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
+    }
+    .ai-head-title {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem;
+    }
+    .ai-head-sub { font-size: 11px; color: var(--text3); }
+    .ai-close {
+      margin-left: auto; background: transparent; border: none;
+      color: var(--text3); font-size: 1.2rem; cursor: pointer;
+      padding: 4px 8px; border-radius: 6px; transition: color .2s;
+    }
+    .ai-close:hover { color: var(--text); }
+
+    /* Pestañas de modo dentro del panel AI */
+    .ai-modes {
+      display: flex; padding: 10px 14px;
+      gap: 6px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+    }
+    /* Cada pestaña activa un modo diferente de la AI */
+    .ai-mode-btn {
+      flex: 1; padding: 7px 6px; border-radius: 8px;
+      border: 1px solid var(--border); background: transparent;
+      font-size: 11px; font-weight: 700; color: var(--text2);
+      cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif;
+      text-align: center;
+    }
+    .ai-mode-btn.active { background: var(--acc); color: var(--bg); border-color: var(--acc); }
+    .ai-mode-btn:hover:not(.active) { border-color: var(--acc); color: var(--acc); }
+
+    /* Área de mensajes del chat */
+    .ai-msgs {
+      flex: 1; overflow-y: auto; padding: 14px;
+      display: flex; flex-direction: column; gap: 12px;
+      scrollbar-width: thin;
+    }
+    /* Mensaje del usuario */
+    .msg-user {
+      align-self: flex-end; background: var(--acc2);
+      color: #fff; padding: 10px 14px; border-radius: 12px 12px 3px 12px;
+      font-size: .88rem; max-width: 85%; line-height: 1.5;
+    }
+    /* Mensaje de la AI */
+    .msg-ai {
+      align-self: flex-start;
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 10px 14px; border-radius: 12px 12px 12px 3px;
+      font-size: .88rem; max-width: 92%; line-height: 1.6;
+      color: var(--text);
+    }
+    .msg-ai strong { color: var(--acc); }
+    /* Indicador de "AI escribiendo..." */
+    .msg-typing {
+      display: flex; gap: 4px; align-items: center;
+      padding: 12px 16px; color: var(--text3); font-size: .85rem;
+    }
+    .dot-loader span {
+      display: inline-block; width: 5px; height: 5px;
+      border-radius: 50%; background: var(--acc);
+      animation: bounce 1.2s infinite;
+    }
+    .dot-loader span:nth-child(2) { animation-delay: .2s; }
+    .dot-loader span:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+    /* Footer del panel AI con input y botón */
+    .ai-footer { padding: 12px 14px; border-top: 1px solid var(--border); flex-shrink: 0; }
+    /* Contexto del modo actual (muestra qué hará la AI) */
+    .ai-ctx {
+      font-size: 10.5px; color: var(--text3); margin-bottom: 8px;
+      padding: 6px 10px; background: var(--bg3);
+      border-radius: 7px; border: 1px solid var(--border);
+    }
+    .ai-ctx strong { color: var(--acc2); }
+    /* Fila de input + botón enviar */
+    .ai-input-row { display: flex; gap: 8px; }
+    .ai-input {
+      flex: 1; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 14px; color: var(--text);
+      font-size: .88rem; font-family: 'DM Sans', sans-serif;
+      resize: none; max-height: 120px; outline: none; transition: border-color .2s;
+    }
+    .ai-input:focus { border-color: var(--acc); }
+    .ai-send {
+      background: linear-gradient(135deg, var(--acc2), var(--acc));
+      border: none; border-radius: 10px; padding: 10px 16px;
+      color: #fff; font-size: 1.1rem; cursor: pointer;
+      transition: opacity .2s; flex-shrink: 0;
+    }
+    .ai-send:hover { opacity: .85; }
+    .ai-send:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ─── FEEDBACK "SECCIÓN ACTUALIZADA" ─────────────────── */
+    /* Banner que aparece brevemente cuando una sección fue mejorada */
+    .update-flash {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--acc); color: var(--bg);
+      padding: 10px 22px; border-radius: 100px;
+      font-size: .88rem; font-weight: 700; z-index: 1000;
+      transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .4s;
+      opacity: 0; pointer-events: none;
+    }
+    .update-flash.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ─── OVERLAY (cierra el panel al hacer click fuera) ─── */
+    .overlay {
+      display: none; position: fixed; inset: 0; z-index: 350;
+      background: rgba(0,0,0,.3); backdrop-filter: blur(2px);
+    }
+    .overlay.show { display: block; }
+
+    /* ─── UTILITARIOS ────────────────────────────────────── */
+    h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; }
+    h4 { font-size: .97rem; font-weight: 700; margin-bottom: 8px; }
+    p { margin-bottom: 12px; }
+    ul,ol { padding-left: 20px; margin-bottom: 12px; color: var(--text2); font-size: .9rem; }
+    li { margin-bottom: 4px; }
+    strong { color: var(--text); }
+    a { color: var(--acc); text-decoration: none; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+    .mt { margin-top: 16px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 14px; }
+    @media (max-width:700px) { .g2,.g3,.pc-grid { grid-template-columns: 1fr; } .ai-panel { width: 100%; } }
+  
+    /* ── API KEY MANAGER CSS ──────────────────────────────────────── */
+    .ak-overlay{display:none;position:fixed;inset:0;z-index:900;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);align-items:center;justify-content:center}
+    .ak-overlay.show{display:flex}
+    .ak-modal{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:32px 36px;max-width:430px;width:90%;box-shadow:0 24px 80px rgba(0,0,0,.5)}
+    .ak-modal h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .ak-modal p{font-size:.88rem;color:var(--text2);margin-bottom:14px;line-height:1.6}
+    .ak-link{display:inline-flex;align-items:center;gap:5px;font-size:.84rem;color:var(--acc);margin-bottom:16px;font-weight:600;text-decoration:none}
+    .ak-link:hover{text-decoration:underline}
+    .ak-row{display:flex;gap:8px;margin-bottom:12px}
+    .ak-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:10px 14px;color:var(--text);font-size:.85rem;font-family:'JetBrains Mono',monospace;outline:none;transition:border-color .2s}
+    .ak-input:focus{border-color:var(--acc)}
+    .ak-save{background:linear-gradient(135deg,var(--acc2,#5b8af5),var(--acc));color:#fff;border:none;border-radius:9px;padding:10px 18px;font-size:.87rem;font-weight:700;cursor:pointer;white-space:nowrap}
+    .ak-note{font-size:.8rem;color:var(--text3);padding:9px 12px;background:var(--bg3);border-radius:8px;line-height:1.55}
+    .ak-note strong{color:var(--text2)}
+    .ak-skip{display:block;margin-top:12px;text-align:center;font-size:.8rem;color:var(--text3);cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif}
+    .ak-skip:hover{color:var(--text2)}
+    .ak-badge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;cursor:pointer;transition:all .2s;border:1px solid var(--border);color:var(--text3);font-family:'DM Sans',sans-serif;white-space:nowrap}
+    .ak-badge.set{border-color:var(--green,#40d080);color:var(--green,#40d080)}
+      
+    /* ── PROVIDER SELECTOR ──────────────────────────────────────────
+       Barra de selección de proveedor AI en el panel.
+       Cada botón tiene el color del proveedor.
+       El activo se resalta con background sólido.
+    ─────────────────────────────────────────────────────────────────*/
+    .prov-bar {
+      display: flex; gap: 5px; padding: 8px 12px; flex-wrap: wrap;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+      background: var(--bg3);
+    }
+    .prov-btn {
+      flex: 1; min-width: 70px; padding: 5px 6px;
+      border-radius: 7px; border: 1px solid var(--border);
+      background: var(--bg2); font-size: 10px; font-weight: 700;
+      cursor: pointer; transition: all .2s; color: var(--text3);
+      font-family: 'DM Sans', sans-serif; text-align: center;
+      white-space: nowrap;
+    }
+    .prov-btn:hover { border-color: var(--acc); color: var(--text); }
+    .prov-btn.active { color: #fff; border-color: transparent; }
+    /* Colores únicos por proveedor */
+    .prov-btn[data-prov="puter"].active  { background: #1a8cff; }
+    .prov-btn[data-prov="gemini"].active { background: #1a7fd4; }
+    .prov-btn[data-prov="grok"].active   { background: #222; }
+    .prov-btn[data-prov="claude"].active { background: #c96442; }
+    .prov-btn[data-prov="ollama"].active { background: #3a8a3a; }
+    /* Badge FREE en los botones gratuitos */
+    .prov-badge {
+      display: inline-block; font-size: 8px; padding: 0px 4px;
+      border-radius: 3px; background: rgba(64,208,128,.2);
+      color: var(--green, #40d080); margin-left: 2px;
+      vertical-align: middle; font-weight: 800;
+    }
+    /* Input de key (se muestra solo cuando el proveedor lo necesita) */
+    .key-row {
+      display: none; gap: 6px; padding: 7px 12px;
+      border-bottom: 1px solid var(--border); flex-shrink: 0;
+      align-items: center;
+    }
+    .key-row.show { display: flex; }
+    .key-input {
+      flex: 1; background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 7px; padding: 6px 10px; color: var(--text);
+      font-size: .8rem; font-family: 'JetBrains Mono', monospace;
+      outline: none; transition: border-color .2s;
+    }
+    .key-input:focus { border-color: var(--acc); }
+    .key-save-btn {
+      background: var(--acc); color: var(--bg); border: none;
+      border-radius: 7px; padding: 6px 12px; font-size: 11px;
+      font-weight: 700; cursor: pointer; white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .key-link {
+      font-size: 10px; color: var(--text3); white-space: nowrap;
+      text-decoration: none;
+    }
+    .key-link:hover { color: var(--acc); }
+
+  </style>
+<script src="https://js.puter.com/v2/"></script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     TOPBAR — Barra superior fija
+     Contiene el logo, botones de tema y el botón principal de AI
+══════════════════════════════════════════════════════════════════ -->
+<header class="topbar">
+  <div class="topbar-logo">AI Coding 2026 <span>/ Guía Viva</span></div>
+  <div class="topbar-sep"></div>
+  <div class="lang-btns">
+    <button class="lang-btn on" data-lang="es" onclick="setLang('es')" title="Español">🇪🇸 ES</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')" title="English">🇺🇸 EN</button>
+  </div>
+  <div class="theme-btns">
+    <button class="tbtn on" onclick="setTheme('dark')">◑ Dark</button>
+    <button class="tbtn" onclick="setTheme('light')">☀ Light</button>
+    <button class="tbtn" onclick="setTheme('minimal')">🌿 Minimal</button>
+  </div>
+  <!-- Botón que abre/cierra el panel AI — el corazón de la interactividad -->
+  <button class="ai-toggle-btn" onclick="togglePanel()">
+    <div class="ai-pulse"></div>
+    🤖 Asistente AI
+  </button>
+</header>
+
+<!-- Overlay oscuro cuando el panel AI está abierto -->
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+
+<!-- Banner flash que aparece al actualizar una sección -->
+<div class="update-flash" id="flash">✓ Sección actualizada con AI</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     LAYOUT: SIDEBAR + CONTENIDO PRINCIPAL
+══════════════════════════════════════════════════════════════════ -->
+<div class="layout" id="layout">
+
+  <!-- ── SIDEBAR ─────────────────────────────────────────────── -->
+  <nav class="sidebar">
+    <div class="nav-head">Guía</div>
+    <a href="#panorama" class="nav-a">🌐 Panorama 2026</a>
+    <div class="nav-sep"></div>
+
+    <div class="nav-head">Top 10 Herramientas</div>
+    <a href="#tool-1" class="nav-a"><span class="rnk" style="background:#f5c842">1</span> Claude Code</a>
+    <a href="#tool-2" class="nav-a"><span class="rnk" style="background:#42c5ff">2</span> Cursor</a>
+    <a href="#tool-3" class="nav-a"><span class="rnk" style="background:#a78bfa">3</span> GitHub Copilot</a>
+    <a href="#tool-4" class="nav-a"><span class="rnk" style="background:#4de8a0">4</span> OpenCode</a>
+    <a href="#tool-5" class="nav-a"><span class="rnk" style="background:#ff6b9d">5</span> Windsurf</a>
+    <a href="#tool-6" class="nav-a"><span class="rnk" style="background:#ff9f47">6</span> Aider</a>
+    <a href="#tool-7" class="nav-a"><span class="rnk" style="background:#4de8c2">7</span> Continue.dev</a>
+    <a href="#tool-8" class="nav-a"><span class="rnk" style="background:#ff5370">8</span> Cline</a>
+    <a href="#tool-9" class="nav-a"><span class="rnk" style="background:#6c63ff">9</span> Gemini</a>
+    <a href="#tool-10" class="nav-a"><span class="rnk" style="background:#6b7a99">10</span> Amazon Q</a>
+    <!-- Zona de herramientas agregadas por AI (se añaden dinámicamente) -->
+    <div id="sidebar-extra"></div>
+
+    <div class="nav-sep"></div>
+    <div class="nav-head">Comparativa</div>
+    <a href="#tabla" class="nav-a">📊 Tabla Maestra</a>
+    <div class="nav-sep"></div>
+    <div class="nav-head">Ollama en M5</div>
+    <a href="#ollama" class="nav-a">🦙 Guía Completa</a>
+    <a href="#ollama-install" class="nav-a sub">↳ Instalación</a>
+    <a href="#ollama-models" class="nav-a sub">↳ Modelos</a>
+    <a href="#ollama-commands" class="nav-a sub">↳ Comandos</a>
+    <a href="#ollama-api" class="nav-a sub">↳ API REST</a>
+    <div class="nav-sep"></div>
+    <div class="nav-head">OpenCode</div>
+    <a href="#opencode" class="nav-a">⚡ Guía Completa</a>
+    <a href="#oc-install" class="nav-a sub">↳ Instalación</a>
+    <a href="#oc-providers" class="nav-a sub">↳ Proveedores</a>
+    <a href="#oc-planbuild" class="nav-a sub">↳ Plan vs Build</a>
+    <a href="#oc-ollama" class="nav-a sub">↳ + Ollama</a>
+    <div class="nav-sep"></div>
+    <a href="#faq" class="nav-a">❓ FAQ</a>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════
+       CONTENIDO PRINCIPAL
+  ══════════════════════════════════════════════════════════ -->
+  <main class="content">
+
+    <!-- ── HERO ──────────────────────────────────────────── -->
+    <div class="hero">
+      <div class="hero-chip">Guía Viva · Actualizable con AI · Mayo 2026</div>
+      <h1>AI Coding Tools,<br><em>Ollama & OpenCode</em></h1>
+      <p>Top 10 herramientas de AI coding, guía completa de Ollama en Mac M5 y OpenCode desde cero. Esta guía es <strong>viva</strong> — usá el Asistente AI para actualizarla, agregar herramientas o hacer preguntas.</p>
+      <!-- Tags interactivos que abren el panel AI en el modo correspondiente -->
+      <div class="hero-tags">
+        <div class="htag" onclick="openAndAsk('chat', '¿Cuál herramienta me conviene si soy freelancer full-stack?')">💬 Preguntarle a la AI</div>
+        <div class="htag ai-action" onclick="openMode('add-tool')">➕ Agregar herramienta al Top 10</div>
+        <div class="htag ai-action" onclick="openMode('improve')">✨ Mejorar una sección</div>
+        <div class="htag" onclick="openAndAsk('chat', '¿Cuál es el mejor stack gratuito offline para Mac M5?')">🆓 Stack gratis offline</div>
+        <div class="htag" onclick="openAndAsk('chat', 'Explica las diferencias entre Claude Code, OpenCode y Aider')">🔍 Comparar herramientas</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         SECCIÓN 1 — PANORAMA 2026
+    ══════════════════════════════════════════════════ -->
+    <section id="panorama">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(66,197,255,.12)">🌐</div>
+        <div>
+          <h2>Panorama AI Coding 2026</h2>
+          <p>El mercado explotó — herramientas terminales, IDEs nativos, agentes cloud y open source</p>
+        </div>
+        <!-- Botón que abre el panel AI en modo "improve" con el contexto de esta sección -->
+        <button class="improve-btn" onclick="openImprove('panorama', 'Panorama AI Coding 2026')">✨ Mejorar sección</button>
+      </div>
+
+      <p>El panorama de herramientas de AI coding en 2026 es radicalmente distinto al de hace 18 meses. Según Stack Overflow Developer Survey 2025, el <strong>84% de los desarrolladores</strong> ya integran o planean integrar AI en su flujo de trabajo, y el 51% las usa a diario. La gran evolución es la <strong>autonomía</strong>: en 2024 era "sugerir la próxima línea", en 2026 es "implementar esta feature mientras reviso el PR". Herramientas como Claude Code, Cursor y Aider pueden planificar, editar múltiples archivos, ejecutar tests y hacer commit — de forma autónoma.</p>
+
+      <div class="callout info">
+        <div class="callout-ico">📈</div>
+        <div>
+          <strong>Datos clave 2026:</strong>
+          <ul style="margin:6px 0 0;padding-left:18px;font-size:.88rem">
+            <li>Claude Code: 4% → 63% de adopción en 9 meses — el crecimiento más rápido registrado en herramientas de dev</li>
+            <li>Los devs con AI diaria hacen merge de <strong>60% más pull requests</strong> (estudio GitHub 2025)</li>
+            <li>Aider: 44K ⭐ GitHub, 6.8M instalaciones pip, 15B tokens procesados por semana</li>
+            <li>OpenCode: 126K+ ⭐ — el agente terminal open source más popular; soporta 75+ proveedores de modelos</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="font-size:.9rem;color:var(--text2)">Las herramientas de última generación comparten tres capacidades que sus predecesoras no tenían: <strong>(1) contexto de repositorio completo</strong> — leen y entienden toda tu codebase, no solo el archivo abierto; <strong>(2) ejecución autónoma</strong> — corren comandos, tests y builds por su cuenta; <strong>(3) edición multi-archivo coherente</strong> — hacen cambios consistentes a través de decenas de archivos manteniendo el contexto de cada decisión.</p>
+
+      <div class="g2 mt">
+        <div class="mini-card">
+          <h4>🖥 Agentes de Terminal</h4>
+          <p style="font-size:.84rem">Acceso total al codebase desde la terminal. Sin GUI. Ideales para refactorizaciones masivas y migraciones. <strong>Claude Code</strong> (SWE-bench 80.8%), <strong>OpenCode</strong> (75+ proveedores, offline con Ollama), <strong>Aider</strong> (44K ⭐, Git-first, 88% del código escrito por el mismo Aider).</p>
+        </div>
+        <div class="mini-card">
+          <h4>🎨 IDEs nativos AI</h4>
+          <p style="font-size:.84rem">Editores construidos desde cero para AI. Mejor experiencia visual para desarrollo diario. <strong>Cursor</strong> (Supermaven autocomplete, 1M+ usuarios, Pro $20/mes) y <strong>Windsurf</strong> (Cascade mode, 26M usuarios Codeium, Free tier generoso).</p>
+        </div>
+        <div class="mini-card">
+          <h4>🔌 Extensiones de IDE</h4>
+          <p style="font-size:.84rem">Se integran en tu editor actual sin cambiar tu flujo. <strong>GitHub Copilot</strong> ($10/mes, el más adoptado, 2000 comp/mes gratis), <strong>Continue.dev</strong> (open source, soporta Ollama local), <strong>Cline</strong> (model-agnostic, BYOK — solo pagás la API).</p>
+        </div>
+        <div class="mini-card">
+          <h4>☁️ Cloud / Browser</h4>
+          <p style="font-size:.84rem">Sin instalación local. Ideales para prototipos rápidos y demos. <strong>Replit</strong> (entorno completo en browser), <strong>Bolt.new</strong> (full-stack app desde un prompt), <strong>Lovable</strong> (apps React), <strong>v0.dev</strong> (componentes UI de Vercel).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECCIÓN 2 — TOP 10 HERRAMIENTAS
+         id="tools-list" es donde se inyectan las tarjetas nuevas generadas por AI
+    ══════════════════════════════════════════════════ -->
+    <section id="top10">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(245,200,66,.12)">🏆</div>
+        <div>
+          <h2>Top 10 Herramientas AI Coding</h2>
+          <p class="i18n" data-es="Ranking actualizado — benchmarks reales, no demos de juguete" data-en="Updated ranking — real benchmarks, not toy demos">Ranking actualizado — benchmarks reales, no demos de juguete</p>
+        </div>
+        <button class="improve-btn" onclick="openMode('add-tool')">➕ Agregar herramienta</button>
+      </div>
+
+      <!-- Lista de tarjetas de herramientas existentes -->
+      <div id="tools-list">
+
+        <!-- #1 CLAUDE CODE -->
+        <div class="tool-card" id="tool-1">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#f5c842">1</div>
+            <div class="tc-info">
+              <h3>Claude Code</h3>
+              <div class="tc-tag">Agente terminal de Anthropic · El más poderoso para código complejo</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(245,200,66,.15);color:var(--gold)">Terminal</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Agente Autónomo</span>
+                <span class="chip" style="background:rgba(66,197,255,.15);color:var(--blue)">Anthropic</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-metrics">
+              <div class="m-box"><div class="m-label">SWE-bench</div><div class="m-val" style="color:var(--green)">80.8%</div><div class="m-sub">Mejor mercado</div></div>
+              <div class="m-box"><div class="m-label">Contexto</div><div class="m-val">1M tokens</div><div class="m-sub">Repos enteros</div></div>
+              <div class="m-box"><div class="m-label">Interfaz</div><div class="m-val">Terminal</div><div class="m-sub">Sin GUI</div></div>
+              <div class="m-box"><div class="m-label">Precio</div><div class="m-val">$0</div><div class="m-sub">Free tier</div></div>
+            </div>
+            <p style="font-size:.88rem;color:var(--text2)">Claude Code se ejecuta en tu terminal, apunta a tu codebase y lee, escribe, refactoriza y debuggea a través de todo tu proyecto. Impulsado por Claude Opus 4.6/4.7 con 80.8% en SWE-bench — el mejor score disponible. Ventana de contexto de 1M tokens. Instalación en Mac: <code>npm i -g @anthropic-ai/claude-code</code></p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Mejor calidad de código del mercado</li>
+                <li>Contexto 1M tokens — carga repos completos</li>
+                <li>Razonamiento complejo excepcional</li>
+                <li>Soporte MCP para servicios externos</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Solo terminal — sin GUI ni autocomplete inline</li>
+                <li>Requiere Claude Pro/Max para uso intensivo</li>
+                <li>No funciona offline</li>
+              </ul></div>
+            </div>
+            <div class="price-row">
+              <span class="pp free">Free (limitado)</span>
+              <span class="pp paid">Claude Pro $20/mes</span>
+              <span class="pp paid">Claude Max $100/mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #2 CURSOR -->
+        <div class="tool-card" id="tool-2">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#42c5ff">2</div>
+            <div class="tc-info">
+              <h3>Cursor</h3>
+              <div class="tc-tag">El mejor IDE AI · Fork de VS Code con AI integrada profundamente</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(66,197,255,.15);color:var(--blue)">IDE AI Nativo</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Multi-Modelo</span>
+                <span class="chip" style="background:rgba(167,139,250,.15);color:#a78bfa">+1M usuarios</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-metrics">
+              <div class="m-box"><div class="m-label">CursorBench</div><div class="m-val" style="color:var(--blue)">70%</div></div>
+              <div class="m-box"><div class="m-label">Autocomplete</div><div class="m-val">Supermaven</div><div class="m-sub">El más rápido</div></div>
+              <div class="m-box"><div class="m-label">Modelos</div><div class="m-val">Multi</div><div class="m-sub">Claude + GPT + más</div></div>
+              <div class="m-box"><div class="m-label">Precio</div><div class="m-val">$0</div><div class="m-sub">Hobby tier</div></div>
+            </div>
+            <p style="font-size:.88rem;color:var(--text2)">Cursor redefinió lo que significa un IDE AI. Composer mode para edición multi-archivo en lenguaje natural. La mejor experiencia para React, Next.js, Angular. Supermaven autocomplete es el más rápido del mercado. Soporta Claude, GPT-5, DeepSeek y más.</p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Autocompletado más rápido (Supermaven)</li>
+                <li>Composer + Agent mode multi-archivo visual</li>
+                <li>Interfaz familiar para usuarios VS Code</li>
+                <li>Soporta múltiples modelos AI</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Requiere GUI — sin servidores headless</li>
+                <li>Más lento que Claude Code en repos grandes</li>
+                <li>Precio sube en uso intensivo</li>
+              </ul></div>
+            </div>
+            <div class="price-row">
+              <span class="pp free">Hobby gratis</span>
+              <span class="pp paid">Pro $20/mes</span>
+              <span class="pp paid">Business $40/u/mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #3 GITHUB COPILOT -->
+        <div class="tool-card" id="tool-3">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#a78bfa">3</div>
+            <div class="tc-info">
+              <h3>GitHub Copilot</h3>
+              <div class="tc-tag">El más adoptado · Integración nativa con GitHub y VS Code</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(167,139,250,.15);color:#a78bfa">Extensión IDE</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Microsoft</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-metrics">
+              <div class="m-box"><div class="m-label">Velocidad dev</div><div class="m-val" style="color:#a78bfa">+55%</div><div class="m-sub">Estudio GitHub</div></div>
+              <div class="m-box"><div class="m-label">IDEs</div><div class="m-val">VS Code</div><div class="m-sub">JetBrains, Neovim</div></div>
+              <div class="m-box"><div class="m-label">Precio</div><div class="m-val">$10/mes</div><div class="m-sub">Pro</div></div>
+            </div>
+            <p style="font-size:.88rem;color:var(--text2)">El más adoptado del mercado. Integración nativa con VS Code, JetBrains y Neovim. El plan Business ($39/mes) incluye modelos de OpenAI y Anthropic. Autocompletado inline excepcional — ahorra 30+ min diarios.</p>
+            <div class="price-row">
+              <span class="pp free">Free (2000 comp/mes)</span>
+              <span class="pp paid">Pro $10/mes</span>
+              <span class="pp paid">Business $39/mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #4 OPENCODE -->
+        <div class="tool-card" id="tool-4">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#4de8a0">4</div>
+            <div class="tc-info">
+              <h3>OpenCode</h3>
+              <div class="tc-tag">Open source · 126K+ ⭐ · 75+ proveedores · Offline con Ollama</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Open Source</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Terminal</span>
+                <span class="chip" style="background:rgba(255,159,71,.15);color:var(--orange)">Offline Ready</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-metrics">
+              <div class="m-box"><div class="m-label">GitHub Stars</div><div class="m-val" style="color:var(--green)">126K+</div></div>
+              <div class="m-box"><div class="m-label">Proveedores</div><div class="m-val">75+</div><div class="m-sub">Ollama incluido</div></div>
+              <div class="m-box"><div class="m-label">Offline</div><div class="m-val">✓ Sí</div></div>
+              <div class="m-box"><div class="m-label">Costo</div><div class="m-val">$0</div><div class="m-sub">Solo API</div></div>
+            </div>
+            <p style="font-size:.88rem;color:var(--text2)">Agente AI open source para terminal, binario único sin dependencias. Plan/Build agents, skills, plugins, integración LSP. Desarrollado por el equipo de Anomaly (ex-SST). Nota: Anthropic bloqueó Claude directo — usarlo via GitHub Copilot o OpenCode Go.</p>
+            <div class="price-row">
+              <span class="pp free">Gratis (Open Source)</span>
+              <span class="pp paid">OpenCode Go $10/mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #5 WINDSURF -->
+        <div class="tool-card" id="tool-5">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#ff6b9d">5</div>
+            <div class="tc-info">
+              <h3>Windsurf <span style="font-size:.75rem;color:var(--text3)">(by Codeium)</span></h3>
+              <div class="tc-tag">Mejor IDE AI gratuito · Modo Cascade para autonomía multi-archivo</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(255,107,157,.15);color:var(--acc3)">IDE AI Nativo</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Free Tier Real</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <p style="font-size:.88rem;color:var(--text2)">El competidor más cercano a Cursor. Mejor tier gratuito de todos los IDEs AI (completions ilimitadas básicas). Modo Cascade para cambios autónomos multi-archivo. 26M+ usuarios via Codeium. Más barato que Cursor en Pro ($15 vs $20).</p>
+            <div class="price-row">
+              <span class="pp free">Free (completions ilimitadas)</span>
+              <span class="pp paid">Pro $15/mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #6 AIDER -->
+        <div class="tool-card" id="tool-6">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#ff9f47">6</div>
+            <div class="tc-info">
+              <h3>Aider</h3>
+              <div class="tc-tag">44K ⭐ · 6.8M installs · Git-first · 100+ LLMs · Voice-to-code · Offline con Ollama</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Open Source</span>
+                <span class="chip" style="background:rgba(255,159,71,.15);color:var(--orange)">Terminal Git</span>
+                <span class="chip" style="background:rgba(56,217,169,.15);color:var(--acc3,#38d9a9)">Offline Ready</span>
+                <span class="chip" style="background:rgba(108,99,255,.15);color:var(--acc2)">Voice-to-code</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <div class="tc-metrics">
+              <div class="m-box"><div class="m-label">GitHub ⭐</div><div class="m-val" style="color:var(--orange)">44K+</div><div class="m-sub">Activo</div></div>
+              <div class="m-box"><div class="m-label">Installs</div><div class="m-val">6.8M</div><div class="m-sub">pip total</div></div>
+              <div class="m-box"><div class="m-label">Tokens/sem</div><div class="m-val">15B</div><div class="m-sub">Procesados</div></div>
+              <div class="m-box"><div class="m-label">Singularity</div><div class="m-val" style="color:var(--green)">88%</div><div class="m-sub">Auto-escrito</div></div>
+            </div>
+            <p style="font-size:.88rem;color:var(--text2)">Aider es el agente terminal AI más maduro del ecosistema open source, con 44K+ estrellas y 6.8M instalaciones. Su dato más impresionante: el <strong>88% del código de Aider mismo es escrito por Aider</strong> — una demostración real de su capacidad. Funciona con 100+ modelos: Claude, GPT, DeepSeek, o3-mini y cualquier modelo local via Ollama. Cada cambio genera un commit Git descriptivo automáticamente. Puede leer imágenes, URLs externas, hablarle por voz, ejecutar linters y tests post-cambio, y tiene un mapa completo de tu repositorio.</p>
+            <div class="callout tip" style="margin:12px 0">
+              <div class="callout-ico">⚡</div>
+              <div style="font-size:.85rem"><strong>Quick start en Mac M5:</strong>
+                <code>pip install aider-chat</code> →
+                <code>cd tu-proyecto</code> →
+                <code>aider --model sonnet --api-key anthropic=sk-...</code>
+                <br>Para offline: <code>aider --model ollama/qwen2.5-coder:7b</code>
+              </div>
+            </div>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Git-first: auto-commits descriptivos en cada cambio</li>
+                <li>44K ⭐ — la mayor comunidad open source del segmento</li>
+                <li>100+ LLMs: Claude, GPT, DeepSeek, Ollama local</li>
+                <li>Offline $0 con Ollama — máxima privacidad</li>
+                <li>Linting y testing automático post-edición</li>
+                <li>Voice-to-code: dictá los cambios con tu voz</li>
+                <li>Lee imágenes y URLs para contexto visual</li>
+                <li>88% singularity — prueba real de capacidad</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Solo terminal — sin GUI ni autocompletado inline</li>
+                <li>Configuración inicial requiere tiempo</li>
+                <li>Con modelos locales pequeños, calidad más limitada</li>
+                <li>Menos "mágico" que Cursor para uso diario casual</li>
+              </ul></div>
+            </div>
+            <div class="price-row">
+              <span class="pp free">Herramienta: $0 (Open Source)</span>
+              <span class="pp free">Offline: $0 vía Ollama</span>
+              <span class="pp paid">Cloud: solo pagas la API del modelo elegido</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #7 CONTINUE.DEV -->
+        <div class="tool-card" id="tool-7">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#4de8c2">7</div>
+            <div class="tc-info">
+              <h3>Continue.dev</h3>
+              <div class="tc-tag">Extensión VS Code open source · Perfecto con Ollama para AI offline gratis</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(77,232,194,.15);color:var(--acc)">VS Code</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">Open Source</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <p style="font-size:.88rem;color:var(--text2)">La extensión AI más flexible para VS Code. Sin vendor lock-in — conectate a cualquier modelo (OpenAI, Anthropic, Google, Ollama local). La combinación Continue.dev + Ollama es el stack AI offline más popular para costo $0 y privacidad total.</p>
+            <div class="price-row"><span class="pp free">100% Gratis · continue.dev</span></div>
+          </div>
+        </div>
+
+        <!-- #8 CLINE -->
+        <div class="tool-card" id="tool-8">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#ff5370">8</div>
+            <div class="tc-info">
+              <h3>Cline</h3>
+              <div class="tc-tag">VS Code open source · Model-agnostic · Solo pagás la API</div>
+              <div class="tc-chips">
+                <span class="chip" style="background:rgba(255,83,112,.15);color:var(--red)">VS Code</span>
+                <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">BYOK</span>
+              </div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <p style="font-size:.88rem;color:var(--text2)">Extensión VS Code open source y model-agnostic. No pagás por la herramienta — solo por la inferencia AI. Soporta cualquier proveedor (incluyendo Ollama). Agente autónomo en VS Code con transparencia total de cambios.</p>
+            <div class="price-row">
+              <span class="pp free">Extensión gratis</span>
+              <span class="pp paid">API: según modelo</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #9 GEMINI CODE ASSIST -->
+        <div class="tool-card" id="tool-9">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#6c63ff">9</div>
+            <div class="tc-info">
+              <h3>Gemini Code Assist</h3>
+              <div class="tc-tag">Google · Gratis para individuos · Ecosistema Google Cloud</div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <p style="font-size:.88rem;color:var(--text2)">La apuesta de Google. Gratis para uso personal. Gemini 3.1 Pro en VS Code y JetBrains. La mejor integración si tu ecosistema es GKE, Cloud Run o BigQuery.</p>
+            <div class="price-row">
+              <span class="pp free">Individual: Gratis</span>
+              <span class="pp paid">Enterprise $19/u/mes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- #10 AMAZON Q -->
+        <div class="tool-card" id="tool-10">
+          <div class="tc-head">
+            <div class="tc-rank" style="background:#6b7a99">10</div>
+            <div class="tc-info">
+              <h3>Amazon Q Developer</h3>
+              <div class="tc-tag">AWS · Gratis individual · Mejor para infraestructura AWS</div>
+            </div>
+          </div>
+          <div class="tc-body">
+            <p style="font-size:.88rem;color:var(--text2)">La apuesta de Amazon. Plan individual gratuito con sugerencias + escaneo de seguridad. Entiende Lambda, EC2, CDK y CloudFormation mejor que ningún otro. Fuera de AWS, la propuesta baja considerablemente.</p>
+            <div class="price-row">
+              <span class="pp free">Individual: Gratis</span>
+              <span class="pp paid">Pro $19/u/mes</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- fin #tools-list -->
+
+      <!-- ZONA DE HERRAMIENTAS GENERADAS POR AI
+           Las tarjetas nuevas creadas por AI se inyectan aquí -->
+      <div id="ai-added-tools"></div>
+
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECCIÓN 3 — TABLA COMPARATIVA
+    ══════════════════════════════════════════════════ -->
+    <section id="tabla">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(108,99,255,.12)">📊</div>
+        <div><h2>Tabla Comparativa Maestra</h2><p>Todas las herramientas a un vistazo</p></div>
+        <button class="improve-btn" onclick="openImprove('tabla', 'Tabla Comparativa')">✨ Mejorar</button>
+      </div>
+      <div style="overflow-x:auto;border-radius:12px;border:1px solid var(--border)">
+        <table class="tbl">
+          <thead><tr>
+            <th>#</th><th>Herramienta</th><th>Tipo</th>
+            <th>Offline</th><th>Open Source</th><th>Precio min.</th><th>Mejor para</th>
+          </tr></thead>
+          <tbody>
+            <tr><td><span class="rnk" style="background:#f5c842;display:inline-flex">1</span></td><td><strong>Claude Code</strong></td><td>Terminal</td><td class="no">✗</td><td class="no">✗</td><td>Gratis</td><td>Proyectos complejos</td></tr>
+            <tr><td><span class="rnk" style="background:#42c5ff;display:inline-flex">2</span></td><td><strong>Cursor</strong></td><td>IDE AI</td><td class="no">✗</td><td class="no">✗</td><td>Gratis</td><td>Desarrollo diario</td></tr>
+            <tr><td><span class="rnk" style="background:#a78bfa;display:inline-flex">3</span></td><td><strong>GitHub Copilot</strong></td><td>Extensión</td><td class="no">✗</td><td class="no">✗</td><td>$10/mes</td><td>Autocomplete diario</td></tr>
+            <tr><td><span class="rnk" style="background:#4de8a0;display:inline-flex">4</span></td><td><strong>OpenCode</strong></td><td>Terminal</td><td class="yes">✓</td><td class="yes">✓</td><td>Gratis</td><td>Flexibilidad max</td></tr>
+            <tr><td><span class="rnk" style="background:#ff6b9d;display:inline-flex">5</span></td><td><strong>Windsurf</strong></td><td>IDE AI</td><td class="no">✗</td><td class="no">✗</td><td>Gratis</td><td>IDE gratuito</td></tr>
+            <tr><td><span class="rnk" style="background:#ff9f47;display:inline-flex">6</span></td><td><strong>Aider</strong></td><td>Terminal Git</td><td class="yes">✓</td><td class="yes">✓</td><td>Gratis</td><td>Flujos Git</td></tr>
+            <tr><td><span class="rnk" style="background:#4de8c2;display:inline-flex">7</span></td><td><strong>Continue.dev</strong></td><td>VS Code ext</td><td class="yes">✓</td><td class="yes">✓</td><td>Gratis</td><td>AI offline VS Code</td></tr>
+            <tr><td><span class="rnk" style="background:#ff5370;display:inline-flex">8</span></td><td><strong>Cline</strong></td><td>VS Code ext</td><td class="yes">✓</td><td class="yes">✓</td><td>Gratis</td><td>Control total</td></tr>
+            <tr><td><span class="rnk" style="background:#6c63ff;display:inline-flex">9</span></td><td><strong>Gemini Code Assist</strong></td><td>Extensión</td><td class="no">✗</td><td class="no">✗</td><td>Gratis</td><td>Google Cloud</td></tr>
+            <tr><td><span class="rnk" style="background:#6b7a99;display:inline-flex">10</span></td><td><strong>Amazon Q</strong></td><td>Extensión</td><td class="no">✗</td><td class="no">✗</td><td>Gratis</td><td>AWS ecosystem</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECCIÓN 4 — OLLAMA EN MAC M5
+    ══════════════════════════════════════════════════ -->
+    <section id="ollama">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(77,232,160,.12)">🦙</div>
+        <div><h2>Ollama en MacBook Pro M5</h2><p>De cero a IA local funcionando en tu Mac — guía completa</p></div>
+        <button class="improve-btn" onclick="openImprove('ollama', 'Ollama en MacBook Pro M5')">✨ Mejorar</button>
+      </div>
+
+      <p>Ollama es el <strong>estándar de facto</strong> para ejecutar LLMs localmente en Mac. Como Docker para modelos AI: hacés <code>pull</code> de un modelo, lo corrés, y tenés AI funcionando. Sin Python, sin CUDA, sin dependencias.</p>
+
+      <div class="callout tip">
+        <div class="callout-ico">🏆</div>
+        <div><strong>¿Por qué el M5 es ideal?</strong> La Unified Memory Architecture (UMA) — CPU y GPU comparten el mismo pool de RAM. Podés correr modelos de 14B parámetros en 24GB que necesitarían GPUs de $2000+ en PC. El M5 Pro alcanza 307 GB/s de ancho de banda — excepcional para inferencia.</div>
+      </div>
+
+      <!-- INSTALACIÓN -->
+      <div id="ollama-install"><h3 class="mt">Instalación</h3>
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">1</div>
+            <div class="step-b">
+              <h4>Homebrew (recomendado)</h4>
+<pre><code><span class="c-cmd">brew install --cask ollama-app</span>
+<span class="c-comment"># Instala Ollama.app + CLI + auto-updates + MLX backend</span>
+<span class="c-cmd">open -a Ollama</span>  <span class="c-comment"># Icono aparece en la barra de menú</span>
+<span class="c-cmd">ollama --version</span>  <span class="c-comment"># Verificar instalación</span>
+<div class="code-lang">bash</div></code></pre>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">2</div>
+            <div class="step-b">
+              <h4>Primer modelo y verificación GPU</h4>
+<pre><code><span class="c-cmd">ollama run qwen2.5-coder:7b</span>  <span class="c-comment"># descarga ~4GB y abre chat</span>
+<span class="c-comment"># Para salir: Ctrl+D o escribir /bye</span>
+
+<span class="c-cmd">ollama ps</span>  <span class="c-comment"># DEBE mostrar "GPU" en columna Processor</span>
+<span class="c-comment"># Si dice CPU → hay problema de configuración</span>
+<div class="code-lang">bash</div></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODELOS POR RAM -->
+      <div id="ollama-models"><h3 class="mt">Modelos recomendados por RAM</h3>
+        <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border)">
+          <table class="ram-tbl">
+            <thead><tr><th>RAM</th><th>Modelo recomendado</th><th>Comando</th><th>Velocidad M5 Pro</th></tr></thead>
+            <tbody>
+              <tr><td><span class="rbadge" style="color:var(--red)">8 GB</span></td><td>Llama 3.2 3B</td><td><code>ollama run llama3.2:3b</code></td><td>~40 tok/s</td></tr>
+              <tr><td><span class="rbadge" style="color:var(--gold)">16 GB</span></td><td>qwen2.5-coder:7b ⭐</td><td><code>ollama run qwen2.5-coder:7b</code></td><td>~45 tok/s</td></tr>
+              <tr><td><span class="rbadge" style="color:var(--green)">24–32 GB</span></td><td>qwen3:14b</td><td><code>ollama run qwen3:14b</code></td><td>~30 tok/s</td></tr>
+              <tr><td><span class="rbadge" style="color:var(--acc)">48 GB+</span></td><td>qwen3:32b</td><td><code>ollama run qwen3:32b</code></td><td>~18 tok/s</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- COMANDOS -->
+      <div id="ollama-commands"><h3 class="mt">Comandos esenciales</h3>
+        <div class="g2">
+          <div class="mini-card"><code>ollama list</code><p>Lista modelos descargados</p></div>
+          <div class="mini-card"><code>ollama pull llama3.2:3b</code><p>Descarga sin ejecutar</p></div>
+          <div class="mini-card"><code>ollama rm modelo</code><p>Elimina para liberar espacio</p></div>
+          <div class="mini-card"><code>ollama ps</code><p>Modelos cargados en GPU/RAM</p></div>
+          <div class="mini-card"><code>ollama serve</code><p>Inicia servidor API</p></div>
+          <div class="mini-card"><code>ollama show gemma4</code><p>Info del modelo</p></div>
+        </div>
+      </div>
+
+      <!-- API REST -->
+      <div id="ollama-api"><h3 class="mt">API REST local — Compatible con OpenAI</h3>
+<pre><code><span class="c-comment"># API en http://localhost:11434</span>
+<span class="c-comment"># Compatible con SDK de OpenAI — solo cambiá la base_url</span>
+
+<span class="c-key">from</span> openai <span class="c-key">import</span> OpenAI
+
+client = OpenAI(
+    base_url=<span class="c-str">"http://localhost:11434/v1"</span>,
+    api_key=<span class="c-str">"ollama"</span>  <span class="c-comment"># cualquier string, no se valida</span>
+)
+response = client.chat.completions.create(
+    model=<span class="c-str">"qwen2.5-coder:7b"</span>,
+    messages=[{<span class="c-str">"role"</span>: <span class="c-str">"user"</span>, <span class="c-str">"content"</span>: <span class="c-str">"¿Qué es un closure?"</span>}]
+)
+<span class="c-key">print</span>(response.choices[<span class="c-num">0</span>].message.content)
+<div class="code-lang">python</div></code></pre>
+      </div>
+
+      <!-- OPEN WEBUI -->
+      <h3 class="mt">Open WebUI — ChatGPT local en tu Mac</h3>
+<pre><code><span class="c-comment"># Requisito: Docker Desktop instalado</span>
+<span class="c-cmd">docker run -d</span> \
+  -p <span class="c-num">3000</span>:<span class="c-num">8080</span> \
+  --add-host=host.docker.internal:host-gateway \
+  -v open-webui:/app/backend/data \
+  --name open-webui --restart always \
+  ghcr.io/open-webui/open-webui:main
+
+<span class="c-cmd">open</span> http://localhost:3000
+<span class="c-comment"># Settings → Connections → Ollama URL: http://host.docker.internal:11434</span>
+<div class="code-lang">bash</div></code></pre>
+    
+
+<div class="g2 mt">
+  <div class="mini-card"><h4>🚀 Optimización GPU</h4><p style="font-size:.84rem">Asegurate que <code>ollama ps</code> muestre "GPU" en la columna "Processor". Si dice CPU, revisá la configuración de MLX/Metal en tu Mac.</p></div>
+  <div class="mini-card"><h4>🗄️ Gestión de Modelos</h4><p style="font-size:.84rem">Los modelos ocupan espacio. Usá <code>ollama rm [nombre_modelo]</code> para liberar disco. Modelos más grandes son más lentos pero más precisos.</p></div>
+</div>
+
+</section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECCIÓN 5 — OPENCODE GUÍA COMPLETA
+    ══════════════════════════════════════════════════ -->
+    <section id="opencode">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(255,159,71,.12)">⚡</div>
+        <div><h2>OpenCode — Guía Completa</h2><p>Agente AI open source para terminal · 126K+ ⭐ GitHub</p></div>
+        <button class="improve-btn" onclick="openImprove('opencode', 'OpenCode')">✨ Mejorar</button>
+      </div>
+
+      <p>OpenCode es un <strong>agente AI para programar desde la terminal</strong>. Binario único sin dependencias, 75+ proveedores de modelos, sistema de agentes Plan/Build, skills y plugins. Desarrollado por Anomaly (ex-SST).</p>
+
+      <!-- INSTALACIÓN -->
+      <div id="oc-install"><h3>Instalación</h3>
+<pre><code><span class="c-cmd">brew install</span> opencode
+<span class="c-comment"># O via script directo:</span>
+<span class="c-cmd">curl</span> -fsSL https://opencode.ai/install | bash
+
+<span class="c-cmd">opencode --version</span>  <span class="c-comment"># verificar</span>
+<span class="c-cmd">cd</span> ~/mi-proyecto && <span class="c-cmd">opencode</span>  <span class="c-comment"># abre la TUI</span>
+<div class="code-lang">bash</div></code></pre>
+      </div>
+
+      <!-- PROVEEDORES -->
+      <div id="oc-providers"><h3 class="mt">Configurar proveedor de modelo</h3>
+<pre><code><span class="c-comment"># Archivo: ~/.config/opencode/config.json</span>
+
+<span class="c-comment">--- Ollama (offline, $0) ---</span>
+{
+  <span class="c-key">"provider"</span>: <span class="c-str">"ollama"</span>,
+  <span class="c-key">"model"</span>: <span class="c-str">"qwen2.5-coder:7b"</span>,
+  <span class="c-key">"apiBase"</span>: <span class="c-str">"http://localhost:11434"</span>
+}
+
+<span class="c-comment">--- DeepSeek (ultra barato ~$2-5/mes) ---</span>
+{
+  <span class="c-key">"provider"</span>: <span class="c-str">"deepseek"</span>,
+  <span class="c-key">"model"</span>: <span class="c-str">"deepseek-coder"</span>,
+  <span class="c-key">"apiKey"</span>: <span class="c-str">"tu-key-de-platform.deepseek.com"</span>
+}
+<div class="code-lang">json</div></code></pre>
+      </div>
+
+      <!-- PLAN VS BUILD -->
+      <div id="oc-planbuild"><h3 class="mt">Plan vs Build — El corazón de OpenCode</h3>
+        <div class="g2">
+          <div class="mini-card" style="border-left:3px solid var(--blue)">
+            <h4 style="color:var(--blue)">📋 Plan</h4>
+            <p>Analiza y planifica. <strong>No modifica archivos.</strong> Revisá el approach antes de ejecutar. Usalo con <code>/plan tu-tarea</code></p>
+          </div>
+          <div class="mini-card" style="border-left:3px solid var(--green)">
+            <h4 style="color:var(--green)">🔨 Build</h4>
+            <p>Ejecuta los cambios: crea, edita, corre comandos. <strong>Modifica el codebase.</strong> Pide confirmación antes de cambios destructivos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPENCODE + OLLAMA STACK OFFLINE -->
+      <div id="oc-ollama"><h3 class="mt">OpenCode + Ollama — Stack 100% offline y gratuito</h3>
+<pre><code><span class="c-comment"># PASO 1: Iniciar Ollama con modelo de código</span>
+<span class="c-cmd">ollama run</span> qwen2.5-coder:7b
+<span class="c-cmd">ollama ps</span>  <span class="c-comment"># verificar GPU</span>
+
+<span class="c-comment"># PASO 2: Config OpenCode → Ollama</span>
+<span class="c-comment"># ~/.config/opencode/config.json:</span>
+{ <span class="c-key">"provider"</span>: <span class="c-str">"ollama"</span>, <span class="c-key">"model"</span>: <span class="c-str">"qwen2.5-coder:7b"</span> }
+
+<span class="c-comment"># PASO 3: Ir al proyecto y abrir OpenCode</span>
+<span class="c-cmd">cd</span> ~/mi-proyecto && <span class="c-cmd">opencode</span>
+
+<span class="c-comment"># PASO 4: Inicializar contexto del proyecto</span>
+/init  <span class="c-comment"># genera AGENTS.md analizando tu codebase</span>
+<div class="code-lang">bash</div></code></pre>
+      </div>
+
+      <!-- COMANDOS OPENCODE -->
+      <h3 class="mt">Comandos dentro de la TUI</h3>
+      <div class="g2">
+        <div class="mini-card"><code>/init</code><p>Analiza el proyecto y genera AGENTS.md</p></div>
+        <div class="mini-card"><code>/plan [tarea]</code><p>Planifica sin modificar archivos</p></div>
+        <div class="mini-card"><code>/compact</code><p>Compacta el contexto (libera tokens)</p></div>
+        <div class="mini-card"><code>/sessions</code><p>Lista sesiones guardadas anteriores</p></div>
+        <div class="mini-card"><code>/new</code><p>Nueva sesión limpia</p></div>
+        <div class="mini-card"><code>/cost</code><p>Tokens y costo de la sesión actual</p></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECCIÓN 6 — FAQ
+    ══════════════════════════════════════════════════ -->
+    <section id="faq">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(108,99,255,.12)">❓</div>
+        <div><h2>Preguntas Frecuentes</h2><p>Las dudas más comunes</p></div>
+        <button class="improve-btn" onclick="openImprove('faq', 'FAQ')">✨ Mejorar</button>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">¿Cuál modelo de Ollama recomendás para un Mac M5 Pro 24GB?</div>
+        <div class="faq-a">Para coding: <code>qwen2.5-coder:14b</code>. Para chat general: <code>gemma4</code> o <code>qwen3:14b</code>. Con 24GB podés tener dos modelos de 7B cargados simultáneamente con <code>OLLAMA_MAX_LOADED_MODELS=2</code>.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cursor o Claude Code? ¿Cuál instalo primero?</div>
+        <div class="faq-a">Si preferís GUI y ya usás VS Code → empezá con <strong>Cursor</strong>. Si vivís en la terminal y trabajás en proyectos grandes → <strong>Claude Code</strong>. La recomendación 2026 es usar los dos: Cursor para el flujo diario, Claude Code para tareas complejas.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo usar Claude en OpenCode si Anthropic lo bloqueó?</div>
+        <div class="faq-a">Tres opciones: (1) GitHub Copilot como proveedor, (2) OpenCode Go ($10/mes), (3) DeepSeek API como alternativa de calidad a $2-5/mes.</div>
+      </div>
+    </section>
+
+    <div style="text-align:center;padding:30px 0 10px;color:var(--text3);font-size:.82rem;border-top:1px solid var(--border);margin-top:30px">
+      Guía Viva AI Coding 2026 · Actualizable con AI · MacBook Pro M5
+    </div>
+  </main>
+</div><!-- fin .layout -->
+
+<!-- ══════════════════════════════════════════════════════════════════
+     PANEL AI — Panel lateral deslizante con todas las capacidades AI
+     Contiene: pestañas de modo, área de mensajes, input + botón enviar
+══════════════════════════════════════════════════════════════════ -->
+<div class="ai-panel" id="aiPanel">
+  <!-- Cabecera del panel -->
+  <div class="ai-head">
+    <div class="ai-head-icon">🤖</div>
+    <div>
+      <div class="ai-head-title">Asistente AI</div>
+      <div class="ai-head-sub" id="panel-sub">Preguntá, agregá o mejorá</div>
+    </div>
+    <button class="ai-close" onclick="togglePanel()" title="Cerrar">✕</button>
+  </div>
+
+  <div class="ai-modes">
+    <button class="ai-mode-btn active" onclick="setMode('chat')" id="mode-chat">
+      💬 Chat
+    </button>
+    <button class="ai-mode-btn" onclick="setMode('add-tool')" id="mode-add-tool">
+      ➕ <span class="i18n" data-es="Agregar Tool" data-en="Add Tool">Agregar Tool</span>
+    </button>
+    <button class="ai-mode-btn" onclick="setMode('improve')" id="mode-improve">
+      ✨ <span class="i18n" data-es="Mejorar" data-en="Improve">Mejorar</span>
+    </button>
+  </div>
+
+    <!-- ── BARRA DE PROVEEDORES AI ─────────────────────────────────────
+         Puter = default gratis, sin key. Gemini = gratis con key de AI Studio.
+         Grok = barato $0.20/M. Claude = quienes tienen key. Ollama = offline.
+    ──────────────────────────────────────────────────────────────────── -->
+    <div class="prov-bar" id="provBar">
+      <button class="prov-btn active" data-prov="puter" onclick="setProvider('puter')" title="Gratis, sin key, funciona ya">
+        🌟 Puter <span class="prov-badge">FREE</span>
+      </button>
+      <button class="prov-btn" data-prov="gemini" onclick="setProvider('gemini')" title="Key gratis en aistudio.google.com">
+        💎 Gemini <span class="prov-badge">FREE</span>
+      </button>
+      <button class="prov-btn" data-prov="grok" onclick="setProvider('grok')" title="$0.20/M tokens xAI">
+        ⚡ Grok
+      </button>
+      <button class="prov-btn" data-prov="claude" onclick="setProvider('claude')" title="Anthropic Claude">
+        🤖 Claude
+      </button>
+      <button class="prov-btn" data-prov="ollama" onclick="setProvider('ollama')" title="100% local offline">
+        🦙 Ollama <span class="prov-badge">FREE</span>
+      </button>
+    </div>
+    <div class="key-row" id="keyRow">
+      <input type="password" class="key-input" id="provKeyInput"
+        placeholder="Pegá tu API key..." onkeydown="if(event.key==='Enter')saveProvKey()">
+      <button class="key-save-btn" onclick="saveProvKey()">✓ Guardar</button>
+      <a class="key-link" id="keyLink" href="#" target="_blank" rel="noopener">Obtener →</a>
+    </div>
+
+  <!-- Área de mensajes del chat -->
+  <div class="ai-msgs" id="aiMsgs">
+    <!-- Mensaje de bienvenida inicial de la AI -->
+    <div class="msg-ai">
+      ¡Hola! Soy tu asistente AI para esta guía. Tengo contexto completo de todas las herramientas, Ollama y OpenCode.<br><br>
+      <strong>💬 Chat</strong> — <span class="i18n" data-es="Cualquier pregunta sobre las tools" data-en="Any question about the tools">Cualquier pregunta sobre las tools</span><br>
+      <strong>➕ <span class="i18n" data-es="Agregar" data-en="Add">Agregar</span></strong> — <span class="i18n" data-es="Describirme una herramienta nueva y la agrego al ranking" data-en="Describe a new tool and I'll add it to the ranking">Describirme una herramienta nueva y la agrego</span><br>
+      <strong>✨ <span class="i18n" data-es="Mejorar" data-en="Improve">Mejorar</span></strong> — <span class="i18n" data-es="Seleccionar una sección para que la reescriba" data-en="Select a section for me to rewrite">Seleccionar una sección para reescribir</span><br><br>
+      <span class="i18n" data-es="¿Por dónde empezamos?" data-en="Where shall we start?">¿Por dónde empezamos?</span>
+    </div>
+  </div>
+
+  <!-- Footer del panel: contexto del modo + input -->
+  <div class="ai-footer">
+    <!-- Descripción del modo actual -->
+    <div class="ai-ctx" id="ai-ctx-label">
+      <strong>Modo Chat:</strong> Preguntá cualquier cosa sobre las herramientas de AI coding
+    </div>
+    <div class="ai-input-row">
+      <!-- Input principal — soporta Enter para enviar, Shift+Enter para salto de línea -->
+      <textarea class="ai-input" id="aiInput" rows="2"
+        placeholder="Escribí tu mensaje..."
+        onkeydown="handleKey(event)"></textarea>
+      <button class="ai-send" id="aiSend" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     SCRIPT PRINCIPAL — Toda la lógica de la aplicación
+     Organizado en secciones:
+     1. Sistema de temas
+     2. Control del panel AI
+     3. Modos de AI (chat, add-tool, improve)
+     4. Función principal callClaude()
+     5. Procesamiento de respuestas
+     6. Helpers de UI
+══════════════════════════════════════════════════════════════════ -->
+<script>
+/* ─── 0. SISTEMA DE IDIOMA ────────────────────────────────────────
+   setLang(l): cambia todos los elementos .i18n y actualiza
+   data-lang en <html>. Guarda en localStorage.
+   Los textos i18n usan data-es / data-en en los elementos.
+   Para el panel AI, también actualiza system prompts y contextos.
+─────────────────────────────────────────────────────────────────── */
+let currentLang = 'es';
+
+function setLang(l) {
+  currentLang = l;
+  document.documentElement.setAttribute('data-lang', l);
+  try { localStorage.setItem('guide-lang', l); } catch(e) {}
+  // Actualizar todos los textos bilingues
+  document.querySelectorAll('.i18n').forEach(el => {
+    const v = el.dataset[l];
+    if (v !== undefined) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = v;
+      else el.textContent = v;
+    }
+  });
+  // Botones de idioma
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('on', b.dataset.lang === l);
+  });
+  // Actualizar contexto del modo AI actual si el panel existe
+  if (typeof updateModeContext === 'function') updateModeContext();
+}
+
+/* ─── 0b. AUTO-TOOLBAR EN BLOQUES DE CÓDIGO ──────────────────────
+   Al cargar la página, agrega automáticamente una barra de
+   herramientas (Copiar + Explicar) encima de cada <pre> que
+   esté dentro del contenido principal.
+   Esto evita tener que modificar cada bloque manualmente.
+─────────────────────────────────────────────────────────────────── */
+function addCodeToolbars() {
+  // Seleccionar todos los pre dentro del contenido
+  document.querySelectorAll('.content pre, #tools-list pre').forEach((pre, idx) => {
+    // Evitar duplicar si ya tiene toolbar
+    if (pre.previousElementSibling && pre.previousElementSibling.classList.contains('code-toolbar')) return;
+
+    // Detectar lenguaje desde el div.code-lang dentro del pre (si existe)
+    const langDiv = pre.querySelector('.code-lang');
+    const lang = langDiv ? langDiv.textContent.trim() : 'bash';
+
+    // Crear ID único para el bloque si no tiene
+    if (!pre.id) pre.id = 'auto-code-' + idx;
+    const codeId = pre.id;
+
+    // Construir la toolbar
+    const toolbar = document.createElement('div');
+    toolbar.className = 'code-toolbar';
+    toolbar.innerHTML = `
+      <span class="code-lang-lbl">${lang}</span>
+      <div class="code-btns-row">
+        <button class="code-action-btn" onclick="copyPre('${codeId}')">
+          📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span>
+        </button>
+        <button class="code-action-btn expl" onclick="explainPre('${codeId}')">
+          📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span>
+        </button>
+      </div>`;
+
+    // Insertar antes del pre y ajustar border-radius
+    pre.parentNode.insertBefore(toolbar, pre);
+    pre.style.borderRadius = '0 0 11px 11px';
+    pre.style.borderTop = 'none';
+  });
+}
+
+/* copyPre(id): copia el texto de un <pre> al portapapeles */
+function copyPre(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    showFlash(currentLang === 'es' ? '✓ Copiado' : '✓ Copied');
+  });
+}
+
+/* explainPre(id): abre el panel AI y explica el bloque de código */
+function explainPre(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const code = el.textContent.trim().slice(0, 800); // limitar tokens
+  const prompt = currentLang === 'es'
+    ? `Explicá este bloque de código línea a línea:\n\n${code}`
+    : `Explain this code block line by line:\n\n${code}`;
+  openAndAsk('chat', prompt);
+}
+
+/* ─── 1. SISTEMA DE TEMAS ──────────────────────────────────────────
+   Cambia data-theme en <html> y actualiza la clase .on
+   en los botones del topbar.
+─────────────────────────────────────────────────────────────────── */
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('guide-theme', t); } catch(e) {}
+  document.querySelectorAll('.tbtn').forEach(b => {
+    b.classList.toggle('on', b.textContent.toLowerCase().includes(t));
+  });
+}
+// Restaurar tema e idioma guardados al cargar
+(function() {
+  let s = 'dark';
+  try { s = localStorage.getItem('guide-theme') || 'dark'; } catch(e) {}
+  setTheme(s);
+  // Detectar idioma: localStorage → navigator.language → 'es' por defecto
+  let l = null;
+  try { l = localStorage.getItem('guide-lang'); } catch(e) {}
+  if (!l) {
+    const bl = (navigator.language || 'es').toLowerCase();
+    l = bl.startsWith('es') ? 'es' : 'en';
+    if (l === 'en') setTimeout(() => showFlash('🌐 Auto-detected: English'), 1000);
+  }
+  // Aplicar idioma + toolbars después de que el DOM esté listo
+  setTimeout(() => { setLang(l); addCodeToolbars(); }, 0);
+})();
+
+/* ─── 2. CONTROL DEL PANEL AI ──────────────────────────────────────
+   togglePanel(): abre/cierra el panel deslizante
+   togglePanel() también actualiza el layout para que el contenido
+   se corra a la izquierda cuando el panel está abierto
+─────────────────────────────────────────────────────────────────── */
+let panelOpen = false;
+
+function togglePanel() {
+  panelOpen = !panelOpen;
+  document.getElementById('aiPanel').classList.toggle('open', panelOpen);
+  document.getElementById('overlay').classList.toggle('show', panelOpen);
+  document.getElementById('layout').classList.toggle('panel-open', panelOpen);
+}
+
+// Abre el panel y cambia al modo especificado
+function openMode(mode) {
+  if (!panelOpen) togglePanel();
+  setMode(mode);
+  document.getElementById('aiInput').focus();
+}
+
+// Abre el panel y envía inmediatamente un mensaje predefinido
+// Útil para los tags del hero que hacen preguntas concretas
+function openAndAsk(mode, msg) {
+  openMode(mode);
+  setTimeout(() => {
+    document.getElementById('aiInput').value = msg;
+    sendMessage();
+  }, 200); // pequeño delay para que el panel termine de abrir
+}
+
+// Abre el panel en modo improve capturando el HTML actual de la sección como contexto
+function openImprove(sectionId, sectionName) {
+  openMode('improve');
+  const sectionEl = document.getElementById(sectionId);
+  let sectionHtml = '';
+  if (sectionEl) {
+    const clone = sectionEl.cloneNode(true);
+    clone.querySelector('.sec-head')?.remove();
+    sectionHtml = clone.innerHTML.trim().slice(0, 4000);
+  }
+  // Capturar primer elemento real como ejemplo de estilo para la AI
+  const firstReal = [...(sectionEl?.children || [])].find(el => !el.classList.contains('sec-head'));
+  const styleExample = firstReal ? firstReal.outerHTML.slice(0, 800) : '';
+  currentImproveSection = { id: sectionId, name: sectionName, html: sectionHtml, example: styleExample };
+  document.getElementById('ai-ctx-label').innerHTML =
+    `<strong>Agregar:</strong> Sección "<strong style="color:var(--acc)">${sectionName}</strong>" — describí qué querés agregar o escribí "agregar más contenido"`;
+  document.getElementById('aiInput').placeholder = `¿Qué querés agregar a "${sectionName}"?`;
+  document.getElementById('aiInput').focus();
+}
+
+/* ─── 3. MODOS DE AI ───────────────────────────────────────────────
+   Tres modos que definen:
+   - currentMode: qué hace la AI con su respuesta
+   - El system prompt enviado
+   - El texto de contexto mostrado al usuario
+─────────────────────────────────────────────────────────────────── */
+let currentMode = 'chat';
+let currentImproveSection = null; // sección activa para mejorar
+
+// Configuración de cada modo
+// Configuración bilingüe de modos — cada modo tiene texto ES e EN
+const MODES = {
+  'chat': {
+    es: { label: 'Modo Chat: Preguntá cualquier cosa sobre las herramientas de AI coding', placeholder: '¿Cuál herramienta me conviene para...?' },
+    en: { label: 'Chat Mode: Ask anything about AI coding tools', placeholder: 'Which tool is best for...?' }
+  },
+  'add-tool': {
+    es: { label: '<strong>Agregar Herramienta:</strong> Describí la herramienta y la agregaré al ranking', placeholder: 'Ej: "Kiro — IDE AI de Amazon, $15/mes..."' },
+    en: { label: '<strong>Add Tool:</strong> Describe the tool and I\'ll add it to the ranking', placeholder: 'Ex: "Kiro — Amazon AI IDE, $15/mo..."' }
+  },
+  'improve': {
+    es: { label: '<strong>Mejorar Sección:</strong> Clic en "✨ Mejorar" o describí qué querés actualizar', placeholder: 'Describí qué cambiar...' },
+    en: { label: '<strong>Improve Section:</strong> Click "✨ Improve" or describe what to update', placeholder: 'Describe what to change...' }
+  }
+};
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.ai-mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mode-' + mode).classList.add('active');
+  updateModeContext();
+  if (mode !== 'improve') currentImproveSection = null;
+}
+
+// updateModeContext(): actualiza el label y placeholder según modo e idioma
+function updateModeContext() {
+  const cfg = MODES[currentMode];
+  if (!cfg) return;
+  const lCfg = cfg[currentLang] || cfg['es'];
+  document.getElementById('ai-ctx-label').innerHTML = lCfg.label;
+  document.getElementById('aiInput').placeholder = lCfg.placeholder;
+}
+
+/* ─── 4. FUNCIÓN PRINCIPAL — callClaude() ──────────────────────────
+   Hace el fetch a la API de Anthropic.
+   Parámetros:
+   - userMsg: el mensaje del usuario
+   - systemPrompt: el contexto e instrucciones para la AI
+   - onToken(text): callback llamado con cada chunk en streaming
+   - onDone(): callback al terminar
+─────────────────────────────────────────────────────────────────── */
+
+/* ════════════════════════════════════════════════════════════════════
+   API KEY MANAGER
+   ─────────────────────────────────────────────────────────────────
+   getApiKey()     → retorna la key guardada o ''
+   saveApiKey()    → guarda la key del input modal
+   buildHeaders()  → construye headers correctos para Anthropic API
+   showApiModal()  → muestra el modal
+   updateApiStatus() → actualiza el badge en el topbar
+
+   HEADERS REQUERIDOS para llamadas directas desde browser:
+     anthropic-version: 2023-06-01
+     anthropic-dangerous-direct-browser-access: true
+     x-api-key: (si no está en Claude.ai)
+════════════════════════════════════════════════════════════════════ */
+function getApiKey() {
+  try { return localStorage.getItem('guide-api-key') || ''; } catch(e) { return ''; }
+}
+function saveApiKey() {
+  const inp = document.getElementById('akKeyInput');
+  const key = inp ? inp.value.trim() : '';
+  if (!key || !key.startsWith('sk-')) {
+    if (inp) { inp.style.borderColor = 'var(--red, #ff4d6d)'; inp.focus(); }
+    return;
+  }
+  try { localStorage.setItem('guide-api-key', key); } catch(e) {}
+  updateApiStatus();
+  document.getElementById('akOverlay').classList.remove('show');
+  // Reintentar el mensaje que falló si existe
+  if (window._pendingMsg) {
+    document.getElementById('aiInput').value = window._pendingMsg;
+    window._pendingMsg = null;
+    setTimeout(sendMessage, 100);
+  }
+}
+function showApiModal(msg) {
+  window._pendingMsg = msg || null;
+  document.getElementById('akOverlay').classList.add('show');
+  setTimeout(() => { const i = document.getElementById('akKeyInput'); if(i) i.focus(); }, 120);
+}
+function buildHeaders() {
+  const key = getApiKey();
+  const h = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
+  if (key) h['x-api-key'] = key;
+  return h;
+}
+function updateApiStatus() {
+  const b = document.getElementById('akStatus');
+  if (!b) return;
+  const k = getApiKey();
+  b.textContent = k ? '🔑 Key ✓' : '🔑 Key';
+  b.classList.toggle('set', !!k);
+  b.title = k ? 'API Key configurada — click para cambiar' : 'Configurar API Key de Anthropic';
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   SISTEMA MULTI-PROVEEDOR
+   ─────────────────────────────────────────────────────────────────
+   5 proveedores soportados:
+   
+   puter   → Puter.js + Gemini 3 Flash  (GRATIS, sin API key, sin cuenta)
+   gemini  → Google Gemini 2.5 Flash    (GRATIS con key de aistudio.google.com)
+   grok    → xAI Grok 4.1 Fast          ($0.20/M — console.x.ai)
+   claude  → Anthropic Claude Sonnet    (console.anthropic.com)
+   ollama  → Ollama local               (localhost:11434, completamente offline)
+   
+   callAI(prompt, system, onToken, onDone) — función unificada que
+   enruta al proveedor activo automáticamente.
+═══════════════════════════════════════════════════════════════════ */
+
+// Estado del proveedor activo
+let activeProvider = 'puter';
+
+// Configuración de cada proveedor
+const PROVIDERS = {
+  puter: {
+    name: 'Puter + Gemini',
+    free: true,
+    needsKey: false,
+    model: 'gemini-2.5-flash-lite',
+    note: '✓ Gratis · Sin configuración'
+  },
+  gemini: {
+    name: 'Google Gemini',
+    free: true,
+    needsKey: true,
+    storageKey: 'key-gemini',
+    placeholder: 'AIzaSy...',
+    keyUrl: 'https://aistudio.google.com',
+    model: 'gemini-2.5-flash',
+    note: 'Key gratis en aistudio.google.com (sin tarjeta)'
+  },
+  grok: {
+    name: 'xAI Grok',
+    free: false,
+    needsKey: true,
+    storageKey: 'key-grok',
+    placeholder: 'xai-...',
+    keyUrl: 'https://console.x.ai',
+    model: 'grok-4.1-fast',
+    note: '$0.20/M tokens — console.x.ai'
+  },
+  claude: {
+    name: 'Anthropic Claude',
+    free: false,
+    needsKey: true,
+    storageKey: 'key-claude',
+    placeholder: 'sk-ant-...',
+    keyUrl: 'https://console.anthropic.com/settings/keys',
+    model: 'claude-sonnet-4-20250514',
+    note: 'console.anthropic.com'
+  },
+  ollama: {
+    name: 'Ollama Local',
+    free: true,
+    needsKey: false,
+    model: 'qwen2.5-coder:7b',
+    note: '100% offline · ollama.com'
+  }
+};
+
+/* setProvider(id): cambia el proveedor activo y actualiza la UI */
+function setProvider(id) {
+  activeProvider = id;
+  const cfg = PROVIDERS[id];
+
+  // Actualizar botones
+  document.querySelectorAll('.prov-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.prov === id);
+  });
+
+  // Mostrar/ocultar fila de key
+  const keyRow  = document.getElementById('keyRow');
+  const keyInp  = document.getElementById('provKeyInput');
+  const keyLink = document.getElementById('keyLink');
+
+  if (cfg.needsKey) {
+    keyRow.classList.add('show');
+    keyInp.placeholder = cfg.placeholder || 'API Key...';
+    // Cargar key guardada si existe
+    const saved = getProvKey(id);
+    keyInp.value = saved ? '••••••••' : '';
+    if (keyLink) { keyLink.href = cfg.keyUrl || '#'; keyLink.textContent = 'Obtener gratis →'; }
+  } else {
+    keyRow.classList.remove('show');
+  }
+
+  // Actualizar contexto del panel
+  updateModeCtx ? updateModeCtx() : updateModeContext && updateModeContext();
+
+  // Mostrar nota en el panel
+  showProviderNote(cfg);
+
+  try { localStorage.setItem('active-provider', id); } catch(e) {}
+}
+
+/* showProviderNote: muestra un mensaje informativo sobre el proveedor */
+function showProviderNote(cfg) {
+  const msgs = document.getElementById('aiMsgs');
+  if (!msgs) return;
+  const note = document.createElement('div');
+  note.style.cssText = `
+    font-size:.8rem;color:var(--text3);padding:6px 12px;
+    background:var(--bg3);border-radius:8px;
+    border:1px solid var(--border);margin:2px 0;text-align:center;`;
+  note.textContent = `${cfg.name} · ${cfg.note}`;
+  msgs.appendChild(note);
+  msgs.scrollTop = msgs.scrollHeight;
+  // Auto-eliminar después de 4 segundos
+  setTimeout(() => { if (note.parentNode) note.parentNode.removeChild(note); }, 4000);
+}
+
+/* getProvKey / saveProvKey: manejo de keys por proveedor */
+function getProvKey(provId) {
+  const key = PROVIDERS[provId]?.storageKey;
+  if (!key) return '';
+  try { return localStorage.getItem(key) || ''; } catch(e) { return ''; }
+}
+
+function saveProvKey() {
+  const cfg = PROVIDERS[activeProvider];
+  if (!cfg?.needsKey) return;
+  const inp = document.getElementById('provKeyInput');
+  const val = inp?.value?.trim();
+  if (!val || val === '••••••••') return;
+  try { localStorage.setItem(cfg.storageKey, val); } catch(e) {}
+  inp.value = '••••••••';
+  showToast ? showToast('✓ Key guardada') : showFlash && showFlash('✓ Key guardada');
+}
+
+/* ─── callAI() — función unificada ──────────────────────────────────
+   Enruta la llamada al proveedor activo.
+   Todos los proveedores llaman onToken(text) por cada fragmento
+   y onDone() al terminar.
+──────────────────────────────────────────────────────────────────── */
+async function callAI(userMsg, systemPrompt, onToken, onDone) {
+  switch (activeProvider) {
+    case 'puter':   return callPuter(userMsg, systemPrompt, onToken, onDone);
+    case 'gemini':  return callGemini(userMsg, systemPrompt, onToken, onDone);
+    case 'grok':    return callGrok(userMsg, systemPrompt, onToken, onDone);
+    case 'claude':  return callClaude(userMsg, systemPrompt, onToken, onDone);
+    case 'ollama':  return callOllama(userMsg, systemPrompt, onToken, onDone);
+    default:        return callPuter(userMsg, systemPrompt, onToken, onDone);
+  }
+}
+
+/* ─── 1. PUTER.JS (GRATIS, SIN KEY) ─────────────────────────────────
+   Intenta modelos en orden hasta encontrar uno disponible.
+   Si uno falla por "model not found", pasa al siguiente automáticamente.
+──────────────────────────────────────────────────────────────────── */
+const PUTER_FALLBACK_MODELS = [
+  'gemini-2.5-flash-lite',
+  'claude-sonnet-4-5',
+  'gpt-4o-mini',
+  'gpt-4o'
+];
+
+async function _puterChat(messages, model, onToken, onDone) {
+  try {
+    const resp = await puter.ai.chat(messages, { model, stream: true });
+    for await (const chunk of resp) {
+      const delta = chunk?.choices?.[0]?.delta?.content || chunk?.text || '';
+      if (delta) onToken(delta);
+    }
+    onDone();
+  } catch (streamErr) {
+    if (streamErr.message?.includes('stream') || streamErr.message?.includes('iterator')) {
+      const resp2 = await puter.ai.chat(messages, { model });
+      const text = resp2?.message?.content?.[0]?.text
+                || resp2?.content?.[0]?.text
+                || resp2?.choices?.[0]?.message?.content
+                || String(resp2);
+      for (let i = 0; i < text.length; i += 3) {
+        onToken(text.slice(i, i + 3));
+        await new Promise(r => setTimeout(r, 8));
+      }
+      onDone();
+    } else { throw streamErr; }
+  }
+}
+
+async function callPuter(userMsg, systemPrompt, onToken, onDone) {
+  if (!window.puter) throw new Error('Puter.js no cargó. Verificá tu conexión a internet.');
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+
+  const modelsToTry = [PROVIDERS.puter.model, ...PUTER_FALLBACK_MODELS.filter(m => m !== PROVIDERS.puter.model)];
+  let lastError;
+  for (const model of modelsToTry) {
+    try {
+      await _puterChat(messages, model, onToken, onDone);
+      PROVIDERS.puter.model = model;
+      return;
+    } catch (err) {
+      const msg = (err.message || '').toLowerCase();
+      if (msg.includes('not found') || msg.includes('model') || msg.includes('invalid') || msg.includes('unsupported')) {
+        lastError = err; continue;
+      }
+      throw err;
+    }
+  }
+  throw lastError || new Error('Ningún modelo de Puter.js disponible. Intentá más tarde.');
+}
+
+/* ─── 2. GEMINI DIRECTO (GRATIS CON KEY DE AISTUDIO) ────────────────
+   Key gratuita en aistudio.google.com — sin tarjeta de crédito.
+   La key va como query param en la URL — sin headers especiales.
+   No tiene problemas de CORS.
+──────────────────────────────────────────────────────────────────── */
+async function callGemini(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('gemini');
+  if (!key) throw new Error('__NEEDS_KEY_gemini__');
+
+  const model = PROVIDERS.gemini.model;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${key}&alt=sse`;
+
+  const body = {
+    contents: [{ role: 'user', parts: [{ text: userMsg }] }],
+    generationConfig: { maxOutputTokens: 1000 }
+  };
+  if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error('Gemini error ' + resp.status + ': ' + err.slice(0, 120));
+  }
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      try {
+        const j = JSON.parse(line.slice(6));
+        const text = j.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) onToken(text);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── 3. GROK (xAI) — API compatible con OpenAI ────────────────────
+   Modelo: grok-4.1-fast → $0.20/M input, $0.50/M output
+   Key en: console.x.ai
+──────────────────────────────────────────────────────────────────── */
+async function callGrok(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('grok');
+  if (!key) throw new Error('__NEEDS_KEY_grok__');
+
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+
+  const resp = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`
+    },
+    body: JSON.stringify({ model: 'grok-4.1-fast', messages, stream: true })
+  });
+
+  if (!resp.ok) throw new Error('Grok error ' + resp.status);
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+      try {
+        const j = JSON.parse(line.slice(6));
+        const delta = j.choices?.[0]?.delta?.content;
+        if (delta) onToken(delta);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── 4. CLAUDE (Anthropic) — versión actualizada ───────────────────
+   Mantiene compatibilidad con el sistema anterior.
+   Requiere header anthropic-dangerous-direct-browser-access: true
+──────────────────────────────────────────────────────────────────── */
+async function callClaude(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('claude');
+  const headers = {
+    'Content-Type': 'application/json',
+    'anthropic-version': '2023-06-01',
+    'anthropic-dangerous-direct-browser-access': 'true'
+  };
+  if (key) headers['x-api-key'] = key;
+
+  let resp;
+  try {
+    resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000, stream: true,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMsg }]
+      })
+    });
+  } catch(e) { throw new Error('__NETWORK__'); }
+
+  if (resp.status === 401 || resp.status === 403) throw new Error('__NEEDS_KEY_claude__');
+  if (!resp.ok) throw new Error('Claude error ' + resp.status);
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n');
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      try {
+        const j = JSON.parse(line.slice(6));
+        if (j.type === 'content_block_delta' && j.delta?.text) onToken(j.delta.text);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── 5. OLLAMA LOCAL ($0, offline) ─────────────────────────────────
+   Requiere Ollama corriendo: brew install --cask ollama-app
+   Modelo por defecto: qwen2.5-coder:7b
+   Sin autenticación — corre en localhost:11434
+──────────────────────────────────────────────────────────────────── */
+async function callOllama(userMsg, systemPrompt, onToken, onDone) {
+  const model = PROVIDERS.ollama.model;
+  let resp;
+  try {
+    resp = await fetch('http://localhost:11434/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model,
+        stream: true,
+        messages: [
+          ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+          { role: 'user', content: userMsg }
+        ]
+      })
+    });
+  } catch(e) {
+    throw new Error('No se pudo conectar con Ollama. ¿Está corriendo? Ejecutá: open -a Ollama');
+  }
+
+  if (!resp.ok) throw new Error('Ollama error ' + resp.status);
+
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  let buf = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    const lines = buf.split('\n').filter(Boolean);
+    buf = '';
+    for (const line of lines) {
+      try {
+        const j = JSON.parse(line);
+        if (j.message?.content) onToken(j.message.content);
+        if (j.done) { onDone(); return; }
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─── ERROR HANDLER PARA NEEDS_KEY ──────────────────────────────────
+   Detecta errores de __NEEDS_KEY_xxx__ y muestra el input correcto.
+──────────────────────────────────────────────────────────────────── */
+function handleAIError(err, aiBubble) {
+  const m = err.message || '';
+  if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
+    const provId = m.replace('__NEEDS_KEY_', '').replace('__NETWORK__', activeProvider);
+    const cfg = PROVIDERS[provId] || PROVIDERS[activeProvider];
+    aiBubble.innerHTML = `
+      <span style="color:var(--red, #ff4d6d)">⚠ Necesitás configurar una API Key</span><br><br>
+      <span style="font-size:.84rem;color:var(--text2)">
+        ${cfg.note || ''}<br><br>
+        <button onclick="setProvider('${provId}')" style="
+          background:var(--acc);color:var(--bg, #080d18);border:none;
+          padding:6px 14px;border-radius:7px;font-size:12px;
+          font-weight:700;cursor:pointer;margin-right:6px;">
+          Configurar key
+        </button>
+        ${cfg.keyUrl ? `<a href="${cfg.keyUrl}" target="_blank" style="font-size:11px;color:var(--text3)">Obtener gratis →</a>` : ''}
+        <br><br>
+        <em style="font-size:.78rem;color:var(--text3)">O cambiá a 🌟 Puter — 100% gratis, sin key</em>
+      </span>`;
+  } else {
+    aiBubble.innerHTML = `<span style="color:var(--red, #ff4d6d)">⚠ ${m || 'Error desconocido'}</span>`;
+  }
+}
+
+
+/* ─── CLAUDE LEGACY (usado via callAI) ─── */
+async function callClaude(userMsg, systemPrompt, onToken, onDone) {
+  let resp;
+  try {
+    resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: buildHeaders(),
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      stream: true,  // Streaming para feedback visual inmediato
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userMsg }]
+    })
+  });
+
+  } catch (_fetchErr) {
+    throw new Error('__NETWORK__');
+  }
+  
+  if (resp.status === 401 || resp.status === 403) {
+    throw new Error('__AUTH__');
+  }
+  if (!resp.ok) {
+    let et = '';
+    try { et = await resp.text(); } catch(e) {}
+    try {
+      const ej = JSON.parse(et);
+      throw new Error(ej.error?.message || 'Error ' + resp.status);
+    } catch(e2) { if (e2.message.startsWith('Error ') || e2.message.includes('_')) throw e2; }
+    throw new Error('API error ' + resp.status);
+  }
+
+  // Procesar el stream de Server-Sent Events
+  const reader = resp.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    buffer = lines.pop(); // guardar línea incompleta
+
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      const data = line.slice(6);
+      if (data === '[DONE]') continue;
+      try {
+        const json = JSON.parse(data);
+        // Los chunks de texto vienen en content_block_delta
+        if (json.type === 'content_block_delta' && json.delta?.text) {
+          onToken(json.delta.text);
+        }
+      } catch(e) { /* ignorar líneas mal formadas */ }
+    }
+  }
+  onDone();
+}
+
+/* ─── 5. SYSTEM PROMPTS ─────────────────────────────────────────────
+   Cada modo tiene un system prompt diferente que define
+   el comportamiento y formato de respuesta de la AI
+─────────────────────────────────────────────────────────────────── */
+
+// Contexto base de la guía (compartido por todos los modos)
+const GUIDE_CONTEXT = `Esta es una guía de AI Coding Tools 2026 para MacBook Pro M5. Las herramientas del Top 10 son: 
+1. Claude Code (Anthropic, terminal, SWE-bench 80.8%, $0/Pro $20/Max $100)
+2. Cursor (IDE AI, VS Code fork, Supermaven autocomplete, $0/Pro $20)
+3. GitHub Copilot (extensión IDE, $0/Pro $10/Business $39)
+4. OpenCode (open source, 126K GitHub stars, 75+ proveedores, offline con Ollama)
+5. Windsurf (IDE AI Codeium, free tier generoso, Cascade mode, Pro $15)
+6. Aider (terminal Git-first, open source, offline Ollama)
+7. Continue.dev (VS Code open source, offline Ollama)
+8. Cline (VS Code BYOK model-agnostic, open source)
+9. Gemini Code Assist (Google, gratis individual)
+10. Amazon Q Developer (AWS, gratis individual)
+
+Ollama: motor de modelos locales para Mac. brew install --cask ollama-app. Modelos: llama3.2:3b (8GB), qwen2.5-coder:7b (16GB), qwen3:14b (24-32GB), qwen3:32b (48GB+).
+OpenCode: agente terminal open source. brew install opencode. Plan/Build agents, skills, 75+ providers. Config en ~/.config/opencode/config.json.`;
+
+// System prompts por modo
+const SYSTEM_PROMPTS = {
+  'chat': `You are an expert AI coding tools assistant embedded in an interactive guide.
+Respond in ${currentLang === 'en' ? 'English' : 'Spanish'}, concisely (max 200 words), directly and helpfully.
+Use **bold** for important terms and \`code\` for commands.
+${GUIDE_CONTEXT}`,
+
+  'add-tool': `Eres un generador de tarjetas HTML para una guía de AI coding 2026.
+El usuario describirá una herramienta de AI coding. Tu tarea es:
+1. Analizar la descripción
+2. Devolver ÚNICAMENTE el HTML de la tarjeta, sin texto adicional, sin markdown, sin explicaciones
+3. El HTML debe seguir EXACTAMENTE este formato:
+
+<div class="tool-card" id="tool-NOMBRE_SLUG">
+  <div class="tc-head">
+    <div class="tc-rank" style="background:#COLOR_HEX">N</div>
+    <div class="tc-info">
+      <h3>NOMBRE</h3>
+      <div class="tc-tag">TAGLINE CORTO</div>
+      <div class="tc-chips">
+        <span class="chip" style="background:rgba(77,232,194,.15);color:var(--acc)">TIPO</span>
+        <span class="chip" style="background:rgba(77,232,160,.15);color:var(--green)">CARACTERÍSTICA</span>
+      </div>
+    </div>
+  </div>
+  <div class="tc-body">
+    <div class="tc-metrics">
+      <div class="m-box"><div class="m-label">MÉTRICA1</div><div class="m-val">VALOR</div></div>
+      <div class="m-box"><div class="m-label">MÉTRICA2</div><div class="m-val">VALOR</div></div>
+    </div>
+    <p style="font-size:.88rem;color:var(--text2)">DESCRIPCIÓN DE 2-3 ORACIONES</p>
+    <div class="pc-grid">
+      <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+        <li>PRO 1</li><li>PRO 2</li><li>PRO 3</li>
+      </ul></div>
+      <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+        <li>CONTRA 1</li><li>CONTRA 2</li>
+      </ul></div>
+    </div>
+    <div class="price-row">
+      <span class="pp free">PRECIO_GRATIS</span>
+      <span class="pp paid">PRECIO_PAGO</span>
+    </div>
+  </div>
+</div>
+
+Usa colores únicos para el rank badge. Completa con información real y precisa de la herramienta.
+DEVUELVE SOLO EL HTML, NADA MÁS.`,
+
+  'improve': `Sos un experto en herramientas AI coding 2026.
+TAREA: Generar HTML nuevo para AGREGAR al final de una sección de una guía interactiva.
+
+COMPONENTES DISPONIBLES — usá EXACTAMENTE estas estructuras:
+
+Grid de mini-cards (2 columnas):
+<div class="g2 mt">
+  <div class="mini-card"><h4>🔧 Título</h4><p style="font-size:.84rem">Descripción técnica concisa y útil.</p></div>
+  <div class="mini-card"><h4>⚡ Título</h4><p style="font-size:.84rem">Descripción técnica concisa y útil.</p></div>
+</div>
+
+Callout informativo:
+<div class="callout tip"><div class="callout-ico">💡</div><div><strong>Pro tip:</strong> Texto del consejo.</div></div>
+<div class="callout info"><div class="callout-ico">📊</div><div><strong>Dato clave:</strong> Texto informativo con <strong>énfasis</strong>.</div></div>
+<div class="callout warn"><div class="callout-ico">⚠️</div><div><strong>Atención:</strong> Texto de aviso importante.</div></div>
+
+Tabla comparativa:
+<div style="overflow-x:auto;border-radius:12px;border:1px solid var(--border)"><table class="tbl"><thead><tr><th>Columna</th><th>Columna</th></tr></thead><tbody><tr><td>Dato</td><td>Dato</td></tr></tbody></table></div>
+
+FAQ item:
+<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Pregunta ❓</div><div class="faq-a">Respuesta detallada con <code>código</code> si aplica.</div></div>
+
+REGLAS:
+- NO repetir contenido ya existente en la sección
+- NO usar <section> ni encabezados <h1>/<h2>
+- Respondé en ${currentLang === 'en' ? 'inglés' : 'español'}
+- DEVOLVÉ SOLO HTML PURO — sin markdown, sin backticks, sin explicaciones
+${GUIDE_CONTEXT}`
+};
+
+/* ─── 6. FUNCIÓN SEND — Procesa el mensaje y llama a la API ─────────
+   Flujo:
+   1. Toma el texto del input
+   2. Agrega burbuja de usuario
+   3. Agrega indicador "escribiendo..."
+   4. Llama a callClaude() con el system prompt del modo activo
+   5. Reemplaza el indicador con la respuesta streameada
+   6. Post-proceso según el modo (chat: mostrar, add-tool: inyectar HTML)
+─────────────────────────────────────────────────────────────────── */
+async function sendMessage() {
+  const input = document.getElementById('aiInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('aiSend').disabled = true;
+
+  const msgs = document.getElementById('aiMsgs');
+
+  // Agregar burbuja del usuario
+  const userBubble = document.createElement('div');
+  userBubble.className = 'msg-user';
+  userBubble.textContent = msg;
+  msgs.appendChild(userBubble);
+
+  // Agregar indicador "escribiendo..."
+  const typing = document.createElement('div');
+  typing.className = 'msg-typing';
+  typing.innerHTML = '<div class="dot-loader"><span></span><span></span><span></span></div> AI pensando...';
+  msgs.appendChild(typing);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  // Determinar prompt basado en modo y contexto
+  let userPrompt = msg;
+  let systemPrompt = SYSTEM_PROMPTS[currentMode];
+
+  // En modo improve: incluir ejemplo de estilo + HTML actual para que la AI genere contenido coherente
+  if (currentMode === 'improve' && currentImproveSection) {
+    const exampleCtx = currentImproveSection.example
+      ? `\n\nELEMENTO EXISTENTE DE REFERENCIA (imitá este estilo exacto):\n${currentImproveSection.example}`
+      : '';
+    const secCtx = currentImproveSection.html
+      ? `\n\nCONTENIDO ACTUAL (NO repetir):\n${currentImproveSection.html}`
+      : '';
+    userPrompt = `Agregar contenido nuevo a la sección "${currentImproveSection.name}". Instrucción: ${msg}${exampleCtx}${secCtx}`;
+  }
+
+  let fullResponse = '';
+
+  // Crear burbuja de respuesta AI (se llenará durante el streaming)
+  const aiBubble = document.createElement('div');
+  aiBubble.className = 'msg-ai';
+  aiBubble.textContent = '';
+
+  try {
+    await callAI(
+      userPrompt,
+      systemPrompt,
+      // onToken: callback de cada chunk de texto
+      (token) => {
+        if (typing.parentNode) {
+          // Primera vez: reemplazar el indicador por la burbuja de respuesta
+          typing.replaceWith(aiBubble);
+        }
+        fullResponse += token;
+
+        // Renderizado diferente según el modo
+        if (currentMode === 'add-tool') {
+          // En modo add-tool mostramos el HTML en un pre temporalmente
+          aiBubble.innerHTML = `<em style="color:var(--text3);font-size:.8rem">Generando tarjeta...</em>`;
+        } else {
+          // Renderizar markdown básico: **negrita** y \`código\`
+          aiBubble.innerHTML = fullResponse
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/`([^`]+)`/g, '<code>$1</code>')
+            .replace(/\n/g, '<br>');
+        }
+        msgs.scrollTop = msgs.scrollHeight;
+      },
+      // onDone: callback al terminar el streaming
+      () => {
+        document.getElementById('aiSend').disabled = false;
+
+        // POST-PROCESO SEGÚN MODO
+        if (currentMode === 'add-tool') {
+          injectNewTool(fullResponse, aiBubble);
+        } else if (currentMode === 'improve' && currentImproveSection) {
+          handleImproveResponse(fullResponse, aiBubble);
+        }
+
+        msgs.scrollTop = msgs.scrollHeight;
+      }
+    );
+  } catch (err) {
+    // Manejo de errores: mostrar mensaje amigable
+    if (typing.parentNode) typing.replaceWith(aiBubble);
+        if (typing && typing.parentNode) typing.replaceWith(aiBubble);
+    handleAIError(err, aiBubble);
+    document.getElementById('aiSend').disabled = false;
+  }
+}
+
+/* ─── 7. INYECCIÓN DE NUEVA HERRAMIENTA ─────────────────────────────
+   Toma el HTML generado por la AI (modo add-tool) y lo inyecta
+   en el DOM dentro de #ai-added-tools.
+   También agrega un enlace en el sidebar para la nueva herramienta.
+─────────────────────────────────────────────────────────────────── */
+function injectNewTool(htmlResponse, bubble) {
+  // Limpiar el HTML: quitar bloques de código markdown si los hay
+  let cleanHtml = htmlResponse
+    .replace(/```html\n?/gi, '')
+    .replace(/```\n?/g, '')
+    .trim();
+
+  // Verificar que el HTML tiene la estructura esperada
+  if (!cleanHtml.includes('tool-card')) {
+    bubble.innerHTML = `<span style="color:var(--red)">⚠ No se pudo generar la tarjeta. Intentá describir la herramienta con más detalle.</span>`;
+    return;
+  }
+
+  // Inyectar en #ai-added-tools
+  const container = document.getElementById('ai-added-tools');
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = cleanHtml;
+  container.appendChild(wrapper.firstElementChild);
+
+  // Extraer nombre para el sidebar
+  const h3 = container.querySelector('.tool-card:last-child h3');
+  const toolName = h3 ? h3.textContent.trim() : 'Nueva herramienta';
+  const toolId = container.querySelector('.tool-card:last-child')?.id || 'tool-new';
+
+  // Agregar enlace en el sidebar
+  const sidebarExtra = document.getElementById('sidebar-extra');
+  const link = document.createElement('a');
+  link.href = '#' + toolId;
+  link.className = 'nav-a';
+  link.innerHTML = `<span class="rnk" style="background:var(--acc);color:var(--bg)">✦</span> ${toolName}`;
+  sidebarExtra.appendChild(link);
+
+  // Actualizar burbuja de confirmación
+  bubble.innerHTML = `✅ <strong>¡${toolName} agregada al ranking!</strong><br><small style="color:var(--text3)">La tarjeta aparece al final de la lista. También la agregué al sidebar.</small>`;
+
+  // Scroll suave a la nueva tarjeta
+  setTimeout(() => {
+    document.querySelector('#' + toolId)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 300);
+
+  // Flash de confirmación
+  showFlash('✓ ' + toolName + ' agregada al ranking');
+}
+
+/* ─── 8. AGREGAR A SECCIÓN ──────────────────────────────────────────
+   La AI genera HTML nuevo para agregar. Se muestra preview y el usuario
+   confirma con el botón antes de que se inserte en el DOM real.
+─────────────────────────────────────────────────────────────────── */
+let _pendingImproveHtml = '';
+
+function handleImproveResponse(response, bubble) {
+  const section = currentImproveSection;
+  if (!section) return;
+
+  // Limpiar posibles backticks markdown que la AI pueda agregar
+  const clean = response.replace(/```html\n?/gi, '').replace(/```\n?/g, '').trim();
+  _pendingImproveHtml = clean;
+
+  // Preview: renderizar el HTML directamente (así se ve como quedará)
+  bubble.innerHTML = `
+    <div style="margin-bottom:8px;font-size:.82rem;color:var(--text3)">
+      ✦ Nuevo contenido para "<strong style="color:var(--acc)">${section.name}</strong>":
+    </div>
+    <div style="padding:10px 14px;background:var(--bg4);border-radius:8px;margin-bottom:12px;
+                font-size:.85rem;line-height:1.7;max-height:240px;overflow-y:auto;
+                border:1px solid var(--border)">
+      ${clean}
+    </div>
+    <button onclick="applyImprovement('${section.id}', this)"
+      style="background:var(--acc);color:var(--bg);border:none;padding:7px 16px;
+             border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
+             font-family:'DM Sans',sans-serif;">
+      ✦ Agregar a la sección
+    </button>`;
+}
+
+/* Agrega el HTML al DOM y lo persiste en el archivo fuente via backend */
+function applyImprovement(sectionId, btn) {
+  const sectionEl = document.getElementById(sectionId);
+  if (!sectionEl) { btn.textContent = '⚠ Sección no encontrada'; return; }
+  if (!_pendingImproveHtml) { btn.textContent = '⚠ Sin contenido'; return; }
+
+  const htmlToSave = _pendingImproveHtml;
+
+  // 1. Aplicar al DOM inmediatamente
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = htmlToSave;
+  const fragment = document.createDocumentFragment();
+  while (wrapper.firstChild) fragment.appendChild(wrapper.firstChild);
+  sectionEl.appendChild(fragment);
+  _pendingImproveHtml = '';
+
+  btn.textContent = '⏳ Guardando...';
+  btn.disabled = true;
+
+  setTimeout(() => sectionEl.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
+
+  // 2. Persistir en el archivo HTML via backend
+  fetch('/api/save-section', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      filename: location.pathname.split('/').pop(),
+      sectionId,
+      htmlToAppend: htmlToSave
+    })
+  })
+  .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  .then(() => {
+    btn.textContent = '✓ Guardado en archivo';
+    btn.style.opacity = '.5';
+    showFlash('✦ Guardado permanentemente en ' + (currentImproveSection?.name || sectionId));
+  })
+  .catch(() => {
+    btn.textContent = '✓ En DOM (sin backend)';
+    btn.style.opacity = '.5';
+    showFlash('✦ Agregado al DOM — reiniciá el servidor para guardar en archivo');
+  });
+}
+
+/* ─── 9. HELPERS UI ─────────────────────────────────────────────────
+   showFlash: banner temporal de confirmación
+   handleKey: Enter para enviar, Shift+Enter para salto de línea
+─────────────────────────────────────────────────────────────────── */
+function showFlash(msg) {
+  const f = document.getElementById('flash');
+  f.textContent = msg;
+  f.classList.add('show');
+  setTimeout(() => f.classList.remove('show'), 2500);
+}
+// Alias para compatibilidad con las funciones de copy toolbar
+const showToast = showFlash;
+
+function handleKey(e) {
+  // Enter sin Shift = enviar mensaje
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+</script>
+
+
+<!-- API KEY MODAL: aparece cuando el fetch falla por falta de key -->
+<div class="ak-overlay" id="akOverlay">
+  <div class="ak-modal">
+    <h3>🔑 API Key de Anthropic</h3>
+    <p>Para usar el Asistente AI fuera de Claude.ai necesitás una API Key de Anthropic. Es gratis con $5 de crédito inicial (~500 conversaciones).</p>
+    <a class="ak-link" href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">↗ Obtener API key gratis en console.anthropic.com</a>
+    <div class="ak-row">
+      <input type="password" class="ak-input" id="akKeyInput" placeholder="sk-ant-api03-..." onkeydown="if(event.key==='Enter')saveApiKey()">
+      <button class="ak-save" onclick="saveApiKey()">Guardar</button>
+    </div>
+    <div class="ak-note">
+      <strong>🔒 Privacidad:</strong> La key se guarda solo en tu navegador (localStorage). No sale de tu dispositivo.<br><br>
+      <strong>💡 En Claude.ai:</strong> No necesitás key — el AI funciona sin configurar nada.
+    </div>
+    <button class="ak-skip" onclick="document.getElementById('akOverlay').classList.remove('show')">✕ Cerrar</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     BACKEND INTEGRATION + UX ENHANCEMENTS
+     Parche no-destructivo agregado sobre el código original.
+     Backend local: http://localhost:8000 (arrancar con back/start.bat)
+     Si el backend no está corriendo, Puter.js funciona igual (gratis).
+════════════════════════════════════════════════════════════════════ -->
+<style>
+/* ─── SCROLL ANIMATIONS ─────────────────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(28px); }
+.reveal.visible { opacity: 1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
+
+/* ─── TOPBAR SHRINK ON SCROLL ────────────────────────────────────── */
+.topbar { transition: height .3s ease, padding .3s ease; }
+.topbar.scrolled { height: 44px !important; }
+
+/* ─── TYPING INDICATOR (3 dots) ──────────────────────────────────── */
+.typing-dots { display: inline-flex; gap: 5px; align-items: center; padding: 10px 14px; }
+.typing-dots span {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--acc); opacity: .4;
+  animation: typingBounce 1.3s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: .18s; }
+.typing-dots span:nth-child(3) { animation-delay: .36s; }
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: .4; }
+  30% { transform: translateY(-8px); opacity: 1; }
+}
+
+/* ─── BACKEND BADGE ──────────────────────────────────────────────── */
+.backend-badge {
+  display: none; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; letter-spacing: .02em;
+  color: var(--green, #4de8a0);
+  background: rgba(77, 232, 160, .08);
+  border: 1px solid rgba(77, 232, 160, .2);
+  border-radius: 20px; padding: 3px 10px;
+  margin: 6px 16px 0;
+}
+.backend-badge.show { display: flex; }
+.backend-badge::before {
+  content: '●'; font-size: 8px;
+  animation: beaconPulse 2.2s ease-in-out infinite;
+}
+@keyframes beaconPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+/* ─── CARDS: hover glow mejorado ─────────────────────────────────── */
+.card-tool {
+  transition: transform .25s ease, box-shadow .25s ease !important;
+}
+.card-tool:hover {
+  transform: translateY(-5px) scale(1.01) !important;
+  box-shadow: 0 16px 48px rgba(0,0,0,.3), 0 0 28px rgba(77,232,194,.12) !important;
+}
+
+/* ─── SECTION: línea izquierda animada ───────────────────────────── */
+.section { position: relative; }
+.section::before {
+  content: ''; position: absolute; left: -1px; top: 10%; bottom: 10%;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, var(--acc), transparent);
+  opacity: 0; transition: opacity .4s ease;
+  border-radius: 2px;
+}
+.section:focus-within::before,
+.section:hover::before { opacity: .45; }
+
+/* ─── AI PANEL: entrada más fluida ───────────────────────────────── */
+.ai-panel {
+  transition: transform .38s cubic-bezier(.4,0,.2,1), opacity .32s ease !important;
+}
+
+/* ─── CODE BLOCK: pulse en copy ──────────────────────────────────── */
+@keyframes copyGlow {
+  0% { box-shadow: 0 0 0 0 var(--acc); }
+  60% { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.code-copied { animation: copyGlow .5s ease forwards; }
+</style>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   BACKEND LOCAL — detección automática y proxy de proveedores
+   Si localhost:8000 no está corriendo, Puter.js sigue funcionando.
+════════════════════════════════════════════════════════════════ */
+let backendAvailable = false;
+const BACKEND_URL = 'http://localhost:8000';
+
+async function checkBackend() {
+  try {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 1800);
+    const resp = await fetch(`${BACKEND_URL}/api/health`, { signal: ctrl.signal, cache: 'no-store' });
+    clearTimeout(tid);
+    if (!resp.ok) return;
+    const data = await resp.json();
+    backendAvailable = true;
+    showBackendBadge(data.providers || {});
+    patchProvidersForBackend(data.providers || {});
+  } catch(e) { /* backend no está corriendo — modo solo-browser */ }
+}
+
+function showBackendBadge(providers) {
+  if (document.getElementById('backendBadge')) return;
+  const badge = document.createElement('div');
+  badge.id = 'backendBadge';
+  badge.className = 'backend-badge show';
+  badge.title = 'Backend local activo — API keys protegidas en .env';
+  const parts = ['Backend local'];
+  if (providers.claude) parts.push('Claude ✓');
+  if (providers.gemini) parts.push('Gemini ✓');
+  badge.textContent = parts.join(' · ');
+  const provBar = document.getElementById('provBar');
+  if (provBar) provBar.parentNode.insertBefore(badge, provBar.nextSibling);
+}
+
+function patchProvidersForBackend(providers) {
+  /* Override callClaude → usa proxy backend (key queda en .env) */
+  if (providers.claude && typeof callClaude === 'function') {
+    window.callClaude = async function(userMsg, systemPrompt, onToken, onDone) {
+      const body = {
+        model: PROVIDERS?.claude?.model || 'claude-sonnet-4-20250514',
+        max_tokens: 1200, stream: true,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userMsg }]
+      };
+      const resp = await fetch(`${BACKEND_URL}/api/claude`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!resp.ok) throw new Error('Claude proxy error ' + resp.status);
+      const reader = resp.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n'); buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try { const j = JSON.parse(line.slice(6)); if (j.type === 'content_block_delta' && j.delta?.text) onToken(j.delta.text); } catch(e) {}
+        }
+      }
+      onDone();
+    };
+  }
+
+  /* Override callGemini → usa proxy backend */
+  if (providers.gemini && typeof callGemini === 'function') {
+    window.callGemini = async function(userMsg, systemPrompt, onToken, onDone) {
+      const body = {
+        _model: PROVIDERS?.gemini?.model || 'gemini-2.5-flash',
+        contents: [{ role: 'user', parts: [{ text: userMsg }] }],
+        generationConfig: { maxOutputTokens: 1200 }
+      };
+      if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+      const resp = await fetch(`${BACKEND_URL}/api/gemini`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (!resp.ok) throw new Error('Gemini proxy error ' + resp.status);
+      const reader = resp.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n'); buf = lines.pop();
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          try { const j = JSON.parse(line.slice(6)); const t = j.candidates?.[0]?.content?.parts?.[0]?.text; if (t) onToken(t); } catch(e) {}
+        }
+      }
+      onDone();
+    };
+  }
+
+  /* Override callOllama → usa proxy backend (soluciona CORS de :11434) */
+  if (typeof callOllama === 'function') {
+    window.callOllama = async function(userMsg, systemPrompt, onToken, onDone) {
+      const resp = await fetch(`${BACKEND_URL}/api/ollama`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: PROVIDERS?.ollama?.model || 'qwen2.5-coder:7b', stream: true,
+          messages: [
+            ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
+            { role: 'user', content: userMsg }
+          ]
+        })
+      });
+      if (!resp.ok) throw new Error('Ollama proxy error ' + resp.status);
+      const reader = resp.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '';
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split('\n').filter(Boolean); buf = '';
+        for (const line of lines) {
+          try { const j = JSON.parse(line); if (j.message?.content) onToken(j.message.content); if (j.done) { onDone(); return; } } catch(e) {}
+        }
+      }
+      onDone();
+    };
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   UX ENHANCEMENTS — scroll animations + topbar shrink
+════════════════════════════════════════════════════════════════ */
+function initScrollAnimations() {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.section, .card-tool, .compare-row, .faq-item').forEach((el, i) => {
+    el.classList.add('reveal');
+    el.style.transitionDelay = (i % 4) * 0.05 + 's';
+    obs.observe(el);
+  });
+}
+
+function initTopbarShrink() {
+  const topbar = document.querySelector('.topbar');
+  if (!topbar) return;
+  window.addEventListener('scroll', () => {
+    topbar.classList.toggle('scrolled', window.scrollY > 50);
+  }, { passive: true });
+}
+
+// ─── i18n COMPREHENSIVO — cubre elementos sin clase .i18n ────────────────
+const _i18n_AI = {
+  es: {
+    logoSub: '/ Guía Viva', aiBtn: '🤖 Asistente AI',
+    flash: '✓ Sección actualizada con AI',
+    navHeads: ['Guía','Top 10 Herramientas','Comparativa','Ollama en M5','OpenCode'],
+    heroBadge: 'Guía Viva · Actualizable con AI · Mayo 2026',
+    heroP: 'Top 10 herramientas de AI coding, guía completa de Ollama en Mac M5 y OpenCode desde cero. Esta guía es <strong>viva</strong> — usá el Asistente AI para actualizarla, agregar herramientas o hacer preguntas.',
+    heroTags: ['💬 Preguntarle a la AI','➕ Agregar herramienta al Top 10','✨ Mejorar una sección','🆓 Stack gratis offline','🔍 Comparar herramientas'],
+    secH2: ['Panorama AI Coding 2026','Top 10 Herramientas AI Coding','Tabla Comparativa Maestra','Ollama en Mac M5','OpenCode — Agente Terminal','FAQ — Preguntas Frecuentes'],
+    secDesc: ['El mercado explotó — terminales, IDEs nativos, agentes cloud y open source','Ranking actualizado — benchmarks reales, no demos de juguete','Precios, límites y casos de uso de un vistazo','Stack offline completo para Mac M5','El agente terminal open source — setup y uso','Preguntas frecuentes sobre AI coding'],
+    improveBtn: '✨ Mejorar sección', addToolBtn: '➕ Agregar herramienta',
+    provBarLabel: 'Proveedor AI',
+  },
+  en: {
+    logoSub: '/ Living Guide', aiBtn: '🤖 AI Assistant',
+    flash: '✓ Section updated with AI',
+    navHeads: ['Guide','Top 10 Tools','Comparison','Ollama on M5','OpenCode'],
+    heroBadge: 'Living Guide · AI-updatable · May 2026',
+    heroP: 'Top 10 AI coding tools, complete Ollama guide on Mac M5 and OpenCode from scratch. This guide is <strong>live</strong> — use the AI Assistant to update it, add tools or ask questions.',
+    heroTags: ['💬 Ask the AI','➕ Add tool to Top 10','✨ Improve a section','🆓 Free offline stack','🔍 Compare tools'],
+    secH2: ['AI Coding Landscape 2026','Top 10 AI Coding Tools','Master Comparison Table','Ollama on Mac M5','OpenCode — Terminal Agent','FAQ — Frequently Asked Questions'],
+    secDesc: ['The market exploded — terminal agents, native IDEs, cloud agents and open source','Updated ranking — real benchmarks, not toy demos','Prices, limits and use cases at a glance','Complete offline stack for Mac M5','The open source terminal agent — setup and usage','Frequently asked questions about AI coding'],
+    improveBtn: '✨ Improve section', addToolBtn: '➕ Add tool',
+    provBarLabel: 'AI Provider',
+  }
+};
+
+function applyI18nPatch(l) {
+  const t = _i18n_AI[l] || _i18n_AI.es;
+  // Topbar
+  const logoSpan = document.querySelector('.topbar-logo span');
+  if (logoSpan) logoSpan.textContent = t.logoSub;
+  const aiBtn = document.querySelector('.ai-toggle-btn');
+  if (aiBtn) { const pulse = aiBtn.querySelector('.ai-pulse'); aiBtn.textContent = t.aiBtn; if (pulse) aiBtn.prepend(pulse); }
+  const flash = document.getElementById('flash');
+  if (flash) flash.textContent = t.flash;
+  // Sidebar nav heads
+  document.querySelectorAll('.nav-head').forEach((h, i) => { if (t.navHeads[i] !== undefined) h.textContent = t.navHeads[i]; });
+  // Hero
+  const chip = document.querySelector('.hero-chip');
+  if (chip) chip.textContent = t.heroBadge;
+  const heroP = document.querySelector('.hero > p');
+  if (heroP) heroP.innerHTML = t.heroP;
+  document.querySelectorAll('.hero .htag').forEach((tag, i) => { if (t.heroTags[i]) tag.textContent = t.heroTags[i]; });
+  // Sections
+  document.querySelectorAll('section .sec-head h2').forEach((h2, i) => { if (t.secH2[i]) h2.textContent = t.secH2[i]; });
+  document.querySelectorAll('section .sec-head p:not(.i18n)').forEach((p, i) => { if (t.secDesc[i]) p.textContent = t.secDesc[i]; });
+  // Improve buttons
+  document.querySelectorAll('.improve-btn').forEach(b => {
+    if (b.textContent.includes('Mejorar') || b.textContent.includes('Improve')) b.textContent = t.improveBtn;
+    if (b.textContent.includes('Agregar') || b.textContent.includes('Add')) b.textContent = t.addToolBtn;
+  });
+}
+
+// Parchear setLang para incluir i18n comprehensivo
+(function() {
+  const _orig = window.setLang || (typeof setLang === 'function' ? setLang : null);
+  if (_orig) {
+    window.setLang = function(l) { _orig(l); applyI18nPatch(l); };
+  }
+})();
+
+window.addEventListener('load', () => {
+  checkBackend();
+  initScrollAnimations();
+  initTopbarShrink();
+  // Aplicar idioma guardado
+  const savedLang = localStorage.getItem('guide-lang');
+  if (savedLang && savedLang !== 'es') applyI18nPatch(savedLang);
+});
+</script>
+
+</body>
+</html>

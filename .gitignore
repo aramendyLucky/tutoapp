@@ -1,0 +1,38 @@
+# ── TutoApp .gitignore ──────────────────────────────────────────────────
+# QUÉ EXCLUIMOS: archivos privados y generados automáticamente.
+# El backend SÍ sube a git para que el proyecto funcione en cualquier equipo.
+# Lo que NUNCA sube: keys de API (.env) y paquetes instalados (.venv/).
+
+# ── API keys — NUNCA al repositorio ─────────────────────────────────────
+back/.env
+.env
+*.env
+!.env.example
+!back/.env.example
+
+# ── Entorno virtual Python — se regenera con el script de arranque ───────
+# ¿Por qué no sube? Pesa cientos de MB y depende del sistema operativo.
+# El script start.bat / start.sh lo crea automáticamente en el otro equipo.
+.venv/
+venv/
+env/
+
+# ── Archivos compilados de Python — se generan solos al correr el código ─
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# ── Logs ─────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Archivos del sistema operativo ───────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Playwright (testing interno) ─────────────────────────────────────────
+front/.playwright-mcp/
