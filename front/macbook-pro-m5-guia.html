@@ -72,16 +72,19 @@
       --kbd-bg:#e8e8f8;--kbd-bd:#b0b0e0;--kbd-text:#484c88;
     }
     [data-theme="minimal"] {
-      --bg:#ece8dc;--bg2:#f8f4e8;--bg3:#e4deca;--bg4:#d8d0b8;
-      --border:#c8bc98;--border2:#b8aa80;
-      --text:#241c08;--text2:#584428;--text3:#988870;
-      --acc:#7848b0;--acc2:#3858a8;--acc3:#3a7820;
-      --gold:#a07010;--red:#b82010;--green:#3a7010;
-      --blue:#1040a0;--orange:#b85018;--purple:#7848b0;
-      --panel-bg:rgba(236,232,220,.98);
-      --panel-bd:rgba(120,72,176,.25);
-      --hero:linear-gradient(135deg,#e8d8f8 0%,#ece8dc 55%,#d8e8f0 100%);
-      --kbd-bg:#d8d0b8;--kbd-bd:#b0a880;--kbd-text:#584428;
+      /* Fondos crema-pergamino cálidos */
+      --bg:#f6f1e3;--bg2:#fdf9f0;--bg3:#ede5cc;--bg4:#e0d5b0;
+      --border:#c8b880;--border2:#b0a060;
+      --text:#2a1e08;--text2:#5a4520;--text3:#9a8050;
+      /* Verde manzana vibrante */
+      --acc:#7cc520;--acc2:#5040b0;--acc3:#d04060;
+      --gold:#c09010;--red:#c02818;--green:#4a9010;
+      --blue:#1858a0;--orange:#c06820;--purple:#5040b0;
+      --panel-bg:rgba(246,241,227,.98);
+      --panel-bd:rgba(124,197,32,.35);
+      --hero:linear-gradient(135deg,#e4f4a8 0%,#f6f1e3 55%,#f0e8f8 100%);
+      /* Teclado en tonos crema cálidos */
+      --kbd-bg:#e0d5b0;--kbd-bd:#b0a060;--kbd-text:#5a4520;
     }
 
     /* ── RESET ──────────────────────────────────── */
@@ -606,6 +609,47 @@
       text-decoration: none;
     }
     .key-link:hover { color: var(--acc); }
+
+    /* ── ANIMACIONES TEMA MINIMAL ───────────────────────────────────────────
+       Scoped a [data-theme="minimal"] — no afecta Dark ni Light. */
+    [data-theme="minimal"] .mini-card,
+    [data-theme="minimal"] .sc-card {
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1),
+                  box-shadow .22s ease;
+    }
+    [data-theme="minimal"] .mini-card:hover {
+      transform: translateY(-5px) scale(1.015);
+      box-shadow: 0 14px 36px rgba(124,197,32,.18), 0 2px 8px rgba(42,30,8,.06);
+    }
+    [data-theme="minimal"] .sc-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(124,197,32,.14);
+    }
+    [data-theme="minimal"] .callout {
+      transition: transform .18s ease;
+    }
+    [data-theme="minimal"] .callout:hover { transform: translateX(6px); }
+    [data-theme="minimal"] .topbar {
+      background: linear-gradient(90deg,#f6f1e3 0%,#edf7cc 50%,#f6f1e3 100%);
+      background-size: 200% 100%;
+      animation: minTopbar 9s ease infinite;
+    }
+    @keyframes minTopbar {
+      0%,100% { background-position:0 0; }
+      50%     { background-position:100% 0; }
+    }
+    [data-theme="minimal"] .tbtn.on { animation: minBtnPulse 3.5s ease infinite; }
+    @keyframes minBtnPulse {
+      0%,100% { box-shadow:0 0 0 3px rgba(124,197,32,.3); }
+      50%     { box-shadow:0 0 0 7px rgba(124,197,32,.08); }
+    }
+    /* Teclas de atajo con acento verde en minimal */
+    [data-theme="minimal"] kbd {
+      background: var(--kbd-bg);
+      border: 1px solid var(--acc);
+      color: var(--text2);
+      box-shadow: 0 2px 0 var(--acc);
+    }
 
   </style>
 <script src="https://js.puter.com/v2/"></script>
@@ -1509,6 +1553,39 @@ Host mi-servidor
           <strong class="i18n" data-es="Stack de productividad recomendado para Mac M5:" data-en="Recommended productivity stack for Mac M5:">Stack de productividad recomendado para Mac M5:</strong>
           <br>
           <span class="i18n" data-es="Raycast (Spotlight++), Rectangle (ventanas), Maccy (portapapeles), AltTab (selector ventanas), iTerm2 (terminal), Cursor/VS Code (editor). Todo gratis o casi." data-en="Raycast (Spotlight++), Rectangle (windows), Maccy (clipboard), AltTab (window switcher), iTerm2 (terminal), Cursor/VS Code (editor). All free or nearly.">Raycast · Rectangle · Maccy · AltTab · iTerm2 · Cursor/VS Code — todo gratis o casi</span>
+        </div>
+      </div>
+
+      <!-- APPS INDISPENSABLES PARA DEVS MAC 2026
+           Fuentes: usevoicy.com/blog/best-mac-apps-for-developers
+                    polivka-pavel.medium.com (developers guide)
+                    developer.apple.com/macos/get-started (Instruments) -->
+      <div class="subsec" style="margin-top:24px">
+        <h3>🛠 Apps Indispensables para Devs Mac 2026</h3>
+        <div class="g2">
+          <div class="mini-card">
+            <h4>💊 Amphetamine</h4>
+            <p style="font-size:.82rem">Mantiene el Mac despierto con un clic. Esencial durante builds largos, deploys o descarga de datasets. Gratis en App Store.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🔑 1Password</h4>
+            <p style="font-size:.82rem">Guardá API keys, SSH keys, tokens y licencias. Integración con Terminal para autofill de SSH. La única app de pago que vale cada peso.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🌿 Tower — Git Visual</h4>
+            <p style="font-size:.82rem">Git con drag-and-drop. Undo de commits, cherry-pick visual, merge interactivo. Para cuando el CLI de Git se complica.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🧊 Ice — Barra de Menú</h4>
+            <p style="font-size:.82rem">Oculta íconos de la barra de menú para mantener el espacio limpio. Alternativa gratis y open source a Bartender. <code>brew install --cask jordanbaird-ice</code></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout info" style="margin-top:14px">
+        <div class="callout-ico">🍎</div>
+        <div>
+          <strong>Xcode Instruments:</strong> La herramienta de profiling más poderosa del ecosistema Apple — incluida gratis con Xcode. Detecta memory leaks, analiza CPU, GPU y I/O de cualquier app. Abrila con <kbd>⌘</kbd><kbd>I</kbd> desde Xcode o buscá "Instruments" en Spotlight.
         </div>
       </div>
     </section>

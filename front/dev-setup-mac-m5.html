@@ -70,18 +70,21 @@
       --p8:#e03050;--p9:#4a46d1;--p10:#1a9050;
     }
     [data-theme="minimal"] {
-      --bg:#ede6d0; --bg2:#f8f3e8; --bg3:#e4dbc0; --bg4:#d8d0b0;
-      --border:#c4b890; --border2:#b0a478;
-      --text:#261e0e; --text2:#58471f; --text3:#988770;
-      --acc:#4a8010; --acc2:#6040b8; --acc3:#b82860;
-      --gold:#a07010; --red:#b02010; --green:#3a7010;
-      --blue:#1050a0; --orange:#b85810; --purple:#6040b8;
-      --panel-bg:rgba(237,230,208,.98);
-      --panel-bd:rgba(74,128,16,.25);
-      --hero:linear-gradient(135deg,#d0e8a8 0%,#ede6d0 55%,#e0d8f0 100%);
-      --p0:#4040a8;--p1:#a07010;--p2:#3a7010;--p3:#1050a0;
-      --p4:#6040b8;--p5:#b82860;--p6:#b85810;--p7:#4a8010;
-      --p8:#b02010;--p9:#4040a8;--p10:#3a7010;
+      /* Fondos crema-pergamino cálidos */
+      --bg:#f6f1e3; --bg2:#fdf9f0; --bg3:#ede5cc; --bg4:#e0d5b0;
+      --border:#c8b880; --border2:#b0a060;
+      --text:#2a1e08; --text2:#5a4520; --text3:#9a8050;
+      /* Verde manzana vibrante */
+      --acc:#7cc520; --acc2:#5040b0; --acc3:#d04060;
+      --gold:#c09010; --red:#c02818; --green:#4a9010;
+      --blue:#1858a0; --orange:#c06820; --purple:#5040b0;
+      --panel-bg:rgba(246,241,227,.98);
+      --panel-bd:rgba(124,197,32,.35);
+      --hero:linear-gradient(135deg,#e4f4a8 0%,#f6f1e3 55%,#f0e8f8 100%);
+      /* Colores de fase ajustados a paleta cálida */
+      --p0:#4a4ab0;--p1:#c09010;--p2:#4a9010;--p3:#1858a0;
+      --p4:#5040b0;--p5:#d04060;--p6:#c06820;--p7:#7cc520;
+      --p8:#c02818;--p9:#4a4ab0;--p10:#4a9010;
     }
 
     /* ── RESET ──────────────────────────────────────────── */
@@ -649,6 +652,45 @@
     }
     .key-link:hover { color: var(--acc); }
 
+    /* ── ANIMACIONES TEMA MINIMAL ───────────────────────────────────────────
+       Scoped a [data-theme="minimal"] — no afecta Dark ni Light. */
+    [data-theme="minimal"] .phase-block,
+    [data-theme="minimal"] .tip-card,
+    [data-theme="minimal"] .step {
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1),
+                  box-shadow .22s ease;
+    }
+    [data-theme="minimal"] .phase-block:hover,
+    [data-theme="minimal"] .tip-card:hover {
+      transform: translateY(-5px) scale(1.012);
+      box-shadow: 0 14px 36px rgba(124,197,32,.16), 0 2px 8px rgba(42,30,8,.06);
+    }
+    [data-theme="minimal"] .callout {
+      transition: transform .18s ease;
+    }
+    [data-theme="minimal"] .callout:hover { transform: translateX(6px); }
+    [data-theme="minimal"] .topbar {
+      background: linear-gradient(90deg,#f6f1e3 0%,#edf7cc 50%,#f6f1e3 100%);
+      background-size: 200% 100%;
+      animation: minTopbar 9s ease infinite;
+    }
+    @keyframes minTopbar {
+      0%,100% { background-position:0 0; }
+      50%     { background-position:100% 0; }
+    }
+    [data-theme="minimal"] .tbtn.on { animation: minBtnPulse 3.5s ease infinite; }
+    @keyframes minBtnPulse {
+      0%,100% { box-shadow:0 0 0 3px rgba(124,197,32,.3); }
+      50%     { box-shadow:0 0 0 7px rgba(124,197,32,.08); }
+    }
+    [data-theme="minimal"] .phase-badge {
+      animation: minPhaseBadge 4s ease infinite;
+    }
+    @keyframes minPhaseBadge {
+      0%,100% { transform: scale(1); }
+      50%     { transform: scale(1.08); }
+    }
+
   </style>
 <script src="https://js.puter.com/v2/"></script>
 </head>
@@ -980,6 +1022,32 @@
 <span class="cmd">brew install --cask font-meslo-lg-nerd-font</span>
 <span class="c"># En iTerm2: Profiles → Text → Font → MesloLGS NF</span></code></pre>
       </div>
+
+      <!-- TERMINALES MODERNAS 2026
+           Fuentes: jphwang.com/mac-setup-guide-2026-part-1
+                    polivka-pavel.medium.com (developers guide)
+           iTerm2 es el standard, pero 2026 trae alternativas más rápidas. -->
+      <div class="tip-grid" style="margin-top:22px">
+        <div class="tip-card">
+          <h4>👻 Ghostty — La Terminal 2026</h4>
+          <p>Terminal nativa escrita en Zig. Rápida, sin bloatware, sin IA forzada. La alternativa moderna a iTerm2 que ganó popularidad en 2025-2026. <code>brew install --cask ghostty</code></p>
+        </div>
+        <div class="tip-card">
+          <h4>🚀 Starship — Prompt Minimalista</h4>
+          <p>Prompt escrito en Rust. Muestra git branch, lenguaje, versión de Node/Python/Go automáticamente. Alternativa liviana a Powerlevel10k. <code>brew install starship</code> → agregá <code>eval "$(starship init zsh)"</code> a <code>~/.zshrc</code></p>
+        </div>
+        <div class="tip-card">
+          <h4>🔍 zoxide — cd Inteligente</h4>
+          <p>Reemplazá <code>cd</code> con <code>z</code>: aprende tus carpetas más usadas y salta a ellas con solo un fragmento del nombre. <code>brew install zoxide</code> → <code>eval "$(zoxide init zsh)"</code></p>
+        </div>
+      </div>
+      <div class="callout info" style="margin-top:14px">
+        <div class="callout-ico">ℹ️</div>
+        <div>
+          <strong>Ghostty vs iTerm2:</strong> Ghostty es la apuesta 2026 — más rápida y sin dependencias pesadas. iTerm2 sigue siendo válida si ya tenés profiles, scripts y configuraciones que no querés migrar.
+        </div>
+      </div>
+
     </section>
 
     <!-- ═══════════════════════════════════════════════════

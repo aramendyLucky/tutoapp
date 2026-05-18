@@ -54,16 +54,19 @@
       --hero-bg: linear-gradient(135deg, #dce8ff 0%, #f5f7ff 60%, #ede8ff 100%);
     }
     [data-theme="minimal"] {
-      --bg: #f0ead8; --bg2: #faf6eb; --bg3: #e8e0c8; --bg4: #ddd4b8;
-      --border: #c8b898; --border2: #b8a880;
-      --text: #281f10; --text2: #5c4a28; --text3: #9c8860;
-      --acc: #4e8a18; --acc2: #6e4ec8; --acc3: #c83870;
-      --gold: #a07810;
-      --red: #b83020; --green: #407810; --blue: #1858a0; --orange: #c06018;
-      --panel-bg: rgba(240, 234, 216, 0.98);
-      --panel-border: rgba(78, 138, 24, 0.3);
-      --glow: 0 0 20px rgba(78, 138, 24, 0.1);
-      --hero-bg: linear-gradient(135deg, #dce8b8 0%, #f0ead8 60%, #e8d8f0 100%);
+      /* Fondos crema-pergamino cálidos */
+      --bg: #f6f1e3; --bg2: #fdf9f0; --bg3: #ede5cc; --bg4: #e0d5b0;
+      --border: #c8b880; --border2: #b0a060;
+      /* Texto marrón cálido para máxima legibilidad */
+      --text: #2a1e08; --text2: #5a4520; --text3: #9a8050;
+      /* Verde manzana vibrante como acento principal */
+      --acc: #7cc520; --acc2: #5040b0; --acc3: #d04060;
+      --gold: #c09010;
+      --red: #c02818; --green: #4a9010; --blue: #1858a0; --orange: #c06820;
+      --panel-bg: rgba(246, 241, 227, 0.98);
+      --panel-border: rgba(124, 197, 32, 0.35);
+      --glow: 0 0 25px rgba(124, 197, 32, 0.15);
+      --hero-bg: linear-gradient(135deg, #e4f4a8 0%, #f6f1e3 55%, #f0e8f8 100%);
     }
 
     /* ─── RESET Y BASE ───────────────────────────────────── */
@@ -653,6 +656,48 @@
     }
     .key-link:hover { color: var(--acc); }
 
+    /* ── ANIMACIONES TEMA MINIMAL ───────────────────────────────────────────
+       QUÉ HACE: Da vida y carácter al tema crema sin tocar Dark ni Light.
+       POR QUÉ AQUÍ: Scoped a [data-theme="minimal"] para no interferir con
+       los otros temas — cada uno tiene su propia personalidad visual.
+       ─────────────────────────────────────────────────────────────────────── */
+    [data-theme="minimal"] .mini-card,
+    [data-theme="minimal"] .tool-card,
+    [data-theme="minimal"] .tip-card,
+    [data-theme="minimal"] .faq-item {
+      transition: transform .22s cubic-bezier(.34,1.56,.64,1),
+                  box-shadow .22s ease;
+    }
+    [data-theme="minimal"] .mini-card:hover,
+    [data-theme="minimal"] .tool-card:hover,
+    [data-theme="minimal"] .tip-card:hover {
+      transform: translateY(-5px) scale(1.015);
+      box-shadow: 0 14px 36px rgba(124,197,32,.18), 0 2px 8px rgba(42,30,8,.06);
+    }
+    [data-theme="minimal"] .callout {
+      transition: transform .18s ease, border-color .2s ease;
+    }
+    [data-theme="minimal"] .callout:hover { transform: translateX(6px); }
+    [data-theme="minimal"] .topbar {
+      background: linear-gradient(90deg,#f6f1e3 0%,#edf7cc 50%,#f6f1e3 100%);
+      background-size: 200% 100%;
+      animation: minTopbar 9s ease infinite;
+    }
+    @keyframes minTopbar {
+      0%,100% { background-position:0 0; }
+      50%     { background-position:100% 0; }
+    }
+    [data-theme="minimal"] .tbtn.on {
+      animation: minBtnPulse 3.5s ease infinite;
+    }
+    @keyframes minBtnPulse {
+      0%,100% { box-shadow:0 0 0 3px rgba(124,197,32,.3); }
+      50%     { box-shadow:0 0 0 7px rgba(124,197,32,.08); }
+    }
+    [data-theme="minimal"] .g2 { gap: 14px; }
+    [data-theme="minimal"] .tbl th { background: rgba(124,197,32,.12); }
+    [data-theme="minimal"] .tbl tr:hover td { background: rgba(124,197,32,.06); }
+
   </style>
 <script src="https://js.puter.com/v2/"></script>
 </head>
@@ -1126,6 +1171,53 @@
       <!-- ZONA DE HERRAMIENTAS GENERADAS POR AI
            Las tarjetas nuevas creadas por AI se inyectan aquí -->
       <div id="ai-added-tools"></div>
+
+      <!-- STACK DEV MAC ESENCIAL 2026
+           Fuentes: usevoicy.com/blog/best-mac-apps-for-developers
+                    polivka-pavel.medium.com (developers guide)
+           Estas apps no son AI tools pero son el entorno donde
+           todo el workflow de AI coding se apoya. -->
+      <div style="margin-top:28px">
+        <h3 style="margin-bottom:6px">🍎 Stack Dev Mac Esencial 2026</h3>
+        <p style="font-size:.85rem;color:var(--text2);margin-bottom:18px">
+          No son herramientas de AI, pero son el entorno donde todo el AI coding workflow se apoya.
+          Instalación en bloque: <code>brew install --cask raycast tableplus docker postman alt-tab maccy rectangle</code>
+        </p>
+        <div class="g2 mt">
+          <div class="mini-card">
+            <h4>⚡ Raycast — Spotlight++</h4>
+            <p style="font-size:.84rem">1.300+ extensiones para GitHub, calendarios, snippets, Docker, cálculos y más. La primera app a instalar en cualquier Mac dev.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🗄️ TablePlus — DB Visual</h4>
+            <p style="font-size:.84rem">Gestor visual para PostgreSQL, MySQL, MongoDB, Redis y 12 tipos más. Edición inline, query editor, import/export. Tier gratuito generoso.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🐳 Docker Desktop M5</h4>
+            <p style="font-size:.84rem">Optimizado para Apple Silicon. Contenedores y microservicios con Docker Compose y soporte Kubernetes integrado.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🧪 Postman — APIs</h4>
+            <p style="font-size:.84rem">Diseñá, testéa y documentá APIs visualmente sin escribir código de prueba. Colecciones compartibles con el equipo.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🌿 Tower — Git Visual</h4>
+            <p style="font-size:.84rem">Cliente Git con drag-and-drop para merge, rebase y cherry-pick. Función "undo" para deshacer acciones que Git no perdona.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🔑 1Password</h4>
+            <p style="font-size:.84rem">Guardá API keys, SSH keys, tokens y licencias de software. La única app de pago aquí que vale absolutamente cada peso.</p>
+          </div>
+          <div class="mini-card">
+            <h4>📋 Maccy — Historial</h4>
+            <p style="font-size:.84rem">Portapapeles con historial de los últimos 200 items copiados. Abre con <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd>. Gratis y open source.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🪟 Rectangle — Ventanas</h4>
+            <p style="font-size:.84rem">Gestor de ventanas con atajos de teclado. Mitades, tercios, esquinas. La productividad en Mac sin él es la mitad.</p>
+          </div>
+        </div>
+      </div>
 
     </section>
 
