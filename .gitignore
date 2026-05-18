@@ -1,14 +1,14 @@
 # ── TutoApp .gitignore ──────────────────────────────────────────────────
 # QUÉ EXCLUIMOS: archivos privados y generados automáticamente.
-# El backend SÍ sube a git para que el proyecto funcione en cualquier equipo.
+# El servidor SÍ sube a git para que el proyecto funcione en cualquier equipo.
 # Lo que NUNCA sube: keys de API (.env) y paquetes instalados (.venv/).
 
 # ── API keys — NUNCA al repositorio ─────────────────────────────────────
-back/.env
+server/.env
 .env
 *.env
 !.env.example
-!back/.env.example
+!server/.env.example
 
 # ── Entorno virtual Python — se regenera con el script de arranque ───────
 # ¿Por qué no sube? Pesa cientos de MB y depende del sistema operativo.
@@ -34,5 +34,7 @@ logs/
 Thumbs.db
 desktop.ini
 
-# ── Playwright (testing interno) ─────────────────────────────────────────
-front/.playwright-mcp/
+# ── Herramientas de desarrollo local (no van al repo) ────────────────────
+client/.playwright-mcp/
+client/.claude/
+front/

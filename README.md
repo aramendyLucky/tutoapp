@@ -61,11 +61,11 @@ El script hace todo automáticamente:
 
 ```
 tutoapp/
-├── front/                  ← Los 3 archivos HTML (las guías)
+├── client/                 ← Los 3 archivos HTML (las guías)
 │   ├── ai-coding-tools.html
 │   ├── dev-setup-mac-m5.html
 │   └── macbook-pro-m5-guia.html
-├── back/                   ← Servidor Python (FastAPI)
+├── server/                 ← Servidor Python (FastAPI)
 │   ├── main.py             ← Código del servidor
 │   ├── requirements.txt    ← Lista de dependencias Python
 │   └── .env.example        ← Plantilla de configuración (sin keys)
@@ -82,7 +82,7 @@ Por defecto usa **Puter.js** — un servicio gratuito que funciona directo en el
 browser sin ninguna API key. No necesitás crear ninguna cuenta.
 
 Si querés usar Claude o Gemini con tu propia API key, editá el archivo
-`back/.env` (se crea automáticamente la primera vez que ejecutás el script):
+`server/.env` (se crea automáticamente la primera vez que ejecutás el script):
 
 ```env
 ANTHROPIC_API_KEY=tu-key-aqui   # claude.anthropic.com

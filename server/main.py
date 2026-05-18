@@ -175,7 +175,7 @@ async def save_section(request: Request) -> dict:
     if filename not in _ALLOWED_FILES:
         raise HTTPException(400, f"Archivo no permitido: {filename}")
 
-    front_dir = Path(__file__).parent.parent / "front"
+    front_dir = Path(__file__).parent.parent / "client"
     filepath = front_dir / filename
 
     if not filepath.exists():
@@ -210,9 +210,9 @@ async def save_section(request: Request) -> dict:
 
 # ─── STATIC FILES — debe ir al FINAL para no pisar las rutas /api/ ───────────
 
-_front_dir = Path(__file__).parent.parent / "front"
-if _front_dir.exists():
-    app.mount("/", StaticFiles(directory=str(_front_dir), html=True), name="static")
-    log.info("Sirviendo HTML desde: %s", _front_dir)
+_client_dir = Path(__file__).parent.parent / "client"
+if _client_dir.exists():
+    app.mount("/", StaticFiles(directory=str(_client_dir), html=True), name="static")
+    log.info("Sirviendo HTML desde: %s", _client_dir)
 else:
-    log.warning("No encontré el directorio front/ en: %s", _front_dir)
+    log.warning("No encontré el directorio client/ en: %s", _client_dir)

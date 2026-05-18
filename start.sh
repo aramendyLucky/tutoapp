@@ -22,7 +22,7 @@
 set -e
 
 # Ir al directorio donde está este script (aunque se ejecute desde otro lado)
-cd "$(dirname "$0")/back"
+cd "$(dirname "$0")/server"
 
 # ── 1. Verificar Python ──────────────────────────────────────────────────
 # En Mac Python se llama "python3", no "python"

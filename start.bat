@@ -14,7 +14,7 @@
 ::   6. Abre el browser en la guia elegida
 :: ============================================================
 chcp 65001 >nul
-cd /d "%~dp0back"
+cd /d "%~dp0server"
 
 :: ── 1. Verificar Python ──────────────────────────────────────────────────
 :: python --version devuelve 0 si esta instalado, errorlevel 1 si no
