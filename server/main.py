@@ -152,6 +152,7 @@ _ALLOWED_FILES = {
     "ai-coding-tools.html",
     "dev-setup-mac-m5.html",
     "macbook-pro-m5-guia.html",
+    "tutorial_mac_2026.html",
 }
 
 

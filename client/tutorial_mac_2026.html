@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La MEJOR configuración para tu Mac 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#0071e3; --blue-l:#5ac8fa; --gray:#1d1d1f; --gray-m:#424245;
+  --gray-l:#6e6e73; --bg:#f5f5f7; --white:#fff; --green:#30d158;
+  --orange:#ff9f0a; --red:#ff453a; --purple:#bf5af2; --teal:#5ac8fa;
+  --pink:#ff2d55; --indigo:#5e5ce6; --r:20px; --cr:14px;
+  --sh:0 4px 24px rgba(0,0,0,.08); --shh:0 8px 40px rgba(0,0,0,.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',-apple-system,sans-serif;background:var(--bg);color:var(--gray);line-height:1.6}
+
+/* HERO */
+.hero{background:linear-gradient(145deg,#1c1c1e,#2c2c2e 50%,#1c1c1e);color:#fff;padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(0,113,227,.18),transparent 60%),radial-gradient(ellipse at 70% 30%,rgba(191,90,242,.12),transparent 50%)}
+.hero-badge{display:inline-block;background:rgba(0,113,227,.2);border:1px solid rgba(0,113,227,.4);color:#5ac8fa;font-size:12px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 16px;border-radius:20px;margin-bottom:24px;position:relative}
+.hero h1{font-size:clamp(28px,5vw,56px);font-weight:700;line-height:1.1;position:relative;margin-bottom:16px}
+.hero h1 span{color:#0071e3}
+.hero p{font-size:17px;color:rgba(255,255,255,.6);max-width:560px;margin:0 auto 32px;position:relative}
+.hero-pills{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
+.hero-pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:13px;padding:6px 14px;border-radius:20px}
+
+/* NAV */
+.nav{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06);padding:14px 40px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;position:sticky;top:0;z-index:100}
+.nav-lbl{font-size:11px;font-weight:700;color:var(--gray-l);letter-spacing:1.5px;text-transform:uppercase;margin-right:4px}
+.nav a{font-size:12px;color:var(--blue);text-decoration:none;background:rgba(0,113,227,.08);padding:5px 12px;border-radius:20px;transition:all .2s;white-space:nowrap}
+.nav a:hover{background:var(--blue);color:#fff}
+
+/* LAYOUT */
+.wrap{max-width:920px;margin:0 auto;padding:52px 24px}
+.sec{margin-bottom:60px;scroll-margin-top:75px}
+
+/* SECTION HEADER */
+.sec-hd{display:flex;align-items:flex-start;gap:18px;margin-bottom:26px;padding-bottom:20px;border-bottom:2px solid rgba(0,0,0,.06)}
+.num{width:46px;height:46px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:17px;color:#fff;flex-shrink:0}
+.n-blue{background:linear-gradient(135deg,#0071e3,#147ce5)}
+.n-green{background:linear-gradient(135deg,#30d158,#34c759)}
+.n-orange{background:linear-gradient(135deg,#ff9f0a,#f05800)}
+.n-purple{background:linear-gradient(135deg,#bf5af2,#9b59b6)}
+.n-red{background:linear-gradient(135deg,#ff453a,#c0392b)}
+.n-teal{background:linear-gradient(135deg,#5ac8fa,#32ade6)}
+.n-pink{background:linear-gradient(135deg,#ff2d55,#ff375f)}
+.n-indigo{background:linear-gradient(135deg,#5e5ce6,#3634a3)}
+.n-gray{background:linear-gradient(135deg,#636366,#48484a)}
+.n-yellow{background:linear-gradient(135deg,#ffd60a,#ff9f0a)}
+.n-mint{background:linear-gradient(135deg,#63e6be,#20c997)}
+.sec-hd-info h2{font-size:22px;font-weight:700;margin-bottom:4px}
+.path{font-family:'DM Mono',monospace;font-size:11px;color:var(--blue);background:rgba(0,113,227,.07);padding:3px 10px;border-radius:6px;display:inline-block;margin-top:2px}
+
+/* CARDS */
+.grid{display:grid;gap:13px}
+.card{background:#fff;border-radius:var(--cr);padding:20px 22px;box-shadow:var(--sh);display:flex;gap:16px;align-items:flex-start;transition:all .25s;border:1px solid rgba(0,0,0,.04)}
+.card:hover{box-shadow:var(--shh);transform:translateY(-2px)}
+.ci{font-size:26px;width:50px;height:50px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-b{background:rgba(0,113,227,.1)} .ci-g{background:rgba(48,209,88,.1)}
+.ci-o{background:rgba(255,159,10,.1)} .ci-p{background:rgba(191,90,242,.1)}
+.ci-r{background:rgba(255,69,58,.1)} .ci-t{background:rgba(90,200,250,.1)}
+.ci-gr{background:rgba(110,110,115,.1)} .ci-pk{background:rgba(255,45,85,.1)}
+.ci-i{background:rgba(94,92,230,.1)} .ci-y{background:rgba(255,214,10,.1)}
+.card h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.card p{font-size:13px;color:var(--gray-l);line-height:1.55;margin-bottom:6px}
+.tip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;padding:4px 10px;border-radius:6px}
+.tip-b{color:var(--blue);background:rgba(0,113,227,.08)}
+.tip-g{color:#1a8a3c;background:rgba(48,209,88,.1)}
+.tip-o{color:#a05a00;background:rgba(255,159,10,.1)}
+.tip-r{color:#c0392b;background:rgba(255,69,58,.1)}
+
+/* TOGGLES */
+.tgl-row{display:flex;align-items:center;gap:10px;margin:5px 0}
+.tgl{width:42px;height:25px;border-radius:13px;position:relative;flex-shrink:0}
+.tgl.on{background:var(--green)} .tgl.off{background:#d1d1d6}
+.tgl::after{content:'';position:absolute;width:21px;height:21px;background:#fff;border-radius:50%;top:2px;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.tgl.on::after{left:19px} .tgl.off::after{left:2px}
+.tgl-lbl{font-size:13px;font-weight:500;color:var(--gray-m)}
+
+/* STEPS */
+.steps{display:grid;gap:10px;margin-top:14px}
+.step{display:flex;gap:12px;align-items:flex-start;background:#fff;border-radius:11px;padding:14px 18px;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04)}
+.sn{width:26px;height:26px;background:var(--blue);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.st{font-size:13.5px;color:var(--gray);line-height:1.5}
+code{font-family:'DM Mono',monospace;font-size:11.5px;background:rgba(0,0,0,.06);padding:2px 7px;border-radius:5px;color:var(--blue)}
+
+/* CALLOUTS */
+.callout{border-radius:13px;padding:16px 20px;display:flex;gap:13px;align-items:flex-start;margin:18px 0}
+.callout.info{background:rgba(0,113,227,.06);border:1px solid rgba(0,113,227,.15)}
+.callout.warn{background:rgba(255,159,10,.07);border:1px solid rgba(255,159,10,.2)}
+.callout.ok{background:rgba(48,209,88,.07);border:1px solid rgba(48,209,88,.2)}
+.callout.purple{background:rgba(191,90,242,.07);border:1px solid rgba(191,90,242,.2)}
+.ci2{font-size:20px;flex-shrink:0;margin-top:2px}
+.ct{font-size:13.5px;line-height:1.55}
+.ct strong{display:block;margin-bottom:2px}
+
+/* 2-COL */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+@media(max-width:580px){.two{grid-template-columns:1fr}}
+
+/* MENUBAR DEMO */
+.mb-demo{background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border-radius:11px;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 20px rgba(0,0,0,.1);margin:14px 0;border:1px solid rgba(0,0,0,.07);font-size:13px}
+.mb-l{display:flex;gap:16px;align-items:center;font-weight:500}
+.mb-r{display:flex;gap:10px;align-items:center;color:var(--gray-m)}
+
+/* DOCK DEMO */
+.dock{background:rgba(255,255,255,.65);backdrop-filter:blur(30px);border-radius:19px;padding:9px 18px;display:flex;gap:9px;justify-content:center;box-shadow:0 4px 30px rgba(0,0,0,.13);border:1px solid rgba(255,255,255,.8);margin:18px auto;width:fit-content}
+.dock span{font-size:30px;cursor:pointer;transition:transform .2s;display:inline-block}
+.dock span:hover{transform:scale(1.45) translateY(-7px)}
+
+/* APPS GRID */
+.apps{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:10px}
+.app{background:#fff;border-radius:13px;padding:16px;text-align:center;box-shadow:var(--sh);border:1px solid rgba(0,0,0,.04);transition:all .25s}
+.app:hover{transform:translateY(-3px);box-shadow:var(--shh)}
+.app .ai{font-size:32px;margin-bottom:8px;display:block}
+.app h4{font-size:13px;font-weight:600;margin-bottom:3px}
+.app p{font-size:11px;color:var(--gray-l)}
+
+/* SCREEN DEMO */
+.screen-demo{background:#1c1c1e;border-radius:14px;padding:20px;margin:14px 0}
+.screen-inner{background:linear-gradient(135deg,#2c2c2e,#3a3a3c);border-radius:10px;padding:14px 18px;color:#fff}
+.screen-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:8px}
+
+/* CHECKLIST */
+.chk-item{background:#fff;border-radius:11px;padding:14px 18px;display:flex;gap:11px;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:9px}
+.chk-ico{font-size:18px}
+.chk-txt{font-size:13.5px}
+.chk-txt strong{color:var(--gray)}
+
+/* DIVIDER */
+hr.div{border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(0,0,0,.08),transparent);margin:44px 0}
+
+/* CORNER GRID */
+.corners{display:grid;grid-template-columns:1fr 1fr;gap:13px;max-width:480px}
+.corner-card{background:#fff;border-radius:12px;padding:14px 16px;box-shadow:var(--sh);border:1px solid rgba(0,0,0,.04)}
+.corner-card .corner-icon{font-size:22px;margin-bottom:6px}
+.corner-card h4{font-size:13px;font-weight:600;margin-bottom:3px}
+.corner-card p{font-size:12px;color:var(--gray-l)}
+
+/* SECTION SUBTITLE */
+.sub{font-size:14px;color:var(--gray-l);margin-bottom:18px;line-height:1.5}
+
+/* COLOR PILLS */
+.color-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.clr{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.8);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+
+/* FOOTER */
+.footer{background:#1c1c1e;color:rgba(255,255,255,.45);text-align:center;padding:40px;font-size:12px}
+.footer strong{color:rgba(255,255,255,.75)}
+
+@media(max-width:600px){
+  .hero{padding:60px 20px 40px}
+  .nav{padding:12px 16px}
+  .wrap{padding:32px 16px}
+  .sec-hd{flex-direction:column;gap:10px}
+  .apps{grid-template-columns:1fr 1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📹 Tutorial completo del video</div>
+  <h1>La <span>MEJOR</span> configuración<br>para tu Mac en <span>2026</span></h1>
+  <p>Todos los ajustes del sistema vistos en el video, organizados paso a paso con iconos y rutas exactas.</p>
+  <div class="hero-pills">
+    <div class="hero-pill">🍎 macOS Sequoia</div>
+    <div class="hero-pill">⏱️ 12 min de video</div>
+    <div class="hero-pill">📋 11 secciones</div>
+    <div class="hero-pill">✅ Capturas analizadas</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <span class="nav-lbl">Ir a</span>
+  <a href="#s1">⚙️ Inicio automático</a>
+  <a href="#s2">🪄 Dock</a>
+  <a href="#s3">🪟 Ventanas</a>
+  <a href="#s4">🔀 Mission Control</a>
+  <a href="#s5">↖️ Esquinas activas</a>
+  <a href="#s6">🔧 Barra de menús</a>
+  <a href="#s7">🔍 Spotlight</a>
+  <a href="#s8">🔒 Privacidad</a>
+  <a href="#s9">🖥️ Pantallas</a>
+  <a href="#s10">🗂️ Escritorio & Widgets</a>
+  <a href="#s11">♿ Accesibilidad</a>
+  <a href="#extra">📦 Apps del Dock</a>
+  <a href="#loc-sistema">📍 Localización sistema</a>
+  <a href="#airdrop">📡 AirDrop</a>
+  <a href="#seguridad">🔐 FileVault</a>
+  <a href="#finder-vistas">🗂️ Finder vistas</a>
+  <a href="#escritorio-final">🖥️ Resultado final</a>
+</div>
+
+<div class="wrap">
+
+<!-- ========== 1. ÍTEMS DE INICIO ========== -->
+<div class="sec" id="s1">
+  <div class="sec-hd">
+    <div class="num n-blue">1</div>
+    <div class="sec-hd-info">
+      <h2>⚙️ Quitar las apps de inicio automático</h2>
+      <span class="path">🍎 Ajustes del Sistema → General → Ítems de inicio y extensiones</span>
+    </div>
+  </div>
+  <p class="sub">El primer consejo del video (subtítulo: <em>"1.- Quitar las apps de inicio automático"</em>). Al arrancar el Mac, muchas apps se abren solas o corren en segundo plano sin que lo sepas, consumiendo RAM y batería.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">🚀</div>
+      <div>
+        <h3>Abrir al iniciar sesión</h3>
+        <p>Apps que se lanzan automáticamente al hacer login. En el video se ven activas: <strong>App Store</strong> y <strong>Atajos</strong>. Elimina las que no necesites tocando el <strong>—</strong> debajo de la lista.</p>
+        <span class="tip tip-b">➕ Mantén solo lo que uses a diario</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">🔄</div>
+      <div>
+        <h3>Actividad en segundo plano — Estado visto en el video</h3>
+        <p>Cada toggle controla si esa app puede seguir corriendo aunque la cierres:</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🤖 ChatGPT — Activado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🔵 Google LLC — Activado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">☕ Oracle Java — Activado</span></div>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">🎵 Spotify — Desactivado ✅</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🌤️ Tiempo — Activado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🎥 Zoom — Activado</span></div>
+        <div style="margin-top:8px"><span class="tip tip-o">⚠️ Desactiva Spotify y Zoom si no los usas constantemente</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="st">Clic en <strong>🍎 menú Apple</strong> (esquina superior izquierda)</div></div>
+    <div class="step"><div class="sn">2</div><div class="st">Abre <strong>Ajustes del Sistema</strong></div></div>
+    <div class="step"><div class="sn">3</div><div class="st">Barra lateral → <strong>General</strong></div></div>
+    <div class="step"><div class="sn">4</div><div class="st">Haz clic en <strong>Ítems de inicio y extensiones</strong></div></div>
+    <div class="step"><div class="sn">5</div><div class="st">Sección "Actividad en segundo plano": desactiva las apps que no necesites corriendo en background</div></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 2. DOCK ========== -->
+<div class="sec" id="s2">
+  <div class="sec-hd">
+    <div class="num n-green">2</div>
+    <div class="sec-hd-info">
+      <h2>🪄 Dock personalizable</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Escritorio y Dock</span>
+    </div>
+  </div>
+  <p class="sub">El video muestra el Dock del Mac con todas las apps del autor y sus configuraciones exactas. Subtítulo del video: <em>"3.- Dock personalizable"</em>.</p>
+
+  <!-- DOCK DEL AUTOR -->
+  <div style="background:linear-gradient(135deg,#e2e4eb,#cdd0db);border-radius:16px;padding:28px 20px;text-align:center;margin-bottom:18px">
+    <p style="font-size:11px;color:#888;margin-bottom:12px;text-transform:uppercase;letter-spacing:1px">Dock exacto visto en el video</p>
+    <div class="dock">
+      <span title="Finder">🗂️</span><span title="Safari">🧭</span><span title="ChatGPT">🤖</span>
+      <span title="Spotify">🎵</span><span title="Mail">📧</span><span title="WhatsApp">💬</span>
+      <span title="VS Code">💻</span><span title="Notion">📓</span><span title="Bear">🐻</span>
+      <span title="Klack/otra">🟣</span><span title="Reeder/otra">⏺️</span><span title="Papelera">🗑️</span>
+    </div>
+    <p style="font-size:11px;color:#aaa;margin-top:6px">Pasa el cursor para ver el efecto de ampliación</p>
+  </div>
+
+  <div class="grid">
+    <div class="two">
+      <div class="card">
+        <div class="ci ci-b">📏</div>
+        <div>
+          <h3>Tamaño</h3>
+          <p>Slider de Pequeño a Grande. Se ve en nivel medio-pequeño en el video.</p>
+          <span class="tip tip-b">🎯 30–45% del slider</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ci ci-t">🔍</div>
+        <div>
+          <h3>Ampliación</h3>
+          <p>Agranda íconos al pasar el cursor. Slider en <strong>Grande</strong>.</p>
+          <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activada</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <div class="ci ci-gr">📍</div>
+        <div>
+          <h3>Posición</h3>
+          <p>Configurado en <strong>Abajo</strong> (predeterminado).</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ci ci-o">✨</div>
+        <div>
+          <h3>Animación al minimizar</h3>
+          <p>Seleccionado: <strong>Efecto Aladino</strong>. Más rápido y limpio que Genio.</p>
+          <span class="tip tip-o">🪄 Más rápido que Genio</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🔲</div>
+      <div>
+        <h3>Doble clic en barra de título → Zoom</h3>
+        <p>Al hacer doble clic en la barra de título de una ventana, esta se maximiza. Configurado como <strong>Zoom</strong>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-r">🔲</div>
+      <div>
+        <h3>Minimizar ventanas en el ícono de la app</h3>
+        <p>Cuando minimizas, la ventana va al ícono de la app en el Dock (no al extremo derecho). <strong>Activado en el video</strong>.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <div class="ci ci-r">👁️</div>
+        <div>
+          <h3>Ocultar Dock automáticamente</h3>
+          <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado</span></div>
+          <p style="margin-top:6px">No se oculta en el video, pero se puede activar para ganar espacio.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ci ci-g">🟢</div>
+        <div>
+          <h3>Indicadores de apps abiertas</h3>
+          <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+          <p style="margin-top:6px">Puntitos bajo los íconos de apps en ejecución.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-p">📋</div>
+      <div>
+        <h3>Mostrar apps recientes y sugeridas</h3>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado ✅ — Dock más limpio</span></div>
+        <p style="margin-top:6px">Desactivado para que el Dock solo muestre las apps que el propio usuario ha puesto.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🗂️</div>
+      <div>
+        <h3>Organizador Visual (Stage Manager)</h3>
+        <p>Organiza tus ventanas recientes en una vista lateral para reducir el desorden.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+        <div style="margin-top:4px"><div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Mostrar apps recientes en el organizador — Activado</span></div></div>
+        <div style="margin-top:4px"><span class="tip tip-b">📌 Mostrar ítems: En el escritorio ✅</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🖱️</div>
+      <div>
+        <h3>Hacer clic en el fondo para mostrar el escritorio</h3>
+        <p>Configurado en <strong>"Siempre"</strong>: clic en el escritorio aparta todas las ventanas y muestra los widgets.</p>
+        <span class="tip tip-b">🖥️ Siempre</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 3. VENTANAS ========== -->
+<div class="sec" id="s3">
+  <div class="sec-hd">
+    <div class="num n-teal">3</div>
+    <div class="sec-hd-info">
+      <h2>🪟 Gestión de Ventanas</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Escritorio y Dock → Ventanas</span>
+    </div>
+  </div>
+  <p class="sub">Sección visible en el video donde se configuran los comportamientos al arrastrar ventanas, minimizar y usar pestañas. Esto es nuevo en macOS Sequoia.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">📑</div>
+      <div>
+        <h3>Preferir pestañas al abrir documentos</h3>
+        <p>Configurado en <strong>"A pantalla completa"</strong>: abre documentos como pestañas cuando estás en pantalla completa.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-r">💾</div>
+      <div>
+        <h3>Preguntar si se guardan los cambios al cerrar</h3>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado — sin confirmación al cerrar</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">🔴</div>
+      <div>
+        <h3>Cerrar ventanas al salir de una aplicación</h3>
+        <p>Cuando está <strong>Activado</strong>: al cerrar una app, sus ventanas y documentos no se restaurarán la próxima vez que la abras. Se empieza desde cero.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+        <span class="tip tip-o" style="margin-top:6px">⚠️ Apps como Safari y Notas recordarán menos estado</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-g">🧲</div>
+      <div>
+        <h3>Arrastrar ventanas al borde para ajustarlas</h3>
+        <p>Arrastra una ventana al borde izquierdo o derecho de la pantalla para que ocupe la mitad. Característica tipo Windows.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">⬆️</div>
+      <div>
+        <h3>Arrastrar ventanas a la barra de menús para llenar la pantalla</h3>
+        <p>Arrastra una ventana hasta la barra de menús para que pase a pantalla completa.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-p">⌥</div>
+      <div>
+        <h3>Ajustar ventanas manteniendo ⌥ (Option) al arrastrarlas</h3>
+        <p>Mantén pulsada la tecla <code>⌥ Option</code> mientras arrastras para activar el ajuste inteligente de ventanas.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">▭</div>
+      <div>
+        <h3>Mostrar márgenes en las ventanas ajustadas</h3>
+        <p>Muestra un pequeño margen/espacio entre ventanas cuando están ajustadas lado a lado.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado (sin márgenes)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 4. MISSION CONTROL ========== -->
+<div class="sec" id="s4">
+  <div class="sec-hd">
+    <div class="num n-purple">4</div>
+    <div class="sec-hd-info">
+      <h2>🔀 Mission Control</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Escritorio y Dock → Mission Control</span>
+    </div>
+  </div>
+  <p class="sub">Mission Control muestra una visualización general unificada de todas las ventanas abiertas y las miniaturas de las apps a pantalla completa.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">🔃</div>
+      <div>
+        <h3>Reordenar Spaces automáticamente</h3>
+        <p>Los Spaces (escritorios virtuales) se reordenan según cuál uses más recientemente.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-g">🔀</div>
+      <div>
+        <h3>Al cambiar de app, ir a un Space con ventanas abiertas</h3>
+        <p>Si cambias a una app que tiene ventanas en otro Space, macOS salta automáticamente a ese Space.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">🗃️</div>
+      <div>
+        <h3>Agrupar ventanas por aplicación</h3>
+        <p>En Mission Control, las ventanas de una misma app aparecen agrupadas juntas.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-p">🖥️</div>
+      <div>
+        <h3>Pantallas con Spaces separados</h3>
+        <p>Si tienes un monitor externo, cada pantalla tiene su propio conjunto de Spaces independientes.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">⬆️</div>
+      <div>
+        <h3>Arrastrar ventanas a la parte superior para abrir Mission Control</h3>
+        <p>Arrastra una ventana hasta el borde superior de la pantalla para activar Mission Control y moverla a otro Space.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 5. ESQUINAS ACTIVAS ========== -->
+<div class="sec" id="s5">
+  <div class="sec-hd">
+    <div class="num n-orange">5</div>
+    <div class="sec-hd-info">
+      <h2>↖️ Esquinas activas (Hot Corners)</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Escritorio y Dock → Esquinas activas…</span>
+    </div>
+  </div>
+  <p class="sub">Al mover el cursor a cualquier esquina de la pantalla se activa una acción. En el video se resalta el botón <strong>"Esquinas activas…"</strong> con un recuadro amarillo. El video muestra la configuración de las esquinas:</p>
+
+  <div class="callout purple">
+    <span class="ci2">🖱️</span>
+    <div class="ct"><strong>¿Cómo funciona?</strong> Lleva el puntero del ratón exactamente a una de las 4 esquinas de la pantalla (sin hacer clic) y se disparará la acción asignada.</div>
+  </div>
+
+  <div class="corners">
+    <div class="corner-card">
+      <div class="corner-icon">↖️</div>
+      <h4>Esquina superior izquierda</h4>
+      <p>Mission Control — Vista general de todas las ventanas</p>
+    </div>
+    <div class="corner-card">
+      <div class="corner-icon">↗️</div>
+      <h4>Esquina superior derecha</h4>
+      <p>Ventanas de aplicación — Ventanas de la app activa</p>
+    </div>
+    <div class="corner-card">
+      <div class="corner-icon">↙️</div>
+      <h4>Esquina inferior izquierda</h4>
+      <p>Escritorio — Muestra el escritorio apartando ventanas</p>
+    </div>
+    <div class="corner-card">
+      <div class="corner-icon">↘️</div>
+      <h4>Esquina inferior derecha</h4>
+      <p>(Sin asignar o configuración adicional)</p>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top:16px">
+    <span class="ci2">💡</span>
+    <div class="ct"><strong>Otras opciones disponibles:</strong> Centro de notificaciones · Apps · Nota rápida · Activar salvapantallas · Desactivar salvapantallas · Poner la pantalla en reposo · Bloquear pantalla. Se ven todas en el desplegable del video.</div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="st">Ve a <strong>Ajustes del Sistema → Escritorio y Dock</strong></div></div>
+    <div class="step"><div class="sn">2</div><div class="st">Baja al final y haz clic en <strong>Esquinas activas…</strong></div></div>
+    <div class="step"><div class="sn">3</div><div class="st">Haz clic en cada desplegable de esquina y elige la acción que prefieras</div></div>
+    <div class="step"><div class="sn">4</div><div class="st">Haz clic en <strong>OK</strong> para guardar</div></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 6. BARRA DE MENÚS ========== -->
+<div class="sec" id="s6">
+  <div class="sec-hd">
+    <div class="num n-pink">6</div>
+    <div class="sec-hd-info">
+      <h2>🔧 Barra de menús completa</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Barra de menús</span>
+    </div>
+  </div>
+  <p class="sub">El video muestra la configuración completa de la barra de menús, incluyendo qué íconos están activados y cuál es el estado de cada uno.</p>
+
+  <!-- DEMO BARRA -->
+  <div class="mb-demo">
+    <div class="mb-l"><span>🍎</span><span>Finder</span><span>Archivo</span><span>Edición</span></div>
+    <div class="mb-r"><span>☀️ 8°C</span><span>📶</span><span>🔋 81%</span><span>🔷</span><span>⚡</span><span>Jue 26 mar 21:50:23</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">🔘</div>
+      <div>
+        <h3>Íconos activos en la barra (vistos en el video)</h3>
+        <p>Lista completa con estado:</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🕐 Reloj → con opciones personalizadas</span></div>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">🔊 Siri — Desactivado</span></div>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">🔍 Spotlight — Desactivado (se usa con ⌘ Espacio)</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">📶 Wi-Fi — Activado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🔷 Bluetooth — Activado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🔋 Batería — Activado → Opciones de batería…</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">💨 AirDrop — Activado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🌙 Modos de concentración — Mostrar cuando esté activo</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">📺 Duplicar pantalla — Mostrar cuando esté activo</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🖥️ Pantalla — Mostrar cuando esté activo</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🔊 Sonido — Mostrar siempre</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">🎵 Ahora suena — Mostrar siempre</span></div>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">👥 Cambio rápido de usuario — Desactivado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-g">🔋</div>
+      <div>
+        <h3>Batería → Opciones: Mostrar porcentaje</h3>
+        <p>El video muestra el panel de opciones de batería con:</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Mostrar porcentaje — Activado ✅</span></div>
+        <p style="margin-top:8px">Modo de energía: <strong>Siempre</strong></p>
+        <span class="tip tip-g">✅ Imprescindible: ver % de batería en todo momento</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🕐</div>
+      <div>
+        <h3>Reloj → Opciones del reloj…</h3>
+        <p>El video muestra el panel con estas opciones:</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Mostrar la fecha — Activado</span></div>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Mostrar el día de la semana — Desactivado</span></div>
+        <p style="margin:6px 0 4px"><strong>Estilo:</strong> 🔵 Digital (no analógico)</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Parpadeo de separadores — Desactivado</span></div>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Mostrar la hora con los segundos — Activado ✅</span></div>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Anunciar la hora — Desactivado</span></div>
+        <span class="tip tip-b" style="margin-top:8px">⏱️ Ver segundos en tiempo real es muy útil</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 7. SPOTLIGHT ========== -->
+<div class="sec" id="s7">
+  <div class="sec-hd">
+    <div class="num n-indigo">7</div>
+    <div class="sec-hd-info">
+      <h2>🔍 Spotlight</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Spotlight</span>
+    </div>
+  </div>
+  <p class="sub">El video dedica tiempo a la configuración de Spotlight. Se puede ver la lista de "Resultados de apps" que Spotlight puede incluir en sus búsquedas.</p>
+
+  <div class="callout info">
+    <span class="ci2">⌘</span>
+    <div class="ct"><strong>Atajo de teclado:</strong> <code>⌘ Cmd + Espacio</code> abre Spotlight desde cualquier lugar. Por eso el ícono de Spotlight en la barra de menús está <strong>desactivado</strong> en el video.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-i">🔍</div>
+      <div>
+        <h3>Mostrar contenido relacionado</h3>
+        <p>Muestra contenido de empresas colaboradoras de Apple al buscar texto, objetos y fotos.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">📊</div>
+      <div>
+        <h3>Ayudar a Apple a mejorar la función de búsqueda</h3>
+        <p>Permite a Apple guardar tus búsquedas en Safari, Siri, Spotlight y Consultar para mejorar el servicio.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+        <span class="tip tip-o" style="margin-top:6px">⚠️ Desactívalo si te preocupa la privacidad</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">📋</div>
+      <div>
+        <h3>Resultados de apps visibles en Spotlight</h3>
+        <p>Estas apps aparecen activadas en el video para que Spotlight muestre sus resultados:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">⚙️ Ajustes del Sistema</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">🛍️ App Store</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">⌨️ Atajos</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">📈 Bolsa</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">🔢 Calculadora</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">📅 Calendario</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🗑️</div>
+      <div>
+        <h3>Historial de búsquedas de Spotlight</h3>
+        <p>El video muestra el botón <strong>"Eliminar historial de búsquedas…"</strong>. Útil para limpiar el historial de lo que has buscado.</p>
+        <span class="tip tip-b">🧹 Bórralo ocasionalmente para mayor privacidad</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 8. PRIVACIDAD ========== -->
+<div class="sec" id="s8">
+  <div class="sec-hd">
+    <div class="num n-red">8</div>
+    <div class="sec-hd-info">
+      <h2>🔒 Privacidad y seguridad</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Privacidad y seguridad</span>
+    </div>
+  </div>
+  <p class="sub">El video muestra la sección completa de Privacidad con todos los permisos de acceso de las apps. Hay que revisarlos y recortar los accesos innecesarios.</p>
+
+  <div class="callout warn">
+    <span class="ci2">⚠️</span>
+    <div class="ct"><strong>Revisión importante.</strong> Cada vez que instalas una app nueva, puede haberse dado permisos que no recuerdas. Esta sección te da visibilidad total sobre qué accede a qué.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">📍</div>
+      <div>
+        <h3>Localización</h3>
+        <p>En el video se ve que <strong>7 apps</strong> tienen acceso a la ubicación. Haz clic y revisa cuáles son realmente necesarias.</p>
+        <span class="tip tip-o">🗺️ Solo activa en: Tiempo, Mapas, apps esenciales</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🌐</div>
+      <div>
+        <h3>Acceso de navegadores a las llaves de acceso</h3>
+        <p>Controla qué navegadores pueden usar las Contraseñas de iCloud. En el video: <strong>Ninguno</strong>.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">💾</div>
+      <div>
+        <h3>Acceso total al disco</h3>
+        <p>Apps con acceso completo a todos los archivos del disco. En el video: <strong>Ninguna</strong>. Solo concede este permiso a apps que realmente lo necesitan (como Backups o CleanMyMac).</p>
+        <span class="tip tip-r">🔴 Permiso muy sensible — revisar cuidadosamente</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">📁</div>
+      <div>
+        <h3>Archivos y carpetas</h3>
+        <p>En el video: <strong>8 apps</strong> con acceso a archivos y carpetas. Revisa cuáles son y si todas necesitan ese acceso.</p>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <div class="ci ci-gr">📅</div>
+        <div>
+          <h3>Calendarios</h3>
+          <p>En el video: <strong>Ninguna</strong> app con acceso.</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ci ci-gr">🏠</div>
+        <div>
+          <h3>Casa</h3>
+          <p>En el video: <strong>Ninguna</strong> app con acceso.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">👤</div>
+      <div>
+        <h3>Contactos</h3>
+        <p>En el video: <strong>1 app</strong> con acceso total a los contactos. Revisa cuál es y si realmente la necesita.</p>
+        <span class="tip tip-o">📇 Solo apps como Mail y WhatsApp deberían tener acceso</span>
+      </div>
+    </div>
+    <div class="two">
+      <div class="card">
+        <div class="ci ci-gr">🖼️</div>
+        <div><h3>Fotos</h3><p>En el video: <strong>Ninguna</strong> app con acceso.</p></div>
+      </div>
+      <div class="card">
+        <div class="ci ci-gr">🎵</div>
+        <div><h3>Multimedia y Apple Music</h3><p>En el video: <strong>Ninguna</strong> app con acceso.</p></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-i">♿</div>
+      <div>
+        <h3>Accesibilidad</h3>
+        <p>En el video: <strong>1 app</strong> con acceso de accesibilidad. Este es un permiso especial que permite a una app controlar tu Mac.</p>
+        <span class="tip tip-r">🔴 Permiso de alto riesgo — solo apps de confianza</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 9. PANTALLAS ========== -->
+<div class="sec" id="s9">
+  <div class="sec-hd">
+    <div class="num n-teal">9</div>
+    <div class="sec-hd-info">
+      <h2>🖥️ Pantallas — True Tone y Night Shift</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Pantallas</span>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">🎨</div>
+      <div>
+        <h3>Resolución de pantalla</h3>
+        <p>El video muestra las opciones: <strong>Texto más grande · Por omisión · Más espacio</strong>. El autor usa <strong>"Más espacio"</strong> para ver más contenido en pantalla.</p>
+        <span class="tip tip-b">💡 "Más espacio" = más cosas visibles, texto más pequeño</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-y">☀️</div>
+      <div>
+        <h3>Brillo y Ajustar brillo automáticamente</h3>
+        <p>El slider de brillo está configurado manualmente. El <strong>Ajuste automático está desactivado</strong> en el video.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Ajustar brillo automáticamente — Desactivado</span></div>
+        <span class="tip tip-o" style="margin-top:6px">⚠️ Si lo activas, puede consumir más batería</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">✨</div>
+      <div>
+        <h3>True Tone</h3>
+        <p>Adapta automáticamente los colores de la pantalla a las condiciones de luz ambiental de la habitación para una apariencia más natural.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">True Tone — Activado ✅</span></div>
+        <span class="tip tip-g">✅ Recomendado siempre activado</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🎨</div>
+      <div>
+        <h3>Perfil de color</h3>
+        <p>Configurado en <strong>"LCD a color"</strong> (perfil estándar para la pantalla integrada del MacBook).</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">🌙</div>
+      <div>
+        <h3>Night Shift — Modo nocturno</h3>
+        <p>Cambia los colores a tonos más cálidos al anochecer para proteger la vista y mejorar el sueño. Configuración del video:</p>
+        <ul style="margin:8px 0 8px 16px;font-size:13px;color:var(--gray-l);line-height:1.8">
+          <li><strong>Horario:</strong> De la puesta a la salida del sol 🌅</li>
+          <li><strong>Activar hasta la salida del sol:</strong> ✅ Activado</li>
+          <li><strong>Temperatura del color:</strong> Slider hacia "Más cálida" (aprox. 65%)</li>
+        </ul>
+        <span class="tip tip-o">🌙 Activar al atardecer protege la vista</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-t">📺</div>
+      <div>
+        <h3>Al conectarse al televisor</h3>
+        <p>Configurado en <strong>"Preguntar qué mostrar"</strong>: cada vez que conectas un TV o monitor externo, macOS te pregunta si duplicar o usar como pantalla secundaria.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="st">Ve a <strong>Ajustes del Sistema → Pantallas</strong></div></div>
+    <div class="step"><div class="sn">2</div><div class="st">Activa <strong>True Tone</strong></div></div>
+    <div class="step"><div class="sn">3</div><div class="st">Haz clic en <strong>Night Shift…</strong> (esquina inferior derecha)</div></div>
+    <div class="step"><div class="sn">4</div><div class="st">Horario: <strong>"De la puesta a la salida del sol"</strong> → Activa el toggle</div></div>
+    <div class="step"><div class="sn">5</div><div class="st">Mueve el slider de temperatura hacia <strong>"Más cálida"</strong> → <strong>Cerrar</strong></div></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 10. ESCRITORIO Y WIDGETS ========== -->
+<div class="sec" id="s10">
+  <div class="sec-hd">
+    <div class="num n-mint">10</div>
+    <div class="sec-hd-info">
+      <h2>🗂️ Escritorio, Widgets y DockFix</h2>
+      <span class="path">Escritorio → clic derecho → Editar widgets</span>
+    </div>
+  </div>
+  <p class="sub">El video dedica tiempo a mostrar los widgets en el escritorio y también presenta <strong>DockFix</strong>, una app de terceros para personalizar el Dock más allá de lo que permite macOS.</p>
+
+  <div class="callout purple">
+    <span class="ci2">🖥️</span>
+    <div class="ct"><strong>Widgets interactivos en el escritorio</strong> — macOS Sequoia permite poner widgets directamente en el escritorio (izquierda). En el video se ven 4 widgets activos en la esquina superior izquierda.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-r">📅</div>
+      <div>
+        <h3>Widget Calendario — Fecha grande</h3>
+        <p>Muestra el día del mes en grande. Video: <strong>"Jue Mar 26"</strong> con el número en negro/rojo. Tamaño grande.</p>
+        <span class="tip tip-b">📌 Posición: esquina superior izquierda</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">⏰</div>
+      <div>
+        <h3>Widget Reloj — Estilo Utility</h3>
+        <p>Reloj digital con aro circular mostrando <strong>22:05</strong>. Estilo "Utility" o análogo decorativo.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-t">🌤️</div>
+      <div>
+        <h3>Widget Tiempo (Clima) — Grande</h3>
+        <p>Muestra la ciudad, temperatura y previsión horaria. Video: <strong>Barcelona 12°, Mayormente despejado, Máx.15° Mín.10°</strong> con pronóstico de 6 horas.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-g">🔋</div>
+      <div>
+        <h3>Widget Batería — Múltiples dispositivos</h3>
+        <p>Muestra el porcentaje de 3+ dispositivos Apple: Mac, AirPods, y otro. Video: <strong>79% · 80% · 72%</strong> con círculos animados en verde.</p>
+        <span class="tip tip-g">🎧 Incluye la batería de AirPods, Watch, Magic Mouse...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="ci2">📊</span>
+    <div class="ct"><strong>Panel de Sugerencias de Widgets</strong> — Al hacer clic en la fecha/hora de la barra de menús, macOS muestra sugerencias de widgets incluyendo: Reloj analógico, Calendario mensual, Fotos, Batería e IBEX 35 (mercados).</div>
+  </div>
+
+  <!-- DOCKFIX -->
+  <div style="background:linear-gradient(135deg,#1c1c1e,#2c2c2e);border-radius:16px;padding:24px;margin-top:20px;color:#fff">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <span style="font-size:28px">🔧</span>
+      <div>
+        <h3 style="font-size:17px;font-weight:700">DockFix — App de terceros</h3>
+        <span style="font-size:12px;background:rgba(0,113,227,.3);color:#5ac8fa;padding:2px 10px;border-radius:10px">App de pago · v4.1.6</span>
+      </div>
+    </div>
+    <p style="font-size:13.5px;color:rgba(255,255,255,.65);margin-bottom:16px">El video muestra DockFix, una aplicación para personalizar el Dock muy por encima de lo que permite macOS nativo. Se ve el anuncio en una ventana superpuesta y luego su interfaz de configuración completa.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:12px">
+        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:4px">SECCIONES</p>
+        <p style="font-size:13px;color:#fff">General · Appearance · Interactions · Dock Content · Presets · Community Docks</p>
+      </div>
+      <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:12px">
+        <p style="font-size:12px;color:rgba(255,255,255,.5);margin-bottom:4px">OPCIONES GENERALES</p>
+        <p style="font-size:13px;color:#fff">Position: Bottom Center · Position Offset: 5 · Full Width: Disabled · Quick Glance</p>
+      </div>
+    </div>
+    <p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:12px">💡 También existe un botón "Install Community Dock" para importar configuraciones de Dock de la comunidad.</p>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="st">Haz <strong>clic derecho en el escritorio</strong></div></div>
+    <div class="step"><div class="sn">2</div><div class="st">Selecciona <strong>"Editar widgets"</strong></div></div>
+    <div class="step"><div class="sn">3</div><div class="st">Busca los widgets que quieres: <em>Calendario, Reloj, Tiempo, Batería</em></div></div>
+    <div class="step"><div class="sn">4</div><div class="st">Arrástralos a la zona izquierda del escritorio y ajusta su posición</div></div>
+    <div class="step"><div class="sn">5</div><div class="st">Haz clic fuera del panel para salir del modo de edición</div></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== 11. ACCESIBILIDAD ========== -->
+<div class="sec" id="s11">
+  <div class="sec-hd">
+    <div class="num n-gray">11</div>
+    <div class="sec-hd-info">
+      <h2>♿ Accesibilidad — Indicadores de movimiento</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Accesibilidad → Movimiento</span>
+    </div>
+  </div>
+  <p class="sub">El último ajuste del video: la sección de Movimiento dentro de Accesibilidad. El video muestra el panel de <strong>Indicadores de movimiento</strong> con opciones de personalización de los puntos indicadores del Dock.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-gr">🔘</div>
+      <div>
+        <h3>Reducir movimiento</h3>
+        <p>Reduce las animaciones del sistema (como el zoom de Mission Control y el parallax). Útil si las animaciones te molestan o si el Mac va lento.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🎞️</div>
+      <div>
+        <h3>Reproducir imágenes animadas automáticamente</h3>
+        <p>Controla si los GIFs y animaciones se reproducen solos en apps como Mail y Mensajes.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🎨</div>
+      <div>
+        <h3>Indicadores de movimiento — Personalización visual</h3>
+        <p>Controla el aspecto de los puntitos indicadores bajo los íconos del Dock. El video muestra el panel completo:</p>
+        <ul style="margin:8px 0 8px 16px;font-size:13px;color:var(--gray-l);line-height:1.9">
+          <li><strong>Patrón:</strong> 🔵 Normal (estable y predecible) vs Dinámico (más visual)</li>
+          <li><strong>Color:</strong> Escala de grises seleccionada en el video (+ rojo, naranja, amarillo, verde, azul, morado disponibles)</li>
+          <li><strong>Mostrar puntos más grandes:</strong> Desactivado</li>
+          <li><strong>Mostrar más puntos:</strong> Desactivado</li>
+        </ul>
+        <div class="color-row">
+          <div class="clr" style="background:#1c1c1e"></div>
+          <div class="clr" style="background:#ff453a"></div>
+          <div class="clr" style="background:#ff9f0a"></div>
+          <div class="clr" style="background:#ffd60a"></div>
+          <div class="clr" style="background:#30d158"></div>
+          <div class="clr" style="background:#0071e3"></div>
+          <div class="clr" style="background:#bf5af2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="st">Ve a <strong>Ajustes del Sistema → Accesibilidad</strong></div></div>
+    <div class="step"><div class="sn">2</div><div class="st">Selecciona <strong>Movimiento</strong> en la barra lateral</div></div>
+    <div class="step"><div class="sn">3</div><div class="st">Haz clic en <strong>Indicadores de movimiento…</strong></div></div>
+    <div class="step"><div class="sn">4</div><div class="st">Elige el <strong>Patrón</strong> (Normal o Dinámico) y el <strong>Color</strong> de los puntos</div></div>
+    <div class="step"><div class="sn">5</div><div class="st">Haz clic en <strong>Aceptar</strong></div></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== FINDER ========== -->
+<div class="sec" id="extra">
+  <div class="sec-hd">
+    <div class="num n-orange">📁</div>
+    <div class="sec-hd-info">
+      <h2>📁 Finder — Carpetas Inteligentes</h2>
+      <span class="path">🗂️ Finder → Archivo → Nueva carpeta inteligente</span>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <span class="ci2">🔎</span>
+    <div class="ct"><strong>Las Carpetas Inteligentes no son carpetas reales.</strong> Son búsquedas guardadas que muestran dinámicamente los archivos que cumplen tus criterios, sin importar dónde estén guardados en el disco.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">🔍</div>
+      <div>
+        <h3>Nueva carpeta inteligente — Ejemplo del video</h3>
+        <p>El video crea una carpeta que agrupa imágenes JPG abiertas recientemente. Criterios vistos:</p>
+        <ul style="margin:8px 0 8px 16px;font-size:13px;color:var(--gray-l);line-height:1.9">
+          <li><strong>Buscar en:</strong> Este Mac</li>
+          <li><strong>Criterio 1:</strong> Clase → es → otra → <code>jpg</code></li>
+          <li><strong>Criterio 2:</strong> Fecha de última apertura → en los últimos X días</li>
+          <li>Clic en <strong>+</strong> para añadir más criterios</li>
+          <li>Clic en <strong>Guardar</strong> para crear la carpeta permanente</li>
+        </ul>
+        <span class="tip tip-b">🖼️ Útil para tener siempre a mano las imágenes recientes</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div" style="margin:28px 0">
+
+  <!-- APPS DEL DOCK -->
+  <div class="sec-hd" style="border:none;padding:0;margin-bottom:20px">
+    <div class="num n-indigo" style="width:36px;height:36px;font-size:14px">📦</div>
+    <div class="sec-hd-info"><h2 style="font-size:18px">Apps del Dock vistas en el video</h2></div>
+  </div>
+
+  <div class="apps">
+    <div class="app"><span class="ai">🗂️</span><h4>Finder</h4><p>Gestor de archivos nativo</p></div>
+    <div class="app"><span class="ai">🧭</span><h4>Safari</h4><p>Navegador de Apple</p></div>
+    <div class="app"><span class="ai">🤖</span><h4>ChatGPT</h4><p>IA de OpenAI</p></div>
+    <div class="app"><span class="ai">🎵</span><h4>Spotify</h4><p>Música en streaming</p></div>
+    <div class="app"><span class="ai">📧</span><h4>Mail</h4><p>Correo nativo</p></div>
+    <div class="app"><span class="ai">💬</span><h4>WhatsApp</h4><p>Mensajería</p></div>
+    <div class="app"><span class="ai">💻</span><h4>VS Code</h4><p>Editor de código</p></div>
+    <div class="app"><span class="ai">📓</span><h4>Notion</h4><p>Notas y productividad</p></div>
+    <div class="app"><span class="ai">🐻</span><h4>Bear</h4><p>Notas en Markdown</p></div>
+    <div class="app"><span class="ai">🟣</span><h4>Klack / Otra</h4><p>App de productividad</p></div>
+    <div class="app"><span class="ai">⏺️</span><h4>Reeder / Otra</h4><p>Lector / Media</p></div>
+    <div class="app"><span class="ai">🗑️</span><h4>Papelera</h4><p>Siempre al final</p></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- CHECKLIST FINAL -->
+<div class="sec">
+  <div class="sec-hd">
+    <div class="num n-green">✅</div>
+    <div class="sec-hd-info">
+      <h2>🚀 Checklist completa del video</h2>
+      <span class="path">Todo lo que debes configurar</span>
+    </div>
+  </div>
+
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>General → Ítems de inicio:</strong> Apps de segundo plano innecesarias desactivadas (especialmente Spotify y Zoom)</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Dock:</strong> Tamaño pequeño, ampliación grande, animación Aladino, minimizar en ícono de app, apps recientes desactivadas, Stage Manager activado</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Ventanas:</strong> Cerrar ventanas al salir activado, arrastrar al borde activado, arrastrar a barra de menús activado, sin márgenes</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Mission Control:</strong> Reordenar Spaces, agrupar ventanas por app, Spaces separados por pantalla — todos activados</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Esquinas activas:</strong> Mission Control (↖️), Ventanas de app (↗️), Escritorio (↙️)</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Barra de menús:</strong> Batería con %, reloj con segundos y fecha, Wi-Fi, Bluetooth, AirDrop, Sonido siempre visible, Siri desactivado</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Spotlight:</strong> Ícono en barra desactivado (usar ⌘ Espacio), historial limpiado, "Ayudar a Apple" desactivado opcionalmente</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Privacidad → Localización:</strong> 7 apps revisadas, Lugares importantes desactivado, Buscar mi Mac activado</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Privacidad → Localización → Servicios del sistema:</strong> Sugerencias y búsqueda desactivado, Lugares y rutas desactivado</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Seguridad:</strong> FileVault ACTIVADO, apps permitidas de "App Store y desarrolladores conocidos", Accesorios en "Preguntar con nuevos"</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Pantallas:</strong> True Tone activado, resolución "Más espacio", brillo manual, Night Shift de puesta a salida del sol</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Escritorio:</strong> Widgets de Calendario (grande), Reloj (Utility), Clima (grande) y Batería (3 dispositivos) en la esquina izquierda</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>General → AirDrop y Continuidad:</strong> AirDrop en "Solo contactos", Handoff activado, Widgets iPhone activados, AirPlay receptor activado</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Finder:</strong> Carpeta inteligente "miniaturas" creada y guardada en escritorio, barra de ruta activada, vista de lista con columnas</span></div>
+  <div class="chk-item"><span class="chk-ico">✅</span><span class="chk-txt"><strong>Accesibilidad → Movimiento → Indicadores:</strong> Patrón Normal, color Rojo, puntos grandes activados</span></div>
+  <div class="chk-item"><span class="chk-ico">🔧</span><span class="chk-txt"><strong>DockFix (app de terceros):</strong> Dock personalizado con posición Bottom Center, offset 5, Full Width desactivado</span></div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- ========== SECCIÓN EXTRA A: LOCALIZACIÓN DE SERVICIOS DEL SISTEMA ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="loc-sistema">
+  <div class="sec-hd">
+    <div class="num n-teal">📍</div>
+    <div class="sec-hd-info">
+      <h2>📍 Localización — Servicios del sistema</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Privacidad y seguridad → Localización → Servicios del sistema</span>
+    </div>
+  </div>
+  <p class="sub">Dentro de Localización hay un subnivel llamado <strong>"Servicios del sistema"</strong> que controla qué funciones propias del Mac (no de apps externas) pueden acceder a tu ubicación. El video muestra este panel con todos los toggles.</p>
+
+  <div class="callout warn">
+    <span class="ci2">🔍</span>
+    <div class="ct"><strong>¿Por qué importa?</strong> Muchos servicios del sistema usan tu ubicación aunque tú no lo hayas pedido. Aquí puedes desactivar los que no necesitas para ganar privacidad y un poco más de batería.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">⌨️</div>
+      <div>
+        <h3>Avisos y automatizaciones de atajos</h3>
+        <p>Permite que la app Atajos use tu ubicación para disparar automatizaciones basadas en lugar.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🔍</div>
+      <div>
+        <h3>Sugerencias y búsqueda</h3>
+        <p>Usa tu ubicación para personalizar los resultados de búsqueda en Spotlight y Siri.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado ✅ — Mayor privacidad</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🕐</div>
+      <div>
+        <h3>Configuración de la zona horaria 🔺</h3>
+        <p>Ajusta automáticamente la zona horaria según tu ubicación geográfica.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado — necesario si viajas</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🎨</div>
+      <div>
+        <h3>Personalización del sistema 🔺</h3>
+        <p>Adapta ciertos elementos del sistema según tu ubicación.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🗺️</div>
+      <div>
+        <h3>Lugares y rutas importantes</h3>
+        <p>El Mac guarda un historial de los lugares que visitas para ofrecerte funciones personalizadas. <strong>Desactivado en el video</strong> — buena práctica de privacidad.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado ✅</span></div>
+        <span class="tip tip-o" style="margin-top:6px">⚠️ Desactivar mejora tu privacidad significativamente</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-g">🔍</div>
+      <div>
+        <h3>Buscar mi Mac 🔺</h3>
+        <p>Permite localizar tu Mac desde iCloud si lo pierdes o te lo roban. <strong>Imprescindible tenerlo activado.</strong></p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado ✅ — No lo desactives nunca</span></div>
+        <span class="tip tip-g">🛡️ Imprescindible para recuperar el Mac si lo pierdes</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🏠</div>
+      <div>
+        <h3>Casa</h3>
+        <p>Permite que la app Casa de Apple use tu ubicación para automatizaciones de hogar inteligente.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">📶</div>
+      <div>
+        <h3>Conexión de red y redes inalámbricas 🔺</h3>
+        <p>Usa la ubicación para optimizar las conexiones de red Wi-Fi según tu zona.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">📊</div>
+      <div>
+        <h3>Análisis del Mac</h3>
+        <p>Incluye información de ubicación en los datos de diagnóstico que se envían a Apple.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado en el video</span></div>
+        <span class="tip tip-o">⚠️ Desactívalo si te preocupa la privacidad</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🔔</div>
+      <div>
+        <h3>Mostrar el ícono de localización en el Centro de Control</h3>
+        <p>Cuando un servicio del sistema solicita tu ubicación, aparece un pequeño ícono de flecha en la barra de menús.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Activado ✅ — Útil para saber cuándo te localizan</span></div>
+        <span class="tip tip-b">👁️ Muy recomendado para tener visibilidad</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#f0f0f5;border-radius:12px;padding:14px 18px;margin-top:16px;font-size:13px;color:var(--gray-m)">
+    <strong>Nota 🔺</strong> — Los servicios marcados con 🔺 en macOS indican que han accedido recientemente a tu ubicación.
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== SECCIÓN EXTRA B: AIRDROP Y CONTINUIDAD ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="airdrop">
+  <div class="sec-hd">
+    <div class="num n-blue">📡</div>
+    <div class="sec-hd-info">
+      <h2>📡 AirDrop y Continuidad</h2>
+      <span class="path">⚙️ Ajustes del Sistema → General → AirDrop y Continuidad</span>
+    </div>
+  </div>
+  <p class="sub">Una de las secciones finales del video. Configura cómo tu Mac se conecta y trabaja junto con tu iPhone, iPad y otros dispositivos Apple. El video navega por la pantalla completa de esta sección.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">💨</div>
+      <div>
+        <h3>AirDrop — Quién puede enviarte archivos</h3>
+        <p>Controla quién puede enviarte contenido a través de AirDrop. Configurado en <strong>"Solo contactos"</strong>: solo las personas que están en tu agenda pueden verte.</p>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <span style="background:#f0f0f5;border-radius:7px;padding:5px 10px;font-size:12px">Desactivado</span>
+          <span style="background:#f0f0f5;border-radius:7px;padding:5px 10px;font-size:12px">Solo contactos ✅</span>
+          <span style="background:#f0f0f5;border-radius:7px;padding:5px 10px;font-size:12px">Todos</span>
+        </div>
+        <span class="tip tip-b" style="margin-top:8px">👥 "Solo contactos" = equilibrio perfecto entre accesibilidad y privacidad</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">👥</div>
+      <div>
+        <h3>Contactos de AirDrop conocidos</h3>
+        <p>Las personas con las que hayas compartido un código de un solo uso pueden detectarte automáticamente durante 30 días. Se puede gestionar con el botón <strong>"Gestionar…"</strong></p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🔗</div>
+      <div>
+        <h3>Continuidad — Permitir Handoff</h3>
+        <p>Handoff te permite empezar una tarea en un dispositivo Apple y continuarla en otro. Por ejemplo: empezar un email en iPhone y terminarlo en el Mac.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Permitir Handoff — Activado ✅</span></div>
+        <span class="tip tip-g">✅ Muy útil con iPhone y iPad — no lo desactives</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">📱</div>
+      <div>
+        <h3>Widgets y duplicación del iPhone</h3>
+        <p>Permite usar widgets de apps de tu iPhone directamente en el escritorio del Mac, y duplicar la pantalla del iPhone en el Mac.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Widgets del iPhone — Activado</span></div>
+        <p style="margin-top:6px;font-size:13px;color:var(--gray-l)">iPhone vinculado: <strong>iPhone de ALF</strong></p>
+        <p style="font-size:13px;color:var(--gray-l)">Notificaciones y actividades en directo: <strong>Sí</strong></p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">📺</div>
+      <div>
+        <h3>AirPlay — Receptor AirPlay</h3>
+        <p>Tu Mac puede actuar como receptor de AirPlay para que otros dispositivos Apple envíen audio o vídeo a él.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Receptor AirPlay — Activado</span></div>
+        <p style="margin-top:6px;font-size:13px;color:var(--gray-l)">Permitir AirPlay para: <strong>Usuario actual</strong></p>
+        <div class="tgl-row" style="margin-top:4px"><div class="tgl on"></div><span class="tgl-lbl">Solicitar contraseña — Activado (más seguro)</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== SECCIÓN EXTRA C: FINDER EN DETALLE ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="finder-detail">
+  <div class="sec-hd">
+    <div class="num n-orange">📂</div>
+    <div class="sec-hd-info">
+      <h2>📂 Finder — Detalle completo del video</h2>
+      <span class="path">🗂️ Finder → Archivo → Nueva carpeta inteligente (subtítulo: "6.1.- Carpetas inteligentes")</span>
+    </div>
+  </div>
+  <p class="sub">El video nombra este apartado <strong>"6.1.- Carpetas inteligentes"</strong> y dedica varios minutos a mostrar exactamente cómo crearlas y para qué sirven. Se puede ver la carpeta real del autor (<em>snoflatech</em>) con archivos de miniaturas de Apple.</p>
+
+  <div class="callout info">
+    <span class="ci2">🔎</span>
+    <div class="ct"><strong>Las Carpetas Inteligentes son búsquedas guardadas — no carpetas reales.</strong> Los archivos no se mueven a ningún sitio; simplemente aparecen agrupados según los criterios que definas, independientemente de dónde estén guardados.</div>
+  </div>
+
+  <!-- DEMO FINDER -->
+  <div style="background:#fff;border-radius:16px;box-shadow:0 4px 30px rgba(0,0,0,.12);overflow:hidden;margin:16px 0;border:1px solid rgba(0,0,0,.07)">
+    <div style="background:#f0f0f0;padding:10px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,0,0,.08)">
+      <span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:#febc2e;display:inline-block"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:#28c840;display:inline-block"></span>
+      <span style="margin-left:12px;font-size:13px;font-weight:600;color:#555">📁 snoflatech</span>
+    </div>
+    <div style="display:flex">
+      <div style="width:160px;background:#f8f8f8;padding:12px;font-size:12px;border-right:1px solid rgba(0,0,0,.06);min-height:160px">
+        <p style="color:#888;margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:1px">Favoritos</p>
+        <p style="margin-bottom:5px">📱 Aplicaciones</p>
+        <p style="margin-bottom:5px">🖥️ Escritorio</p>
+        <p style="margin-bottom:5px">📄 Documentos</p>
+        <p style="margin-bottom:5px">⬇️ Descargas</p>
+        <p style="color:#888;margin:8px 0 4px;font-size:10px;text-transform:uppercase;letter-spacing:1px">Ubicaciones</p>
+        <p style="margin-bottom:5px">☁️ iCloud...</p>
+        <p style="margin-bottom:5px">💨 AirDrop</p>
+      </div>
+      <div style="flex:1;padding:12px">
+        <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:4px;font-size:11px;color:#888;border-bottom:1px solid #eee;padding-bottom:6px;margin-bottom:8px">
+          <span>Nombre</span><span>Fecha mod.</span><span>Tamaño</span><span>Clase</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr auto auto auto;gap:6px;font-size:12px;align-items:center">
+          <span>🖼️ apple_silver.jpeg</span><span style="color:#888;font-size:11px">anteayer</span><span style="color:#888;font-size:11px">90 KB</span><span style="color:#888;font-size:11px">Imagen JPEG</span>
+          <span>🖼️ iphone_miniatura.jpg</span><span style="color:#888;font-size:11px">anteayer</span><span style="color:#888;font-size:11px">71 KB</span><span style="color:#888;font-size:11px">Imagen JPEG</span>
+          <span>🖼️ macbookNeao_miniatura.jpg</span><span style="color:#888;font-size:11px">anteayer</span><span style="color:#888;font-size:11px">156 KB</span><span style="color:#888;font-size:11px">Imagen JPEG</span>
+          <span>🖼️ WWDC_miniatura.jpg</span><span style="color:#888;font-size:11px">anteayer</span><span style="color:#888;font-size:11px">111 KB</span><span style="color:#888;font-size:11px">Imagen JPEG</span>
+        </div>
+        <div style="margin-top:10px;font-size:11px;color:#aaa">Macintosh HD › Usuarios › alf › Documentos › snoflatech</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">🎛️</div>
+      <div>
+        <h3>Operadores de filtro disponibles</h3>
+        <p>El video muestra el desplegable completo de operadores para el criterio de <strong>Nombre</strong>:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">coincide con</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">contiene</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">empieza por</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">termina en</span>
+          <span style="background:#0071e3;color:#fff;padding:4px 10px;border-radius:7px;font-size:12px">✓ es</span>
+          <span style="background:#f0f0f5;padding:4px 10px;border-radius:7px;font-size:12px">no es</span>
+        </div>
+        <span class="tip tip-b" style="margin-top:8px">💡 Usa "es" + extensión exacta para filtrar tipos de archivo</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-g">💡</div>
+      <div>
+        <h3>Casos de uso prácticos para Carpetas Inteligentes</h3>
+        <ul style="margin:6px 0 0 16px;font-size:13px;color:var(--gray-l);line-height:1.9">
+          <li>🖼️ Todas las imágenes JPG abiertas en los últimos 7 días</li>
+          <li>📄 PDFs creados este mes</li>
+          <li>🎬 Vídeos mayores de 1 GB</li>
+          <li>📝 Documentos sin etiquetar</li>
+          <li>⬇️ Archivos descargados hace más de 30 días</li>
+          <li>🔴 Archivos con etiqueta Roja (urgentes)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-p">🏷️</div>
+      <div>
+        <h3>Etiquetas del Finder (Gris visible en el video)</h3>
+        <p>La barra lateral del Finder del autor muestra una sección <strong>"Etiquetas"</strong> con la etiqueta <strong>Gris</strong> visible. Las etiquetas de color permiten categorizar archivos y usarlos también como criterio en Carpetas Inteligentes.</p>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+          <div style="width:14px;height:14px;border-radius:50%;background:#8e8e93;border:2px solid rgba(0,0,0,.1)"></div>
+          <span style="font-size:12px">Gris (etiqueta activa en el Finder del autor)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== SECCIÓN EXTRA D: SEGURIDAD — FILEVAULT Y MÁS ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="seguridad">
+  <div class="sec-hd">
+    <div class="num n-red">🔐</div>
+    <div class="sec-hd-info">
+      <h2>🔐 Seguridad — FileVault y protección del sistema</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Privacidad y seguridad → (sección Seguridad)</span>
+    </div>
+  </div>
+  <p class="sub">El video dedica una parte específica a la sección de Seguridad dentro de Privacidad. Aquí están los ajustes más críticos para proteger tu Mac tanto de accesos externos como de software malicioso.</p>
+
+  <div class="callout warn">
+    <span class="ci2">🛡️</span>
+    <div class="ct"><strong>Esta sección es la más importante para la seguridad del Mac.</strong> FileVault y el control de aplicaciones son la primera línea de defensa contra robo de datos y malware.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-r">🔒</div>
+      <div>
+        <h3>FileVault — Encriptación del disco completo</h3>
+        <p>FileVault protege todos los datos del Mac mediante encriptación AES de 256 bits. Si alguien roba tu Mac y extrae el disco, no podrá leer ningún archivo sin la contraseña.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl" style="font-weight:700;color:#1a8a3c">FileVault — ACTIVADO ✅ (confirmado en el video)</span></div>
+        <ul style="margin:10px 0 0 16px;font-size:13px;color:var(--gray-l);line-height:1.8">
+          <li><strong>Clave de recuperación:</strong> botón "Mostrar" disponible por si olvidas la contraseña</li>
+          <li>La clave también se puede recuperar con el llavero de iCloud</li>
+        </ul>
+        <span class="tip tip-g" style="margin-top:8px">🛡️ Imprescindible en cualquier portátil — actívalo siempre</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">🛍️</div>
+      <div>
+        <h3>Permitir aplicaciones de</h3>
+        <p>Controla qué aplicaciones puede ejecutar el Mac según su origen. Configurado en:</p>
+        <div style="background:#f0f7ff;border:1px solid rgba(0,113,227,.15);border-radius:8px;padding:10px 14px;margin-top:8px">
+          <p style="font-size:13px;font-weight:600;color:var(--blue)">✅ "App Store y desarrolladores conocidos"</p>
+          <p style="font-size:12px;color:var(--gray-l);margin-top:2px">Permite apps de la App Store y apps firmadas por desarrolladores certificados por Apple</p>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <span style="background:#f0f0f5;border-radius:7px;padding:4px 10px;font-size:12px">Solo App Store</span>
+          <span style="background:#e8f4e8;border-radius:7px;padding:4px 10px;font-size:12px;color:#1a8a3c;border:1px solid rgba(48,209,88,.3)">✓ App Store y desarrolladores conocidos</span>
+          <span style="background:#f0f0f5;border-radius:7px;padding:4px 10px;font-size:12px">Cualquier lugar (avanzado)</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-o">⚡</div>
+      <div>
+        <h3>Modo de concentración — Modo de aislamiento</h3>
+        <p>Visible en la sección de Privacidad. Incluye ajustes para <strong>Modos de concentración</strong> (1 activo), <strong>Monitorización de dispositivos de entrada</strong> (0 apps), <strong>Reconocimiento de voz</strong> (0 apps), <strong>Red local</strong> (2 apps).</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">⚠️</div>
+      <div>
+        <h3>Aviso de contenido sensible</h3>
+        <p>Detecta automáticamente imágenes de contenido sensible (nudismo) en Mensajes, AirDrop, Video FaceTime y otras apps. En el video: <strong>Desactivado</strong>.</p>
+        <div class="tgl-row"><div class="tgl off"></div><span class="tgl-lbl">Desactivado en el video</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🔬</div>
+      <div>
+        <h3>Análisis y mejoras + Publicidad de Apple</h3>
+        <p>Controla si tu Mac envía datos de diagnóstico a Apple y si recibes publicidad personalizada basada en el Apple ID. Secciones visibles en el video aunque no se configura nada específico.</p>
+        <span class="tip tip-o">⚠️ Desactiva "Publicidad de Apple" si no quieres anuncios personalizados</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🤖</div>
+      <div>
+        <h3>Informe de Apple Intelligence</h3>
+        <p>Comparte informes del uso de Apple Intelligence con Apple. En el video: <strong>Activado</strong>.</p>
+        <div class="tgl-row"><div class="tgl on"></div><span class="tgl-lbl">Informe de Apple Intelligence — Activado</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-p">🔌</div>
+      <div>
+        <h3>Accesorios</h3>
+        <p>Controla si los accesorios USB-C/Thunderbolt pueden conectarse sin preguntar. Configurado en <strong>"Preguntar con nuevos accesorios"</strong> — más seguro que permitir todo automáticamente.</p>
+        <span class="tip tip-b">🔌 Buena protección contra ataques físicos por USB</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><div class="sn">1</div><div class="st">Ve a <strong>Ajustes del Sistema → Privacidad y seguridad</strong></div></div>
+    <div class="step"><div class="sn">2</div><div class="st">Baja hasta la sección <strong>Seguridad</strong></div></div>
+    <div class="step"><div class="sn">3</div><div class="st">Verifica que <strong>FileVault</strong> esté <strong>Activado</strong> — si no lo está, actívalo</div></div>
+    <div class="step"><div class="sn">4</div><div class="st">Guarda la <strong>Clave de recuperación</strong> en un lugar seguro (no en el mismo Mac)</div></div>
+    <div class="step"><div class="sn">5</div><div class="st">Configura <strong>"Permitir aplicaciones de"</strong> → <code>App Store y desarrolladores conocidos</code></div></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== SECCIÓN EXTRA E: FINDER — VISTAS Y OPCIONES ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="finder-vistas">
+  <div class="sec-hd">
+    <div class="num n-orange">🗂️</div>
+    <div class="sec-hd-info">
+      <h2>🗂️ Finder — Vistas, barra de rutas y carpeta guardada</h2>
+      <span class="path">🗂️ Finder → menú Visualización</span>
+    </div>
+  </div>
+  <p class="sub">El video navega por el menú <strong>Visualización</strong> del Finder y muestra la Smart Folder guardada <em>"miniaturas"</em> directamente en el escritorio del Mac.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">👁️</div>
+      <div>
+        <h3>Modos de vista del Finder (menú Visualización)</h3>
+        <p>El video abre el menú Visualización y se ven todas las opciones con sus atajos:</p>
+        <div style="display:grid;gap:6px;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#f0f0f5;border-radius:8px;font-size:13px">
+            <span>☑️ <strong>Como íconos</strong></span><code>⌘ 1</code>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#f0f0f5;border-radius:8px;font-size:13px">
+            <span>📋 <strong>Como lista</strong></span><code>⌘ 2</code>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#f0f0f5;border-radius:8px;font-size:13px">
+            <span>📊 <strong>Como columnas</strong></span><code>⌘ 3</code>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:#f0f0f5;border-radius:8px;font-size:13px">
+            <span>🖼️ <strong>Como galería</strong></span><code>⌘ 4</code>
+          </div>
+        </div>
+        <span class="tip tip-b" style="margin-top:8px">💡 El video usa vista de íconos para mostrar las imágenes de la carpeta snoflatech</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">⚙️</div>
+      <div>
+        <h3>Opciones adicionales del menú Visualización</h3>
+        <ul style="margin:6px 0 0 16px;font-size:13px;color:var(--gray-l);line-height:1.9">
+          <li>Usar grupos <code>^ ⌘ 0</code></li>
+          <li>Ordenar por →</li>
+          <li>Alinear / Alinear por →</li>
+          <li>Mostrar barra de pestañas <code>⇧ ⌘ T</code></li>
+          <li>Mostrar todas las pestañas <code>⇧ ⌘ C</code></li>
+          <li>Ocultar/Mostrar barra lateral <code>⌥ ⌘ S</code></li>
+          <li>Mostrar previsualización <code>⇧ ⌘ P</code></li>
+          <li><strong>Mostrar barra de ruta</strong> <code>⌥ ⌘ P</code></li>
+          <li>Mostrar barra de estado <code>⌘ /</code></li>
+          <li>Personalizar barra de herramientas…</li>
+          <li>Mostrar opciones de visualización <code>⌘ J</code></li>
+        </ul>
+        <span class="tip tip-b" style="margin-top:8px">💡 Activa la <strong>barra de ruta</strong> siempre — te muestra dónde está el archivo</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-p">📁</div>
+      <div>
+        <h3>Smart Folder "miniaturas" guardada en el escritorio</h3>
+        <p>El video muestra cómo la carpeta inteligente creada se guarda con el ícono de <strong>carpeta morada/lila con engranaje</strong> directamente en el escritorio. El nombre elegido es <strong>"miniaturas"</strong>.</p>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:10px;background:#f8f0ff;border-radius:10px;padding:12px">
+          <span style="font-size:36px">🟣</span>
+          <div>
+            <p style="font-size:14px;font-weight:600">miniaturas</p>
+            <p style="font-size:12px;color:var(--gray-l)">Carpeta Inteligente (ícono morado con engranaje ⚙️)</p>
+          </div>
+        </div>
+        <span class="tip tip-b" style="margin-top:10px">📌 Las Smart Folders se guardan en la carpeta del usuario pero puedes ponerlas donde quieras</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-b">📍</div>
+      <div>
+        <h3>Barra de ruta del Finder</h3>
+        <p>En el video se ve claramente la barra de ruta en la parte inferior del Finder mostrando la ruta completa: <code>Macintosh HD › Usuarios › alf › Documentos › snoflatech</code></p>
+        <p style="margin-top:6px;font-size:13px;color:var(--gray-l)">Para activarla: menú <strong>Visualización → Mostrar barra de ruta</strong> o <code>⌥ ⌘ P</code></p>
+        <span class="tip tip-g">✅ Muy recomendado: siempre sabes exactamente dónde estás</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== SECCIÓN EXTRA F: ACCESIBILIDAD PANEL COMPLETO ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="accesibilidad-panel">
+  <div class="sec-hd">
+    <div class="num n-gray">♿</div>
+    <div class="sec-hd-info">
+      <h2>♿ Accesibilidad — Panel completo</h2>
+      <span class="path">⚙️ Ajustes del Sistema → Accesibilidad</span>
+    </div>
+  </div>
+  <p class="sub">El video muestra la pantalla principal de Accesibilidad con una <strong>flecha roja</strong> apuntando específicamente a <strong>Movimiento</strong>. Esto indica que es el único ajuste de Accesibilidad que el autor recomienda tocar.</p>
+
+  <div class="callout info">
+    <span class="ci2">🎯</span>
+    <div class="ct"><strong>El autor solo señala "Movimiento".</strong> El resto de la sección Accesibilidad (VoiceOver, Zoom, texto flotante, etc.) está pensado para necesidades específicas y no forma parte de la configuración general recomendada.</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="ci ci-b">👁️</div>
+      <div>
+        <h3>Sección Visión (no modificada en el video)</h3>
+        <div style="display:grid;gap:5px;margin-top:6px">
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🔊</span> VoiceOver</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🔍</span> Zoom</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>💬</span> Texto flotante</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🖥️</span> Pantalla</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#e8f0ff;border-radius:7px;font-size:13px;border:1px solid rgba(0,113,227,.2)"><span>🎯</span> <strong>Movimiento ← el autor señala esto con flecha roja</strong></div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>📖</span> Lectura y voz</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🎙️</span> Audiodescripción</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-gr">🎧</div>
+      <div>
+        <h3>Sección Audición (no modificada en el video)</h3>
+        <div style="display:grid;gap:5px;margin-top:6px">
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🎧</span> Audífonos</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🔉</span> Audio</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>📞</span> RTT</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>📝</span> Subtítulos</div>
+          <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;background:#f8f8fa;border-radius:7px;font-size:13px"><span>🔴</span> Subtítulos en vivo</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ci ci-r">🎯</div>
+      <div>
+        <h3>Movimiento → Indicadores de movimiento (el único ajuste recomendado)</h3>
+        <p>Es el panel que el video muestra en detalle. El autor lo usa para personalizar el color y tamaño de los puntitos indicadores bajo los íconos del Dock.</p>
+        <div style="background:#fff3f0;border-radius:10px;padding:12px;margin-top:8px;border:1px solid rgba(255,69,58,.15)">
+          <p style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:6px">Configuración final del video:</p>
+          <ul style="font-size:13px;color:var(--gray-l);line-height:1.8;margin-left:16px">
+            <li>Patrón: <strong>Normal</strong></li>
+            <li>Color: <strong>Escala de grises (negro)</strong> → luego cambia a <strong>Rojo</strong></li>
+            <li>Mostrar puntos más grandes: <strong>Activado</strong> en el último frame</li>
+            <li>Mostrar más puntos: <strong>Desactivado</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== SECCIÓN EXTRA G: ESCRITORIO FINAL DEL VIDEO ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="escritorio-final">
+  <div class="sec-hd">
+    <div class="num n-mint">🖥️</div>
+    <div class="sec-hd-info">
+      <h2>🖥️ Resultado final — Escritorio del Mac configurado</h2>
+      <span class="path">Escritorio de macOS Sequoia con todos los ajustes aplicados</span>
+    </div>
+  </div>
+  <p class="sub">El video cierra mostrando el escritorio del Mac al día siguiente (Vie Mar 27) con la configuración completa aplicada. Así luce el resultado final:</p>
+
+  <!-- ESCRITORIO FINAL DEMO -->
+  <div style="background:linear-gradient(145deg,#d8dce8 0%,#c8ccda 40%,#b8bcd0 100%);border-radius:16px;padding:24px;position:relative;overflow:hidden">
+    <!-- Barra de menús -->
+    <div style="background:rgba(255,255,255,.75);backdrop-filter:blur(20px);border-radius:8px;padding:7px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:12px">
+      <div style="display:flex;gap:14px;font-weight:500">🍎 <span>Finder</span> <span>Archivo</span> <span>Edición</span> <span>Visualización</span> <span>Ir</span> <span>Ventana</span></div>
+      <div style="display:flex;gap:10px;color:#555">☀️ 13° &nbsp; 📶 &nbsp; 🔋 72% &nbsp; 🔷 &nbsp; ⚡ &nbsp; <strong>Vie 27 mar 11:15</strong></div>
+    </div>
+    <!-- Widgets -->
+    <div style="display:grid;grid-template-columns:auto auto;gap:10px;width:fit-content">
+      <div style="background:rgba(255,255,255,.9);border-radius:14px;padding:16px 20px;min-width:120px">
+        <p style="font-size:13px;color:#e00;font-weight:600">Vie Mar</p>
+        <p style="font-size:52px;font-weight:700;line-height:1">27</p>
+      </div>
+      <div style="background:rgba(0,0,0,.75);border-radius:14px;padding:14px 16px;color:#fff;min-width:120px;display:flex;align-items:center;justify-content:center">
+        <p style="font-size:38px;font-weight:300;font-family:monospace">11:15</p>
+      </div>
+      <div style="background:rgba(0,30,60,.85);border-radius:14px;padding:14px 18px;color:#fff;grid-column:1/-1">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <p style="font-size:14px;font-weight:600">Barcelona</p>
+          <span style="font-size:16px">🌙</span>
+        </div>
+        <p style="font-size:32px;font-weight:300">13°</p>
+        <p style="font-size:12px;opacity:.7">Soleado &nbsp; Máx. 15° Mín. 9°</p>
+        <div style="display:flex;gap:14px;margin-top:8px;font-size:11px;opacity:.75">
+          <span>☀️<br>14°</span><span>☀️<br>15°</span><span>⛅<br>15°</span><span>☁️<br>14°</span><span>☁️<br>14°</span>
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.3);border-radius:14px;padding:14px;grid-column:1/-1">
+        <div style="display:flex;gap:16px;align-items:center">
+          <div style="text-align:center;font-size:12px">
+            <div style="width:44px;height:44px;border-radius:50%;border:3px solid #30d158;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 4px">💻</div>72%
+          </div>
+          <div style="text-align:center;font-size:12px">
+            <div style="width:44px;height:44px;border-radius:50%;border:3px solid #30d158;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 4px">🎧</div>80%
+          </div>
+          <div style="text-align:center;font-size:12px">
+            <div style="width:44px;height:44px;border-radius:50%;border:3px solid #30d158;display:flex;align-items:center;justify-content:center;font-size:16px;margin:0 auto 4px">⌨️</div>72%
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Dock -->
+    <div style="display:flex;justify-content:center;margin-top:20px">
+      <div style="background:rgba(255,255,255,.6);backdrop-filter:blur(30px);border-radius:18px;padding:8px 16px;display:flex;gap:8px;box-shadow:0 4px 24px rgba(0,0,0,.15)">
+        <span style="font-size:26px">🗂️</span><span style="font-size:26px">🧭</span><span style="font-size:26px">🤖</span><span style="font-size:26px">🎵</span><span style="font-size:26px">📧</span><span style="font-size:26px">💬</span><span style="font-size:26px">💻</span><span style="font-size:26px">📓</span><span style="font-size:26px">🗑️</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout ok" style="margin-top:16px">
+    <span class="ci2">✅</span>
+    <div class="ct"><strong>Este es el resultado que muestra el video.</strong> Un escritorio limpio con los 4 widgets en la esquina izquierda, el Dock con solo las apps esenciales (sin apps recientes), la barra de menús con todos los datos útiles visibles, y el fondo de pantalla por defecto de macOS Sequoia.</div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- ========== RESUMEN ESTRUCTURA DEL VIDEO ========== -->
+<div class="sec" style="scroll-margin-top:75px" id="estructura">
+  <div class="sec-hd">
+    <div class="num n-gray">📋</div>
+    <div class="sec-hd-info">
+      <h2>📋 Estructura completa del video</h2>
+      <span class="path">Subtítulos detectados en los frames del video</span>
+    </div>
+  </div>
+  <p class="sub">Los títulos y subtítulos que aparecen sobreimpresos en el video, detectados en el análisis de frames:</p>
+
+  <div style="background:#fff;border-radius:16px;box-shadow:var(--sh);padding:24px;border:1px solid rgba(0,0,0,.04)">
+    <div style="display:grid;gap:10px">
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#0071e3;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">1</span>
+        <div><p style="font-size:14px;font-weight:600">Quitar las apps de inicio automático</p><p style="font-size:12px;color:var(--gray-l)">General → Ítems de inicio y extensiones</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#30d158;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">2</span>
+        <div><p style="font-size:14px;font-weight:600">(Sección de Dock nativo antes de DockFix)</p><p style="font-size:12px;color:var(--gray-l)">Escritorio y Dock → configuración básica</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#ff9f0a;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">3</span>
+        <div><p style="font-size:14px;font-weight:600">Dock personalizable</p><p style="font-size:12px;color:var(--gray-l)">DockFix — app de terceros para personalización avanzada</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#bf5af2;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">4</span>
+        <div><p style="font-size:14px;font-weight:600">Barra de menús + Horarios (Night Shift)</p><p style="font-size:12px;color:var(--gray-l)">Reloj, batería, íconos visibles — Pantallas → Night Shift</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#ff453a;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">5</span>
+        <div><p style="font-size:14px;font-weight:600">Privacidad → Localización (servicios del sistema)</p><p style="font-size:12px;color:var(--gray-l)">Lugares importantes, Buscar mi Mac, zona horaria</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#5e5ce6;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">6</span>
+        <div><p style="font-size:14px;font-weight:600">Guardar y borrador — Tocar al escribir</p><p style="font-size:12px;color:var(--gray-l)">(Texto animado en el video — referencia al trackpad)</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#5e5ce6;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">6.1</span>
+        <div><p style="font-size:14px;font-weight:600">Carpetas inteligentes</p><p style="font-size:12px;color:var(--gray-l)">Finder → Archivo → Nueva carpeta inteligente</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#636366;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">7</span>
+        <div><p style="font-size:14px;font-weight:600">Widgets + MES DÍA (escritorio)</p><p style="font-size:12px;color:var(--gray-l)">Panel de widgets — calendario, reloj, tiempo, batería</p></div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;padding:12px;background:#f8f8fa;border-radius:10px">
+        <span style="background:#636366;color:#fff;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">8</span>
+        <div><p style="font-size:14px;font-weight:600">AirDrop y Continuidad + Accesibilidad/Movimiento</p><p style="font-size:12px;color:var(--gray-l)">Handoff, Widgets iPhone, AirPlay — Indicadores del Dock</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO DEL CREADOR -->
+  <div style="background:linear-gradient(135deg,#1c1c1e,#2c2c2e);border-radius:16px;padding:24px;margin-top:20px;display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+    <div style="flex:1;min-width:200px">
+      <p style="font-size:12px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px">Creador del video</p>
+      <p style="font-size:18px;font-weight:700;color:#fff;margin-bottom:4px">snofla.tech</p>
+      <p style="font-size:13px;color:rgba(255,255,255,.5)">Canal de YouTube sobre tecnología Apple y productividad</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;text-align:center">
+        <span style="font-size:20px;display:block;margin-bottom:4px">🎵</span>
+        <p style="font-size:12px;color:rgba(255,255,255,.6)">TikTok</p>
+        <p style="font-size:13px;font-weight:600;color:#fff">@snoflaa</p>
+      </div>
+      <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;text-align:center">
+        <span style="font-size:20px;display:block;margin-bottom:4px">📸</span>
+        <p style="font-size:12px;color:rgba(255,255,255,.6)">Instagram</p>
+        <p style="font-size:13px;font-weight:600;color:#fff">@snofla.tech</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<div class="footer">
+  <p>Tutorial generado a partir del análisis frame a frame del video <strong>"La MEJOR configuración para tu Mac (2026)"</strong></p>
+  <p style="margin-top:6px">Compatible con <strong>macOS Sequoia</strong> · Video grabado el 26 de marzo de 2026 · Duración: ~12 minutos</p>
+</div>
+
+</body>
+</html>
