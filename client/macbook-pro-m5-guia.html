@@ -2106,6 +2106,17 @@ async function _puterChat(messages, model, onToken, onDone) {
     }
     onDone();
   } catch (streamErr) {
+    // Detectar errores de autenticación y propagarlos inmediatamente.
+    // Si el usuario no está logueado, todos los modelos fallarán igual.
+    const em = (streamErr.message || '').toLowerCase();
+    if (
+      em.includes('sign') || em.includes('auth')   || em.includes('login')  ||
+      em.includes('account') || em.includes('popup') || em.includes('blocked') ||
+      em.includes('unauthorized') || em.includes('unauthenticated')
+    ) {
+      throw new Error('__PUTER_AUTH__');
+    }
+    // Fallback sin streaming para modelos que no soportan el iterador async
     if (streamErr.message?.includes('stream') || streamErr.message?.includes('iterator')) {
       const resp2 = await puter.ai.chat(messages, { model });
       const text = resp2?.message?.content?.[0]?.text || resp2?.content?.[0]?.text
@@ -2117,7 +2128,8 @@ async function _puterChat(messages, model, onToken, onDone) {
 }
 
 async function callPuter(userMsg, systemPrompt, onToken, onDone) {
-  if (!window.puter) throw new Error('Puter.js no cargó. Verificá tu conexión a internet.');
+  // Verificar que puter.js cargó desde CDN (puede fallar por ad blocker o CDN caído)
+  if (!window.puter) throw new Error('__PUTER_NO_LOAD__');
   const messages = [];
   if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
   messages.push({ role: 'user', content: userMsg });
@@ -2126,6 +2138,8 @@ async function callPuter(userMsg, systemPrompt, onToken, onDone) {
   for (const model of modelsToTry) {
     try { await _puterChat(messages, model, onToken, onDone); PROVIDERS.puter.model = model; return; }
     catch (err) {
+      // Error de auth: no tiene sentido probar otros modelos
+      if (err.message === '__PUTER_AUTH__') throw err;
       const msg = (err.message || '').toLowerCase();
       if (msg.includes('not found') || msg.includes('model') || msg.includes('invalid') || msg.includes('unsupported')) { lastError = err; continue; }
       throw err;
@@ -2330,7 +2344,41 @@ async function callOllama(userMsg, systemPrompt, onToken, onDone) {
 ──────────────────────────────────────────────────────────────────── */
 function handleAIError(err, aiBubble) {
   const m = err.message || '';
-  if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
+
+  if (m === '__PUTER_AUTH__') {
+    aiBubble.innerHTML = `
+      <div style="margin-bottom:10px;font-size:.88rem;color:var(--text2)">
+        🌟 <strong>Puter.js</strong> necesita que inicies sesión una vez para usar AI gratis.
+        <br><span style="font-size:.78rem;color:var(--text3)">Cuenta gratuita · Sin tarjeta · Solo en tu navegador</span>
+      </div>
+      <button onclick="puterLogin()" style="
+        background:var(--acc);color:var(--bg, #080d18);border:none;
+        padding:7px 16px;border-radius:8px;font-size:12px;font-weight:700;
+        cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:8px;">
+        Iniciar sesión en Puter →
+      </button>
+      <button onclick="setProvider('gemini')" style="
+        background:var(--bg3);color:var(--text2);border:1px solid var(--border);
+        padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;
+        cursor:pointer;font-family:'DM Sans',sans-serif;">
+        Usar Gemini (gratis con key)
+      </button>`;
+
+  } else if (m === '__PUTER_NO_LOAD__') {
+    aiBubble.innerHTML = `
+      <span style="color:var(--red, #ff4d6d)">⚠ Puter.js no cargó</span><br><br>
+      <span style="font-size:.84rem;color:var(--text2)">
+        Posibles causas: ad blocker activo, sin internet, o CDN de puter.com caído.<br>
+        Probá desactivar el ad blocker para <code>localhost:8000</code>
+        o usá otro proveedor:<br><br>
+        <button onclick="setProvider('gemini')" style="
+          background:var(--acc);color:var(--bg, #080d18);border:none;
+          padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">
+          Cambiar a Gemini (gratis con key)
+        </button>
+      </span>`;
+
+  } else if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
     const provId = m.replace('__NEEDS_KEY_', '').replace('__NETWORK__', activeProvider);
     const cfg = PROVIDERS[provId] || PROVIDERS[activeProvider];
     aiBubble.innerHTML = `
@@ -2345,10 +2393,31 @@ function handleAIError(err, aiBubble) {
         </button>
         ${cfg.keyUrl ? `<a href="${cfg.keyUrl}" target="_blank" style="font-size:11px;color:var(--text3)">Obtener gratis →</a>` : ''}
         <br><br>
-        <em style="font-size:.78rem;color:var(--text3)">O cambiá a 🌟 Puter — 100% gratis, sin key</em>
+        <em style="font-size:.78rem;color:var(--text3)">O usá 🌟 Puter — gratis (requiere login en puter.com)</em>
       </span>`;
   } else {
     aiBubble.innerHTML = `<span style="color:var(--red, #ff4d6d)">⚠ ${m || 'Error desconocido'}</span>`;
+  }
+}
+
+/* puterLogin — DEBE llamarse directamente desde onclick para preservar
+   el "user gesture" y evitar que el browser bloquee el popup de puter.com */
+function puterLogin() {
+  if (!window.puter) { showFlash('⚠ Puter.js no está cargado'); return; }
+  if (typeof puter.auth?.signIn === 'function') {
+    puter.auth.signIn()
+      .then(() => showFlash('✓ Conectado a Puter — AI lista para usar'))
+      .catch((e) => {
+        const msg = e?.message || '';
+        if (msg.toLowerCase().includes('popup') || msg.toLowerCase().includes('blocked')) {
+          showFlash('⚠ Popup bloqueado — permitir popups para localhost:8000');
+        } else {
+          showFlash('⚠ ' + (msg || 'Error de login en Puter'));
+        }
+      });
+  } else {
+    window.open('https://puter.com', '_blank');
+    showFlash('Iniciá sesión en puter.com y volvé aquí para continuar');
   }
 }
 
@@ -2835,6 +2904,19 @@ function applyI18nPatch(l) {
 
 window.addEventListener('load', () => {
   checkBackend(); initScrollAnimations(); initTopbarShrink();
+
+  // Verificar si puter.js cargó desde CDN — avisar si falló y puter es el proveedor activo
+  if (!window.puter && activeProvider === 'puter') {
+    const msgs = document.getElementById('aiMsgs');
+    if (msgs) {
+      const warn = document.createElement('div');
+      warn.style.cssText = 'padding:10px 14px;background:rgba(255,180,0,.08);border:1px solid rgba(255,180,0,.25);border-radius:10px;font-size:.82rem;color:var(--text2);margin:4px 0';
+      warn.innerHTML = '⚠ <strong>Puter.js no cargó</strong> — puede estar bloqueado por un ad blocker.<br>'
+        + 'Desactivá el bloqueador para <code>localhost:8000</code> o cambiá de proveedor AI.';
+      msgs.appendChild(warn);
+    }
+  }
+
   const savedLang = localStorage.getItem('guide-lang');
   if (savedLang && savedLang !== 'es') applyI18nPatch(savedLang);
 });
