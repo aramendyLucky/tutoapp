@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<!--
+  ╔══════════════════════════════════════════════════════════════════════════╗
+  ║  ARQUITECTURA TÉCNICA — TUTOAPP                                         ║
+  ║                                                                          ║
+  ║  QUÉ HACE ESTE ARCHIVO:                                                  ║
+  ║   Documenta cómo funciona TutoApp internamente: el backend FastAPI,      ║
+  ║   el sistema de proveedores AI, el flujo de datos y la configuración.    ║
+  ║                                                                          ║
+  ║  CAPACIDADES DE AI EN ESTE ARCHIVO:                                      ║
+  ║   1. CHAT — Preguntá cualquier cosa sobre la arquitectura               ║
+  ║   2. EXPLICAR — La AI explica cualquier bloque de código                ║
+  ║   3. MEJORAR — La AI reescribe cualquier sección                        ║
+  ║                                                                          ║
+  ║  ARQUITECTURA DE ESTE MISMO ARCHIVO:                                     ║
+  ║   - Mismo sistema visual que los otros 4 HTMLs (3 temas, 2 idiomas)     ║
+  ║   - AI panel con Puter/Gemini/Grok/Claude/Ollama                        ║
+  ║   - System prompt especializado en arquitectura TutoApp                  ║
+  ╚══════════════════════════════════════════════════════════════════════════╝
+-->
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arquitectura Técnica — TutoApp</title>
+  <!-- Fuentes: Syne (display) + DM Sans (cuerpo) + JetBrains Mono (código) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════════════
+       VARIABLES DE TEMA — idénticas a los otros HTMLs del proyecto
+       para mantener coherencia visual en toda la suite TutoApp
+    ═══════════════════════════════════════════════════════ */
+    [data-theme="dark"] {
+      --bg: #080b14; --bg2: #0f1320; --bg3: #161c2e; --bg4: #1e2640;
+      --border: #232d45; --border2: #2d3a58;
+      --text: #e2e8f8; --text2: #8b9ec4; --text3: #4a5a80;
+      --acc: #4de8c2; --acc2: #6c63ff; --acc3: #ff6b9d;
+      --gold: #f5c842;
+      --red: #ff5370; --green: #4de8a0; --blue: #42c5ff; --orange: #ff9f47;
+      --panel-bg: rgba(8, 11, 20, 0.97);
+      --panel-border: rgba(77, 232, 194, 0.2);
+      --glow: 0 0 30px rgba(77, 232, 194, 0.15);
+      --hero-bg: linear-gradient(135deg, #0d1729 0%, #080b14 60%, #0d0b1f 100%);
+    }
+    [data-theme="light"] {
+      --bg: #f5f7ff; --bg2: #ffffff; --bg3: #eef1fa; --bg4: #e3e8f5;
+      --border: #d0d8f0; --border2: #b8c4e0;
+      --text: #1a2040; --text2: #4a5a80; --text3: #8898c0;
+      --acc: #1a8fef; --acc2: #6c63ff; --acc3: #e8337a;
+      --gold: #c8940a;
+      --red: #e53560; --green: #1a9e60; --blue: #1a7abe; --orange: #d97010;
+      --panel-bg: rgba(245, 247, 255, 0.98);
+      --panel-border: rgba(26, 143, 239, 0.3);
+      --glow: 0 0 30px rgba(26, 143, 239, 0.1);
+      --hero-bg: linear-gradient(135deg, #dce8ff 0%, #f5f7ff 60%, #ede8ff 100%);
+    }
+    [data-theme="minimal"] {
+      --bg: #f6f1e3; --bg2: #fdf9f0; --bg3: #ede5cc; --bg4: #e0d5b0;
+      --border: #c8b880; --border2: #b0a060;
+      --text: #2a1e08; --text2: #5a4520; --text3: #9a8050;
+      --acc: #7cc520; --acc2: #5040b0; --acc3: #d04060;
+      --gold: #c09010;
+      --red: #c02818; --green: #4a9010; --blue: #1858a0; --orange: #c06820;
+      --panel-bg: rgba(246, 241, 227, 0.98);
+      --panel-border: rgba(124, 197, 32, 0.35);
+      --glow: 0 0 25px rgba(124, 197, 32, 0.15);
+      --hero-bg: linear-gradient(135deg, #e4f4a8 0%, #f6f1e3 55%, #f0e8f8 100%);
+    }
+
+    /* ─── RESET Y BASE ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      font-size: 15px; line-height: 1.7;
+      transition: background .3s, color .3s;
+      background-image: radial-gradient(var(--border) 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    /* ─── TOPBAR ─────────────────────────────────────────── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      height: 52px; background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 20px; gap: 12px;
+      backdrop-filter: blur(12px);
+    }
+    .topbar-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: var(--acc); letter-spacing: -.02em; white-space: nowrap; }
+    .topbar-logo span { color: var(--text3); font-weight: 400; font-size: .75rem; }
+    .topbar-sep { flex: 1; }
+    .lang-btns { display: flex; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .lang-btn { padding: 3px 11px; font-size: 11px; font-weight: 700; border: none; background: transparent; cursor: pointer; color: var(--text3); font-family: 'DM Sans', sans-serif; transition: all .2s; }
+    .lang-btn.on { color: #fff; }
+    .lang-btn[data-lang="es"].on { background: linear-gradient(135deg, #c60b1e 0%, #c60b1e 35%, #ffc400 65%, #ffc400 100%); text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+    .lang-btn[data-lang="en"].on { background: linear-gradient(135deg, #012169 0%, #012169 40%, #C8102E 70%, #C8102E 100%); text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+    .lang-btn:first-child { border-right: 1px solid var(--border); }
+    .theme-btns { display: flex; gap: 4px; }
+    .tbtn { border: 1px solid var(--border); background: transparent; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; color: var(--text3); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; }
+    .tbtn:hover { color: var(--text); border-color: var(--border2); }
+    .tbtn.on { background: var(--acc); color: #fff; border-color: var(--acc); }
+    .ai-toggle-btn { display: flex; align-items: center; gap: 7px; background: linear-gradient(135deg, var(--acc2), var(--acc)); color: #fff; border: none; padding: 6px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity .2s; white-space: nowrap; }
+    .ai-toggle-btn:hover { opacity: .85; }
+    .ai-pulse { width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1;transform:scale(1); } 50% { opacity:.5;transform:scale(.7); } }
+
+    /* ─── LAYOUT ─────────────────────────────────────────── */
+    .layout { display: flex; padding-top: 52px; min-height: 100vh; transition: margin-right .35s cubic-bezier(.4,0,.2,1); }
+    .layout.panel-open { margin-right: 400px; }
+
+    /* ─── SIDEBAR ─────────────────────────────────────────── */
+    .sidebar { width: 240px; min-width: 240px; background: var(--bg2); border-right: 1px solid var(--border); position: sticky; top: 52px; height: calc(100vh - 52px); overflow-y: auto; padding: 20px 10px; scrollbar-width: thin; }
+    .nav-head { font-size: 9px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--text3); padding: 0 8px; margin: 16px 0 5px; }
+    .nav-head:first-child { margin-top: 0; }
+    .nav-a { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 7px; font-size: 12.5px; color: var(--text2); text-decoration: none; transition: all .15s; border-left: 2px solid transparent; }
+    .nav-a:hover { background: rgba(77,232,194,.08); color: var(--text); border-left-color: var(--acc); }
+    .nav-a.sub { padding-left: 22px; font-size: 11.5px; }
+    .nav-sep { height: 1px; background: var(--border); margin: 8px 8px; }
+
+    /* ─── CONTENIDO ──────────────────────────────────────── */
+    .content { flex: 1; max-width: 900px; margin: 0 auto; padding: 40px 40px 120px; }
+    @media (max-width: 900px) { .content { padding: 28px 18px 100px; } }
+
+    /* ─── HERO ───────────────────────────────────────────── */
+    .hero { background: var(--hero-bg); border: 1px solid var(--border); border-radius: 20px; padding: 44px 44px 36px; margin-bottom: 48px; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; top: -60px; right: -60px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(77,232,194,.12) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+    .hero-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(77,232,194,.12); border: 1px solid rgba(77,232,194,.25); border-radius: 100px; padding: 4px 12px; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--acc); margin-bottom: 14px; }
+    .hero-chip::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--acc); animation: pulse 2s infinite; }
+    .hero h1 { font-family: 'Syne', sans-serif; font-size: 2.6rem; font-weight: 800; line-height: 1.15; margin-bottom: 12px; }
+    .hero h1 em { font-style: normal; color: var(--acc); }
+    .hero p { color: var(--text2); max-width: 560px; font-size: .97rem; }
+    .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .htag { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 8px; border: 1px solid var(--border); color: var(--text2); cursor: pointer; transition: all .2s; }
+    .htag:hover { border-color: var(--acc); color: var(--acc); background: rgba(77,232,194,.06); }
+    .htag.ai-action { border-color: rgba(108,99,255,.4); color: var(--acc2); background: rgba(108,99,255,.08); }
+    .htag.ai-action:hover { background: rgba(108,99,255,.15); }
+
+    /* ─── SECCIONES ──────────────────────────────────────── */
+    section { margin-bottom: 60px; }
+    .sec-head { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .sec-icon { width: 42px; height: 42px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+    .sec-head h2 { font-family: 'Syne', sans-serif; font-size: 1.55rem; font-weight: 800; }
+    .sec-head p { font-size: .88rem; color: var(--text2); margin-top: 2px; }
+    .improve-btn { margin-left: auto; flex-shrink: 0; display: flex; align-items: center; gap: 6px; background: rgba(108,99,255,.12); border: 1px solid rgba(108,99,255,.3); color: var(--acc2); border-radius: 8px; padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+    .improve-btn:hover { background: rgba(108,99,255,.22); }
+
+    /* ─── CÓDIGO ─────────────────────────────────────────── */
+    pre { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin: 12px 0; overflow-x: auto; position: relative; }
+    pre code { font-family: 'JetBrains Mono', monospace; font-size: .8rem; line-height: 1.75; color: var(--text); }
+    code { font-family: 'JetBrains Mono', monospace; font-size: .8em; background: var(--bg3); padding: 2px 6px; border-radius: 4px; color: var(--acc); }
+    pre code { background: none; padding: 0; }
+    .code-lang { position: absolute; top: 8px; right: 12px; font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+    .c-comment { color: var(--text3); font-style: italic; }
+    .c-str { color: var(--green); }
+    .c-key { color: var(--blue); }
+    .c-num { color: var(--gold); }
+    .c-cmd { color: var(--acc); }
+    .c-dec { color: var(--acc3); }
+
+    /* ─── TOOLBAR DE CÓDIGO ──────────────────────────────── */
+    .code-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 6px 12px; background: var(--bg4); border: 1px solid var(--border); border-bottom: none; border-radius: 11px 11px 0 0; }
+    .code-lang-lbl { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+    .code-btns-row { display: flex; gap: 5px; }
+    .code-action-btn { font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg3); color: var(--text3); cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; }
+    .code-action-btn:hover { border-color: var(--acc); color: var(--acc); }
+    .code-action-btn.expl { border-color: rgba(108,99,255,.3); color: var(--acc2); }
+    .has-tb pre { border-radius: 0 0 11px 11px; border-top: none; }
+
+    /* ─── CALLOUTS ───────────────────────────────────────── */
+    .callout { border-radius: 10px; padding: 14px 18px; margin: 14px 0; display: flex; gap: 12px; font-size: .9rem; }
+    .callout-ico { font-size: 1.1rem; flex-shrink: 0; }
+    .callout.info { background: rgba(66,197,255,.08); border-left: 3px solid var(--blue); }
+    .callout.tip { background: rgba(77,232,160,.08); border-left: 3px solid var(--green); }
+    .callout.warn { background: rgba(245,200,66,.08); border-left: 3px solid var(--gold); }
+    .callout.danger { background: rgba(255,83,112,.08); border-left: 3px solid var(--red); }
+
+    /* ─── GRIDS Y CARDS ──────────────────────────────────── */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 14px; }
+    .mini-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .mini-card h4 { font-size: .92rem; font-weight: 700; margin-bottom: 4px; }
+    .mini-card p { font-size: .82rem; color: var(--text2); }
+
+    /* ─── FLOW DIAGRAM ───────────────────────────────────── */
+    /* Diagrama de flujo ASCII con colores de tema */
+    .flow-box {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 24px; margin: 16px 0;
+      font-family: 'JetBrains Mono', monospace; font-size: .78rem;
+      line-height: 2; color: var(--text2); overflow-x: auto;
+    }
+    .flow-box .f-browser { color: var(--blue); font-weight: 700; }
+    .flow-box .f-server  { color: var(--acc); font-weight: 700; }
+    .flow-box .f-ai      { color: var(--acc3); font-weight: 700; }
+    .flow-box .f-arrow   { color: var(--text3); }
+    .flow-box .f-label   { color: var(--gold); }
+
+    /* ─── TABLA ──────────────────────────────────────────── */
+    .tbl { width: 100%; border-collapse: collapse; font-size: .87rem; }
+    .tbl th { background: var(--bg3); padding: 10px 14px; text-align: left; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--text3); border-bottom: 1px solid var(--border); }
+    .tbl td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text2); }
+    .tbl tr:hover td { background: rgba(77,232,194,.03); }
+    .yes { color: var(--green); font-weight: 700; }
+    .no  { color: var(--red); }
+
+    /* ─── ENDPOINT CARD ──────────────────────────────────── */
+    /* Tarjeta visual para documentar cada endpoint del API */
+    .endpoint {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden; margin-bottom: 20px;
+    }
+    .ep-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+    }
+    .ep-method {
+      font-family: 'JetBrains Mono', monospace; font-size: 11px;
+      font-weight: 800; padding: 3px 9px; border-radius: 6px;
+      letter-spacing: .05em; flex-shrink: 0;
+    }
+    .ep-method.get  { background: rgba(77,232,160,.15); color: var(--green); }
+    .ep-method.post { background: rgba(66,197,255,.15); color: var(--blue); }
+    .ep-path { font-family: 'JetBrains Mono', monospace; font-size: .88rem; color: var(--acc); font-weight: 600; }
+    .ep-desc { font-size: .82rem; color: var(--text2); margin-left: auto; }
+    .ep-body { padding: 16px 20px; }
+
+    /* ─── PROVIDER BADGES ────────────────────────────────── */
+    .prov-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 100px; border: 1px solid var(--border);
+      color: var(--text2); margin: 3px;
+    }
+    .prov-chip.free { border-color: var(--green); color: var(--green); }
+    .prov-chip.paid { border-color: var(--orange); color: var(--orange); }
+
+    /* ─── STEPS ──────────────────────────────────────────── */
+    .steps { counter-reset: stp; }
+    .step { display: flex; gap: 18px; margin-bottom: 24px; }
+    .step-n { width: 34px; height: 34px; border-radius: 50%; background: var(--acc); color: var(--bg); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .85rem; flex-shrink: 0; }
+    .step-b h4 { font-size: .97rem; font-weight: 700; margin-bottom: 6px; }
+    .step-b p { font-size: .88rem; color: var(--text2); }
+
+    /* ─── AI PANEL ───────────────────────────────────────── */
+    .ai-panel { position: fixed; top: 52px; right: 0; width: 400px; height: calc(100vh - 52px); background: var(--panel-bg); border-left: 1px solid var(--panel-border); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1); z-index: 400; box-shadow: -8px 0 40px rgba(0,0,0,.3); }
+    .ai-panel.open { transform: translateX(0); }
+    .ai-head { padding: 16px 18px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .ai-head-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--acc2), var(--acc)); display: flex; align-items: center; justify-content: center; font-size: 18px; }
+    .ai-head-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; }
+    .ai-head-sub { font-size: 11px; color: var(--text3); }
+    .ai-close { margin-left: auto; background: transparent; border: none; color: var(--text3); font-size: 1.2rem; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: color .2s; }
+    .ai-close:hover { color: var(--text); }
+    .ai-modes { display: flex; padding: 10px 14px; gap: 6px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .ai-mode-btn { flex: 1; padding: 7px 6px; border-radius: 8px; border: 1px solid var(--border); background: transparent; font-size: 11px; font-weight: 700; color: var(--text2); cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif; text-align: center; }
+    .ai-mode-btn.active { background: var(--acc); color: var(--bg); border-color: var(--acc); }
+    .ai-mode-btn:hover:not(.active) { border-color: var(--acc); color: var(--acc); }
+    .prov-bar { display: flex; gap: 5px; padding: 8px 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border); flex-shrink: 0; background: var(--bg3); }
+    .prov-btn { flex: 1; min-width: 70px; padding: 5px 6px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg2); font-size: 10px; font-weight: 700; cursor: pointer; transition: all .2s; color: var(--text3); font-family: 'DM Sans', sans-serif; text-align: center; white-space: nowrap; }
+    .prov-btn:hover { border-color: var(--acc); color: var(--text); }
+    .prov-btn.active { color: #fff; border-color: transparent; }
+    .prov-btn[data-prov="puter"].active  { background: #1a8cff; }
+    .prov-btn[data-prov="gemini"].active { background: #1a7fd4; }
+    .prov-btn[data-prov="grok"].active   { background: #222; }
+    .prov-btn[data-prov="claude"].active { background: #c96442; }
+    .prov-btn[data-prov="ollama"].active { background: #3a8a3a; }
+    .prov-badge { display: inline-block; font-size: 8px; padding: 0px 4px; border-radius: 3px; background: rgba(64,208,128,.2); color: var(--green, #40d080); margin-left: 2px; vertical-align: middle; font-weight: 800; }
+    .key-row { display: none; gap: 6px; padding: 7px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; align-items: center; }
+    .key-row.show { display: flex; }
+    .key-input { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 6px 10px; color: var(--text); font-size: .8rem; font-family: 'JetBrains Mono', monospace; outline: none; transition: border-color .2s; }
+    .key-input:focus { border-color: var(--acc); }
+    .key-save-btn { background: var(--acc); color: var(--bg); border: none; border-radius: 7px; padding: 6px 12px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; }
+    .key-link { font-size: 10px; color: var(--text3); white-space: nowrap; text-decoration: none; }
+    .key-link:hover { color: var(--acc); }
+    .ai-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; }
+    .msg-user { align-self: flex-end; background: var(--acc2); color: #fff; padding: 10px 14px; border-radius: 12px 12px 3px 12px; font-size: .88rem; max-width: 85%; line-height: 1.5; }
+    .msg-ai { align-self: flex-start; background: var(--bg3); border: 1px solid var(--border); padding: 10px 14px; border-radius: 12px 12px 12px 3px; font-size: .88rem; max-width: 92%; line-height: 1.6; color: var(--text); }
+    .msg-ai strong { color: var(--acc); }
+    .msg-typing { display: flex; gap: 4px; align-items: center; padding: 12px 16px; color: var(--text3); font-size: .85rem; }
+    .dot-loader span { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--acc); animation: bounce 1.2s infinite; }
+    .dot-loader span:nth-child(2) { animation-delay: .2s; }
+    .dot-loader span:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce { 0%,80%,100% { transform:scale(0); } 40% { transform:scale(1); } }
+    .ai-footer { padding: 12px 14px; border-top: 1px solid var(--border); flex-shrink: 0; }
+    .ai-ctx { font-size: 10.5px; color: var(--text3); margin-bottom: 8px; padding: 6px 10px; background: var(--bg3); border-radius: 7px; border: 1px solid var(--border); }
+    .ai-ctx strong { color: var(--acc2); }
+    .ai-input-row { display: flex; gap: 8px; }
+    .ai-input { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: .88rem; font-family: 'DM Sans', sans-serif; resize: none; max-height: 120px; outline: none; transition: border-color .2s; }
+    .ai-input:focus { border-color: var(--acc); }
+    .ai-send { background: linear-gradient(135deg, var(--acc2), var(--acc)); border: none; border-radius: 10px; padding: 10px 16px; color: #fff; font-size: 1.1rem; cursor: pointer; transition: opacity .2s; flex-shrink: 0; }
+    .ai-send:hover { opacity: .85; }
+    .ai-send:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ─── OVERLAY Y FLASH ────────────────────────────────── */
+    .overlay { display: none; position: fixed; inset: 0; z-index: 350; background: rgba(0,0,0,.3); backdrop-filter: blur(2px); }
+    .overlay.show { display: block; }
+    .update-flash { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--acc); color: var(--bg); padding: 10px 22px; border-radius: 100px; font-size: .88rem; font-weight: 700; z-index: 1000; transition: transform .4s cubic-bezier(.34,1.56,.64,1), opacity .4s; opacity: 0; pointer-events: none; }
+    .update-flash.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ─── UTILITARIOS ────────────────────────────────────── */
+    h3 { font-family: 'Syne', sans-serif; font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; }
+    h4 { font-size: .97rem; font-weight: 700; margin-bottom: 8px; }
+    p { margin-bottom: 12px; }
+    ul,ol { padding-left: 20px; margin-bottom: 12px; color: var(--text2); font-size: .9rem; }
+    li { margin-bottom: 4px; }
+    strong { color: var(--text); }
+    a { color: var(--acc); text-decoration: none; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 30px 0; }
+    .mt { margin-top: 16px; }
+    @media (max-width:700px) { .g2,.g3 { grid-template-columns: 1fr; } .ai-panel { width: 100%; } .sidebar { display: none; } }
+
+    /* ─── TEMA MINIMAL ───────────────────────────────────── */
+    [data-theme="minimal"] .mini-card, [data-theme="minimal"] .endpoint { transition: transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s ease; }
+    [data-theme="minimal"] .mini-card:hover, [data-theme="minimal"] .endpoint:hover { transform: translateY(-5px) scale(1.015); box-shadow: 0 14px 36px rgba(124,197,32,.18); }
+    [data-theme="minimal"] .callout { transition: transform .18s ease; }
+    [data-theme="minimal"] .callout:hover { transform: translateX(6px); }
+    [data-theme="minimal"] .topbar { background: linear-gradient(90deg,#f6f1e3 0%,#edf7cc 50%,#f6f1e3 100%); background-size: 200% 100%; animation: minTopbar 9s ease infinite; }
+    @keyframes minTopbar { 0%,100% { background-position:0 0; } 50% { background-position:100% 0; } }
+  </style>
+  <script src="https://js.puter.com/v2/"></script>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-logo">TutoApp <span>/ Arquitectura Técnica</span></div>
+  <div class="topbar-sep"></div>
+  <div class="lang-btns">
+    <button class="lang-btn on" data-lang="es" onclick="setLang('es')">🇪🇸 ES</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇺🇸 EN</button>
+  </div>
+  <div class="theme-btns">
+    <button class="tbtn on" onclick="setTheme('dark')">◑ Dark</button>
+    <button class="tbtn" onclick="setTheme('light')">☀ Light</button>
+    <button class="tbtn" onclick="setTheme('minimal')">🌿 Minimal</button>
+  </div>
+  <button class="ai-toggle-btn" onclick="togglePanel()">
+    <div class="ai-pulse"></div>
+    🤖 Asistente AI
+  </button>
+</header>
+
+<div class="overlay" id="overlay" onclick="togglePanel()"></div>
+<div class="update-flash" id="flash">✓ Copiado</div>
+
+<!-- LAYOUT -->
+<div class="layout" id="layout">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="nav-head">Visión General</div>
+    <a href="#overview" class="nav-a">🏗 Arquitectura</a>
+    <a href="#flujo" class="nav-a">🔄 Flujo de Datos</a>
+    <div class="nav-sep"></div>
+
+    <div class="nav-head">Backend</div>
+    <a href="#backend" class="nav-a">⚙️ FastAPI</a>
+    <a href="#ep-health" class="nav-a sub">↳ /api/health</a>
+    <a href="#ep-claude" class="nav-a sub">↳ /api/claude</a>
+    <a href="#ep-gemini" class="nav-a sub">↳ /api/gemini</a>
+    <a href="#ep-ollama" class="nav-a sub">↳ /api/ollama</a>
+    <a href="#ep-save" class="nav-a sub">↳ /api/save-section</a>
+    <div class="nav-sep"></div>
+
+    <div class="nav-head">Frontend</div>
+    <a href="#frontend" class="nav-a">📄 HTML Tutoriales</a>
+    <a href="#providers" class="nav-a sub">↳ Proveedores AI</a>
+    <a href="#themes" class="nav-a sub">↳ Sistema de Temas</a>
+    <div class="nav-sep"></div>
+
+    <div class="nav-head">Configuración</div>
+    <a href="#config" class="nav-a">🔧 .env y start.bat</a>
+    <a href="#security" class="nav-a">🔒 Seguridad</a>
+    <div class="nav-sep"></div>
+
+    <a href="#faq" class="nav-a">❓ FAQ</a>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <main class="content">
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-chip">Documentación Interna · TutoApp v2.0 · Mayo 2026</div>
+      <h1>Arquitectura<br><em>Técnica</em></h1>
+      <p>Cómo funciona TutoApp por dentro: el backend FastAPI que proxea las llamadas de IA, el sistema de proveedores multi-modelo y el flujo completo de datos desde el browser hasta las APIs externas.</p>
+      <div class="hero-tags">
+        <div class="htag" onclick="openAndAsk('chat', '¿Cómo funciona el sistema de proxy de API keys en TutoApp?')">💬 Preguntar sobre arquitectura</div>
+        <div class="htag ai-action" onclick="openAndAsk('chat', 'Explica el flujo completo cuando el usuario hace una pregunta al asistente AI')">🔄 Flujo completo</div>
+        <div class="htag" onclick="openAndAsk('chat', '¿Cómo agrego un nuevo proveedor de AI al sistema?')">➕ Agregar proveedor</div>
+        <div class="htag" onclick="openAndAsk('chat', '¿Cómo funciona /api/save-section y por qué tiene _ALLOWED_FILES?')">🔒 Seguridad explicada</div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 1 — VISIÓN GENERAL
+    ══════════════════════════════════════════════ -->
+    <section id="overview">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(77,232,194,.12)">🏗</div>
+        <div>
+          <h2 class="i18n" data-es="Visión General" data-en="Overview">Visión General</h2>
+          <p class="i18n" data-es="Qué es TutoApp y cómo están organizadas sus capas" data-en="What TutoApp is and how its layers are organized">Qué es TutoApp y cómo están organizadas sus capas</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('overview', 'Visión General')">✨ Mejorar</button>
+      </div>
+
+      <p>TutoApp es una suite de guías interactivas que combinan <strong>documentación técnica estática</strong> (HTML + CSS + JS) con <strong>un asistente AI integrado</strong> que puede responder preguntas, agregar contenido y mejorar secciones en tiempo real. El sistema está diseñado para correr completamente en local — sin servidor externo, sin cuenta, sin suscripción.</p>
+
+      <div class="g3">
+        <div class="mini-card">
+          <h4>📄 Capa Frontend</h4>
+          <p>5 archivos HTML auto-contenidos. Cada uno incluye el CSS, el JS y la lógica de AI integrada. Se sirven desde <code>localhost:8000</code> via FastAPI StaticFiles.</p>
+        </div>
+        <div class="mini-card">
+          <h4>⚙️ Capa Backend</h4>
+          <p>FastAPI en <code>server/main.py</code>. Un solo archivo. Proxea las llamadas a Claude/Gemini/Ollama manteniendo las API keys fuera del browser.</p>
+        </div>
+        <div class="mini-card">
+          <h4>🔑 Capa de Configuración</h4>
+          <p>Archivo <code>server/.env</code> con las API keys del usuario. Nunca va a Git. El backend lo lee al iniciar via <code>python-dotenv</code>.</p>
+        </div>
+      </div>
+
+      <div class="callout info mt">
+        <div class="callout-ico">💡</div>
+        <div>
+          <strong>Diseño sin servidor externo:</strong> TutoApp usa <strong>Puter.js como proveedor default</strong> — una librería que conecta con modelos AI gratuitos sin necesidad de API key. El backend FastAPI solo entra en juego cuando el usuario quiere usar Claude o Gemini con su propia key.
+        </div>
+      </div>
+
+      <h3 class="mt">Estructura de archivos</h3>
+      <div class="has-tb">
+        <pre><code><span class="c-comment"># Estructura raíz del proyecto</span>
+tutoapp/
+<span class="c-cmd">├── start.bat</span>              <span class="c-comment"># Lanzador Windows — punto de entrada para usuarios</span>
+<span class="c-cmd">├── start_bak.bat</span>          <span class="c-comment"># Backup del lanzador original</span>
+<span class="c-cmd">│</span>
+<span class="c-cmd">├── server/</span>               <span class="c-comment"># Backend FastAPI</span>
+<span class="c-cmd">│   ├── main.py</span>            <span class="c-comment"># Todo el backend — proxy AI + servidor estático</span>
+<span class="c-cmd">│   ├── requirements.txt</span>   <span class="c-comment"># fastapi, uvicorn, httpx, python-dotenv</span>
+<span class="c-cmd">│   ├── .env</span>               <span class="c-comment"># API keys del usuario (no va a Git)</span>
+<span class="c-cmd">│   └── .env.example</span>      <span class="c-comment"># Template sin valores (sí va a Git)</span>
+<span class="c-cmd">│</span>
+<span class="c-cmd">└── client/</span>               <span class="c-comment"># Frontend — guías HTML interactivas</span>
+<span class="c-cmd">    ├── ai-coding-tools.html</span>
+<span class="c-cmd">    ├── dev-setup-mac-m5.html</span>
+<span class="c-cmd">    ├── macbook-pro-m5-guia.html</span>
+<span class="c-cmd">    ├── tutorial_mac_2026.html</span>
+<span class="c-cmd">    └── arquitectura-tecnica.html</span>  <span class="c-comment"># Este archivo</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 2 — FLUJO DE DATOS
+    ══════════════════════════════════════════════ -->
+    <section id="flujo">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(108,99,255,.12)">🔄</div>
+        <div>
+          <h2>Flujo de Datos</h2>
+          <p>Qué pasa exactamente cuando el usuario hace una pregunta al asistente AI</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('flujo', 'Flujo de Datos')">✨ Mejorar</button>
+      </div>
+
+      <h3>Flujo con Puter.js (sin backend)</h3>
+      <p>Cuando el proveedor activo es <strong>Puter</strong>, el HTML llama directamente a la API de Puter sin pasar por el backend local:</p>
+      <div class="flow-box">
+<span class="f-browser">[Browser / HTML]</span>
+    │
+    │   <span class="f-label">puter.ai.chat(messages, { model, stream: true })</span>
+    │
+    ▼
+<span class="f-ai">[Puter.js CDN]</span>
+    │
+    │   <span class="f-label">Reenvía al modelo AI seleccionado (Gemini / GPT / Claude)</span>
+    │
+    ▼
+<span class="f-ai">[Modelo AI Externo]</span>
+    │
+    │   <span class="f-label">Respuesta en streaming → AsyncIterator de chunks</span>
+    │
+    ▼
+<span class="f-browser">[Browser]</span>   <span class="c-comment"># onToken(chunk) llamado por cada fragmento recibido</span>
+      </div>
+
+      <h3>Flujo con Claude/Gemini (via backend local)</h3>
+      <p>Cuando el proveedor necesita API key propia, el HTML envía el request al backend FastAPI local que lo reenvía a la API externa con la key del <code>.env</code>:</p>
+      <div class="flow-box">
+<span class="f-browser">[Browser / HTML]</span>
+    │
+    │   <span class="f-label">fetch("http://localhost:8000/api/claude", { method: 'POST', body: payload })</span>
+    │
+    ▼
+<span class="f-server">[FastAPI / main.py]</span>
+    │
+    │   <span class="f-label">Lee ANTHROPIC_API_KEY del .env</span>
+    │   <span class="f-label">httpx.AsyncClient().stream("POST", anthropic_url, headers={x-api-key: KEY})</span>
+    │
+    ▼
+<span class="f-ai">[Anthropic / Google / Ollama]</span>
+    │
+    │   <span class="f-label">StreamingResponse — bytes en tiempo real via SSE</span>
+    │
+    ▼
+<span class="f-server">[FastAPI]</span>  <span class="c-comment"># aiter_bytes() reenvía el stream sin buffering</span>
+    │
+    ▼
+<span class="f-browser">[Browser]</span>  <span class="c-comment"># ReadableStream → onToken() por cada chunk</span>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">🔑</div>
+        <div><strong>Por qué el proxy:</strong> Las API keys de Claude y Gemini no pueden estar en el código del browser — cualquier persona que abra DevTools las vería. El backend las guarda en <code>.env</code> (que nunca va a Git) y las inyecta en cada request del servidor.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 3 — BACKEND FASTAPI
+    ══════════════════════════════════════════════ -->
+    <section id="backend">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(66,197,255,.12)">⚙️</div>
+        <div>
+          <h2>Backend FastAPI</h2>
+          <p>Un solo archivo <code>server/main.py</code> — 5 endpoints, 220 líneas</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('backend', 'Backend FastAPI')">✨ Mejorar</button>
+      </div>
+
+      <p>El backend es intencionalmente minimalista. No tiene base de datos, no tiene auth, no tiene modelos ORM. Su único trabajo es: <strong>(1)</strong> servir los archivos HTML estáticos de <code>client/</code>, <strong>(2)</strong> proxear las llamadas a APIs de AI con las keys del <code>.env</code>, y <strong>(3)</strong> persistir contenido generado por AI en los archivos HTML.</p>
+
+      <h3>Dependencias</h3>
+      <div class="has-tb">
+        <pre><code><span class="c-comment"># server/requirements.txt — solo 4 paquetes</span>
+<span class="c-str">fastapi==0.115.5</span>       <span class="c-comment"># framework ASGI — routers, middlewares, HTTPException</span>
+<span class="c-str">uvicorn[standard]==0.32.1</span> <span class="c-comment"># servidor ASGI — HTTP/1.1 + WebSockets + hot reload</span>
+<span class="c-str">httpx==0.27.2</span>          <span class="c-comment"># cliente HTTP async — para proxear requests a AI APIs</span>
+<span class="c-str">python-dotenv==1.0.1</span>   <span class="c-comment"># leer .env — nunca hardcodear keys</span></code></pre>
+      </div>
+
+      <!-- ENDPOINT: /api/health -->
+      <h3 id="ep-health" class="mt">Endpoints</h3>
+      <div class="endpoint">
+        <div class="ep-head">
+          <span class="ep-method get">GET</span>
+          <span class="ep-path">/api/health</span>
+          <span class="ep-desc">Detección de backend por los HTMLs</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Los HTMLs llaman este endpoint al cargar para detectar si el backend está activo. Si responde, habilitan las opciones Claude y Gemini en el panel AI. Si no responde, solo muestran Puter.js (gratis, sin key).</p>
+          <div class="has-tb">
+            <pre><code><span class="c-comment"># Respuesta:</span>
+{
+  <span class="c-str">"status"</span>: <span class="c-str">"ok"</span>,
+  <span class="c-str">"providers"</span>: {
+    <span class="c-str">"claude"</span>: <span class="c-key">true</span>,   <span class="c-comment"># true si ANTHROPIC_API_KEY está en .env</span>
+    <span class="c-str">"gemini"</span>: <span class="c-key">false</span>,  <span class="c-comment"># false si no está configurado</span>
+    <span class="c-str">"ollama"</span>: <span class="c-key">true</span>    <span class="c-comment"># siempre true — Ollama no necesita key</span>
+  }
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT: /api/claude -->
+      <div class="endpoint" id="ep-claude">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/claude</span>
+          <span class="ep-desc">Proxy a Anthropic API</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Acepta el mismo body que la API de Anthropic (<code>model</code>, <code>messages</code>, <code>max_tokens</code>, <code>stream</code>) e inyecta el header <code>x-api-key</code> desde el <code>.env</code>. Devuelve el stream SSE sin modificarlo.</p>
+          <div class="has-tb">
+            <pre><code><span class="c-comment"># Body que envía el HTML:</span>
+{
+  <span class="c-str">"model"</span>: <span class="c-str">"claude-sonnet-4-20250514"</span>,
+  <span class="c-str">"max_tokens"</span>: <span class="c-num">2048</span>,
+  <span class="c-str">"stream"</span>: <span class="c-key">true</span>,
+  <span class="c-str">"messages"</span>: [{ <span class="c-str">"role"</span>: <span class="c-str">"user"</span>, <span class="c-str">"content"</span>: <span class="c-str">"..."</span> }]
+}
+<span class="c-comment"># El backend agrega automáticamente:</span>
+<span class="c-comment">#   "x-api-key": ANTHROPIC_KEY  (desde .env)</span>
+<span class="c-comment">#   "anthropic-version": "2023-06-01"</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT: /api/gemini -->
+      <div class="endpoint" id="ep-gemini">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/gemini</span>
+          <span class="ep-desc">Proxy a Google Gemini API</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Gemini acepta la key como query parameter en la URL (<code>?key=...</code>). El backend construye la URL con el modelo y la key del <code>.env</code> antes de reenviar el request.</p>
+          <div class="has-tb">
+            <pre><code><span class="c-comment"># Parámetro especial que extrae el backend:</span>
+{ <span class="c-str">"_model"</span>: <span class="c-str">"gemini-2.5-flash"</span>, ... }
+<span class="c-comment"># _model se hace pop() del body antes de enviar a Google.</span>
+<span class="c-comment"># URL resultante:</span>
+<span class="c-str">"https://generativelanguage.googleapis.com/v1beta/models/</span>
+<span class="c-str"> gemini-2.5-flash:streamGenerateContent?key=KEY&amp;alt=sse"</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT: /api/ollama -->
+      <div class="endpoint" id="ep-ollama">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/ollama</span>
+          <span class="ep-desc">Proxy a Ollama local (CORS fix)</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Ollama corre en <code>:11434</code> y los HTMLs en <code>:8000</code>. El browser bloquea el cross-origin request. Este endpoint actúa como puente en el mismo origen para evitar el bloqueo CORS.</p>
+          <div class="has-tb">
+            <pre><code><span class="c-comment"># Por qué existe este endpoint:</span>
+<span class="c-comment"># fetch("http://localhost:11434/api/chat") → BLOQUEADO por CORS</span>
+<span class="c-comment"># fetch("http://localhost:8000/api/ollama") → OK (mismo origen)</span>
+<span class="c-comment">#   el backend reenvía a localhost:11434 desde Python (sin CORS)</span>
+
+<span class="c-comment"># Manejo de error si Ollama no está corriendo:</span>
+<span class="c-comment"># httpx.ConnectError → devuelve {"error": "Ollama no está corriendo..."}</span>
+<span class="c-comment"># El frontend muestra el mensaje en el chat en lugar de un error roto</span></code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT: /api/save-section -->
+      <div class="endpoint" id="ep-save">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/save-section</span>
+          <span class="ep-desc">Persiste HTML generado por AI en el archivo fuente</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Cuando el usuario usa "Mejorar Sección" o "Agregar Herramienta", la AI genera HTML nuevo. Sin este endpoint, ese HTML desaparecería al recargar la página. <code>save-section</code> lo inserta directamente en el archivo <code>.html</code> de origen.</p>
+          <div class="has-tb">
+            <pre><code><span class="c-comment"># Body requerido:</span>
+{
+  <span class="c-str">"filename"</span>: <span class="c-str">"ai-coding-tools.html"</span>,  <span class="c-comment"># debe estar en _ALLOWED_FILES</span>
+  <span class="c-str">"sectionId"</span>: <span class="c-str">"tools-list"</span>,           <span class="c-comment"># id del elemento en el HTML</span>
+  <span class="c-str">"htmlToAppend"</span>: <span class="c-str">"&lt;div class=..."</span>       <span class="c-comment"># HTML a insertar</span>
+}
+
+<span class="c-comment"># Cómo funciona la inserción:</span>
+<span class="c-comment">#   1. Lee el archivo completo como string</span>
+<span class="c-comment">#   2. Busca id="sectionId" para localizar la sección</span>
+<span class="c-comment">#   3. Encuentra el &lt;/section&gt; de cierre</span>
+<span class="c-comment">#   4. Inserta el HTML nuevo ANTES del &lt;/section&gt;</span>
+<span class="c-comment">#   5. Escribe el archivo completo de vuelta</span></code></pre>
+          </div>
+          <div class="callout warn" style="margin-top:12px">
+            <div class="callout-ico">⚠️</div>
+            <div><strong>_ALLOWED_FILES:</strong> El endpoint solo acepta archivos que estén en el set <code>_ALLOWED_FILES</code> en <code>main.py</code>. Esto evita path traversal (<code>../../etc/passwd</code>) y modificación accidental de archivos fuera de <code>client/</code>. Cuando agregues una nueva guía HTML, acordate de sumarla a ese set.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 4 — FRONTEND
+    ══════════════════════════════════════════════ -->
+    <section id="frontend">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(255,107,157,.12)">📄</div>
+        <div>
+          <h2>Frontend — HTML Tutoriales</h2>
+          <p>Cómo están construidos los 5 archivos HTML y cómo integran la AI</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('frontend', 'Frontend')">✨ Mejorar</button>
+      </div>
+
+      <p>Cada HTML es un archivo auto-contenido: incluye su propio CSS, JavaScript, y lógica de AI. No dependen de frameworks externos (sin React, sin Vue). La única dependencia externa es <strong>Puter.js</strong>, cargada desde CDN como script tag.</p>
+
+      <h3>Sistema de Proveedores AI</h3>
+      <p id="providers">Los HTMLs tienen 5 proveedores configurados. El sistema detecta automáticamente cuáles están disponibles consultando <code>/api/health</code> al cargar:</p>
+
+      <table class="tbl" style="margin:14px 0">
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>Modelo default</th>
+            <th>Key requerida</th>
+            <th>Costo</th>
+            <th>Requiere backend</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Puter.js</strong></td><td>gemini-2.5-flash-lite</td><td class="yes">No</td><td class="yes">Gratis</td><td class="no">No</td></tr>
+          <tr><td><strong>Google Gemini</strong></td><td>gemini-2.5-flash</td><td class="no">Sí</td><td class="yes">Gratis</td><td class="no">No (directo)</td></tr>
+          <tr><td><strong>xAI Grok</strong></td><td>grok-4.1-fast</td><td class="no">Sí</td><td>$0.20/M</td><td class="no">No (directo)</td></tr>
+          <tr><td><strong>Anthropic Claude</strong></td><td>claude-sonnet-4</td><td class="no">Sí</td><td>Pago</td><td class="yes" style="color:var(--blue)">Sí</td></tr>
+          <tr><td><strong>Ollama Local</strong></td><td>qwen2.5-coder:7b</td><td class="yes">No</td><td class="yes">Gratis</td><td class="yes" style="color:var(--blue)">Sí (CORS)</td></tr>
+        </tbody>
+      </table>
+
+      <h3 id="themes">Sistema de Temas</h3>
+      <p>Los 3 temas (Dark, Light, Minimal) están implementados como <strong>CSS custom properties</strong> scoped al atributo <code>data-theme</code> en el elemento <code>&lt;html&gt;</code>. Cambiar el tema es una sola línea de JavaScript:</p>
+      <div class="has-tb">
+        <pre><code><span class="c-comment">// setTheme() — cómo funciona el sistema de temas</span>
+<span class="c-key">function</span> <span class="c-cmd">setTheme</span>(t) {
+  <span class="c-comment">// Cambia data-theme en &lt;html&gt; — el CSS scoped hace el resto</span>
+  document.documentElement.<span class="c-cmd">setAttribute</span>(<span class="c-str">'data-theme'</span>, t);
+
+  <span class="c-comment">// Persiste en localStorage para recordar entre sesiones</span>
+  localStorage.<span class="c-cmd">setItem</span>(<span class="c-str">'guide-theme'</span>, t);
+
+  <span class="c-comment">// Actualiza la clase .on en los botones del topbar</span>
+  document.<span class="c-cmd">querySelectorAll</span>(<span class="c-str">'.tbtn'</span>).<span class="c-cmd">forEach</span>(b =>
+    b.classList.<span class="c-cmd">toggle</span>(<span class="c-str">'on'</span>, b.textContent.toLowerCase().<span class="c-cmd">includes</span>(t))
+  );
+}</code></pre>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎨</div>
+        <div><strong>Tema Minimal:</strong> Es el más diferente visualmente — paleta crema/pergamino con verde manzana como acento. Tiene sus propias animaciones CSS (<code>keyframes</code>) que solo se activan cuando <code>data-theme="minimal"</code>, sin afectar los otros temas.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 5 — CONFIGURACIÓN
+    ══════════════════════════════════════════════ -->
+    <section id="config">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(245,200,66,.12)">🔧</div>
+        <div>
+          <h2>Configuración</h2>
+          <p>El archivo .env y el lanzador start.bat</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('config', 'Configuración')">✨ Mejorar</button>
+      </div>
+
+      <h3>Archivo .env</h3>
+      <p>El backend lee las variables de entorno desde <code>server/.env</code> al arrancar. Este archivo <strong>nunca va a Git</strong> (está en <code>.gitignore</code>). El template para crearlo es <code>server/.env.example</code>:</p>
+      <div class="has-tb">
+        <pre><code><span class="c-comment"># server/.env.example — template público (sin valores reales)</span>
+
+<span class="c-comment"># Claude (Anthropic) — console.anthropic.com/settings/keys</span>
+ANTHROPIC_API_KEY=
+
+<span class="c-comment"># Google Gemini — aistudio.google.com (gratis, sin tarjeta)</span>
+GEMINI_API_KEY=
+
+<span class="c-comment"># Ollama — solo cambiar si está en otro puerto</span>
+OLLAMA_URL=http://localhost:11434</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">✅</div>
+        <div><strong>Puter.js funciona sin ninguna key:</strong> Si dejás el <code>.env</code> vacío, TutoApp funciona igual. Puter.js como proveedor default te da acceso a Gemini 2.5 Flash, GPT-4o y Claude sin configurar nada.</div>
+      </div>
+
+      <h3>start.bat — El lanzador Windows</h3>
+      <p>El lanzador automatiza todo el setup para usuarios no técnicos. Está escrito en <strong>ASCII puro</strong> (sin caracteres Unicode) para evitar errores de encoding en CMD:</p>
+
+      <div class="g2 mt">
+        <div class="mini-card">
+          <h4>Lo que hace start.bat</h4>
+          <ul style="font-size:.83rem;margin-top:8px">
+            <li>Verifica que Python está en el PATH</li>
+            <li>Crea <code>server/.venv</code> si no existe</li>
+            <li>Instala requirements solo si falta <code>uvicorn.exe</code></li>
+            <li>Crea <code>.env</code> desde <code>.env.example</code> si no existe</li>
+            <li>Libera el puerto 8000 si está ocupado</li>
+            <li>Muestra el menú de guías con <code>choice</code></li>
+            <li>Arranca uvicorn en ventana minimizada</li>
+            <li>Espera que el servidor responda en <code>/api/health</code></li>
+            <li>Abre el browser en la guía elegida</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>Decisiones técnicas</h4>
+          <ul style="font-size:.83rem;margin-top:8px">
+            <li><code>choice /C 012345</code> en lugar de <code>set /p</code> — no requiere Enter, más confiable</li>
+            <li>ERRORLEVEL capturado inmediatamente en variable — se sobreescribe con cada comando</li>
+            <li><code>if not exist uvicorn.exe</code> — evita pip en cada arranque</li>
+            <li>PowerShell para liberar puerto — más robusto que parsear netstat</li>
+            <li>curl con <code>--max-time 2</code> para polling — timeout corto, hasta 30 intentos</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 6 — SEGURIDAD
+    ══════════════════════════════════════════════ -->
+    <section id="security">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(255,83,112,.12)">🔒</div>
+        <div>
+          <h2>Seguridad</h2>
+          <p>Mecanismos para proteger las API keys y prevenir accesos indebidos</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('security', 'Seguridad')">✨ Mejorar</button>
+      </div>
+
+      <div class="g2">
+        <div class="mini-card">
+          <h4>🛡 _ALLOWED_FILES whitelist</h4>
+          <p style="font-size:.83rem">El endpoint <code>/api/save-section</code> solo acepta filenames que estén en el set <code>_ALLOWED_FILES</code>. Evita que un request malicioso modifique archivos fuera de <code>client/</code> o haga path traversal con <code>../../</code>.</p>
+          <div class="has-tb" style="margin-top:8px">
+            <pre style="margin:0"><code style="font-size:.75rem"><span class="c-comment"># server/main.py</span>
+_ALLOWED_FILES = {
+  <span class="c-str">"ai-coding-tools.html"</span>,
+  <span class="c-str">"dev-setup-mac-m5.html"</span>,
+  <span class="c-str">"macbook-pro-m5-guia.html"</span>,
+  <span class="c-str">"tutorial_mac_2026.html"</span>,
+  <span class="c-str">"arquitectura-tecnica.html"</span>,
+}</code></pre>
+          </div>
+        </div>
+        <div class="mini-card">
+          <h4>🔑 API keys fuera del browser</h4>
+          <p style="font-size:.83rem">Las keys de Claude y Gemini nunca tocan el código del browser. Viven en <code>server/.env</code> (excluido de Git) y el backend las inyecta en cada request. La key nunca aparece en DevTools → Network.</p>
+          <p style="font-size:.83rem;color:var(--text3)">Para Puter, Grok y Gemini directo: el usuario guarda sus propias keys en <code>localStorage</code> del browser — son suyas y nunca salen de su dispositivo.</p>
+        </div>
+      </div>
+
+      <div class="callout warn mt">
+        <div class="callout-ico">⚠️</div>
+        <div><strong>Límite de seguridad:</strong> TutoApp está diseñado para uso local en tu propia máquina, no como servicio público. El CORS está abierto (<code>allow_origins=["*"]</code>) porque solo corre en localhost. No expongas el puerto 8000 a internet sin agregar autenticación.</div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════
+         SECCIÓN 7 — FAQ
+    ══════════════════════════════════════════════ -->
+    <section id="faq">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(77,232,160,.12)">❓</div>
+        <div>
+          <h2>FAQ Técnico</h2>
+          <p>Las preguntas más frecuentes sobre cómo funciona el sistema</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('faq', 'FAQ Técnico')">✨ Mejorar</button>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:14px">
+        <p style="font-weight:700;margin-bottom:6px">¿Qué pasa si agrego un nuevo archivo HTML al proyecto?</p>
+        <p style="font-size:.88rem;color:var(--text2)">Tenés que hacer dos cosas: (1) agregar el filename al set <code>_ALLOWED_FILES</code> en <code>server/main.py</code> para que <code>/api/save-section</code> lo acepte, y (2) agregar una opción al menú de <code>start.bat</code> si querés que sea accesible desde el lanzador.</p>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:14px">
+        <p style="font-weight:700;margin-bottom:6px">¿Por qué el backend usa <code>httpx</code> y no <code>requests</code>?</p>
+        <p style="font-size:.88rem;color:var(--text2)"><code>requests</code> es síncrono — bloquearía el event loop de uvicorn mientras espera la respuesta de Anthropic (que puede tardar 30+ segundos en completar). <code>httpx</code> tiene soporte async nativo y soporte de streaming via <code>client.stream()</code> + <code>aiter_bytes()</code>.</p>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:14px">
+        <p style="font-weight:700;margin-bottom:6px">¿Por qué el StaticFiles de FastAPI va al FINAL del archivo?</p>
+        <p style="font-size:.88rem;color:var(--text2)">FastAPI evalúa los middleware y rutas en orden de registro. Si el <code>app.mount("/")</code> del StaticFiles estuviera al principio, capturaría todos los requests incluyendo <code>/api/health</code>, <code>/api/claude</code>, etc., devolviendo 404 para todos. Al ir al final, las rutas <code>/api/*</code> tienen prioridad.</p>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:18px 22px;margin-bottom:14px">
+        <p style="font-weight:700;margin-bottom:6px">¿Cómo funciona el fallback de modelos en Puter.js?</p>
+        <p style="font-size:.88rem;color:var(--text2)">La función <code>callPuter()</code> en los HTMLs tiene una lista <code>PUTER_FALLBACK_MODELS</code> y prueba los modelos en orden hasta que uno responda sin error "model not found". Si el error es de autenticación (<code>sign</code>, <code>auth</code>, <code>login</code>), propaga inmediatamente sin probar los demás — ya que el mismo error ocurriría para todos.</p>
+      </div>
+
+      <div class="callout tip mt">
+        <div class="callout-ico">💬</div>
+        <div>¿Tu pregunta no está acá? Usá el <strong>Asistente AI</strong> del panel derecho — tiene acceso al contexto completo de la arquitectura de TutoApp y puede responder preguntas específicas sobre implementación.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     PANEL AI LATERAL
+══════════════════════════════════════════════ -->
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-head">
+    <div class="ai-head-icon">🏗</div>
+    <div>
+      <div class="ai-head-title">Asistente Arquitectura</div>
+      <div class="ai-head-sub">Especializado en TutoApp</div>
+    </div>
+    <button class="ai-close" onclick="togglePanel()">✕</button>
+  </div>
+
+  <!-- Pestañas de modo -->
+  <div class="ai-modes">
+    <button class="ai-mode-btn active" id="mode-chat" onclick="setMode('chat')">💬 Chat</button>
+    <button class="ai-mode-btn" id="mode-improve" onclick="setMode('improve')">✨ Mejorar</button>
+  </div>
+
+  <!-- Selector de proveedor AI -->
+  <div class="prov-bar">
+    <button class="prov-btn active" data-prov="puter" onclick="setProvider('puter')">Puter <span class="prov-badge">FREE</span></button>
+    <button class="prov-btn" data-prov="gemini" onclick="setProvider('gemini')">Gemini <span class="prov-badge">FREE</span></button>
+    <button class="prov-btn" data-prov="grok" onclick="setProvider('grok')">Grok</button>
+    <button class="prov-btn" data-prov="claude" onclick="setProvider('claude')">Claude</button>
+    <button class="prov-btn" data-prov="ollama" onclick="setProvider('ollama')">Ollama <span class="prov-badge">FREE</span></button>
+  </div>
+
+  <!-- Fila de key (visible solo cuando el proveedor la necesita) -->
+  <div class="key-row" id="keyRow">
+    <input class="key-input" id="provKeyInput" type="password" placeholder="API Key...">
+    <button class="key-save-btn" onclick="saveProvKey()">Guardar</button>
+    <a class="key-link" id="keyLink" href="#" target="_blank">Obtener →</a>
+  </div>
+
+  <!-- Mensajes del chat -->
+  <div class="ai-msgs" id="aiMsgs">
+    <div class="msg-ai">
+      Hola. Soy el asistente especializado en la arquitectura de <strong>TutoApp</strong>. Puedo explicarte cómo funciona el backend, el sistema de proveedores AI, el flujo de datos o cualquier decisión técnica del proyecto. ¿Qué querés saber?
+    </div>
+  </div>
+
+  <!-- Footer con input -->
+  <div class="ai-footer">
+    <div class="ai-ctx" id="ai-ctx-label">
+      <strong>Chat:</strong> Preguntá sobre arquitectura, endpoints, proveedores o configuración
+    </div>
+    <div class="ai-input-row">
+      <textarea class="ai-input" id="aiInput" rows="1" placeholder="¿Cómo funciona el proxy de Claude?..." onkeydown="handleKey(event)"></textarea>
+      <button class="ai-send" id="aiSend" onclick="sendMessage()">➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─────────────────────────────────────────────────────────────────
+   SISTEMA DE IDIOMA
+   setLang(l): actualiza todos los elementos .i18n y guarda en localStorage
+───────────────────────────────────────────────────────────────── */
+let currentLang = 'es';
+
+function setLang(l) {
+  currentLang = l;
+  document.documentElement.setAttribute('data-lang', l);
+  try { localStorage.setItem('guide-lang', l); } catch(e) {}
+  document.querySelectorAll('.i18n').forEach(el => {
+    const v = el.dataset[l];
+    if (v !== undefined) el.textContent = v;
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('on', b.dataset.lang === l);
+  });
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SISTEMA DE TEMAS
+   setTheme(t): cambia data-theme en <html> y actualiza botones
+───────────────────────────────────────────────────────────────── */
+function setTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('guide-theme', t); } catch(e) {}
+  document.querySelectorAll('.tbtn').forEach(b => {
+    b.classList.toggle('on', b.textContent.toLowerCase().includes(t));
+  });
+}
+
+/* Restaurar tema e idioma guardados al cargar */
+(function() {
+  let s = 'dark';
+  try { s = localStorage.getItem('guide-theme') || 'dark'; } catch(e) {}
+  setTheme(s);
+  let l = null;
+  try { l = localStorage.getItem('guide-lang'); } catch(e) {}
+  if (!l) {
+    const bl = (navigator.language || 'es').toLowerCase();
+    l = bl.startsWith('es') ? 'es' : 'en';
+  }
+  setTimeout(() => { setLang(l); addCodeToolbars(); }, 0);
+})();
+
+/* ─────────────────────────────────────────────────────────────────
+   TOOLBARS EN BLOQUES DE CÓDIGO
+   Agrega botones Copiar + Explicar encima de cada <pre>
+───────────────────────────────────────────────────────────────── */
+function addCodeToolbars() {
+  document.querySelectorAll('.content pre').forEach((pre, idx) => {
+    if (pre.previousElementSibling?.classList.contains('code-toolbar')) return;
+    const langDiv = pre.querySelector('.code-lang');
+    const lang = langDiv ? langDiv.textContent.trim() : 'code';
+    if (!pre.id) pre.id = 'code-' + idx;
+    const tb = document.createElement('div');
+    tb.className = 'code-toolbar';
+    tb.innerHTML = `
+      <span class="code-lang-lbl">${lang}</span>
+      <div class="code-btns-row">
+        <button class="code-action-btn" onclick="copyPre('${pre.id}')">📋 Copiar</button>
+        <button class="code-action-btn expl" onclick="explainPre('${pre.id}')">📖 Explicar</button>
+      </div>`;
+    pre.parentNode.insertBefore(tb, pre);
+    pre.style.borderRadius = '0 0 11px 11px';
+    pre.style.borderTop = 'none';
+  });
+}
+
+function copyPre(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => showFlash('✓ Copiado'));
+}
+
+function explainPre(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const code = el.textContent.trim().slice(0, 800);
+  openAndAsk('chat', `Explicá este código línea a línea:\n\n${code}`);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   CONTROL DEL PANEL AI
+───────────────────────────────────────────────────────────────── */
+let panelOpen = false;
+
+function togglePanel() {
+  panelOpen = !panelOpen;
+  document.getElementById('aiPanel').classList.toggle('open', panelOpen);
+  document.getElementById('overlay').classList.toggle('show', panelOpen);
+  document.getElementById('layout').classList.toggle('panel-open', panelOpen);
+}
+
+function openMode(mode) {
+  if (!panelOpen) togglePanel();
+  setMode(mode);
+  document.getElementById('aiInput').focus();
+}
+
+function openAndAsk(mode, msg) {
+  openMode(mode);
+  setTimeout(() => {
+    document.getElementById('aiInput').value = msg;
+    sendMessage();
+  }, 200);
+}
+
+function openImprove(sectionId, sectionName) {
+  openMode('improve');
+  const sectionEl = document.getElementById(sectionId);
+  let sectionHtml = '';
+  if (sectionEl) {
+    const clone = sectionEl.cloneNode(true);
+    clone.querySelector('.sec-head')?.remove();
+    sectionHtml = clone.innerHTML.trim().slice(0, 4000);
+  }
+  currentImproveSection = { id: sectionId, name: sectionName, html: sectionHtml };
+  document.getElementById('ai-ctx-label').innerHTML =
+    `<strong>Agregar a:</strong> "<strong style="color:var(--acc)">${sectionName}</strong>" — describí qué querés agregar`;
+  document.getElementById('aiInput').placeholder = `¿Qué querés agregar a "${sectionName}"?`;
+  document.getElementById('aiInput').focus();
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MODOS DEL PANEL AI
+───────────────────────────────────────────────────────────────── */
+let currentMode = 'chat';
+let currentImproveSection = null;
+
+const MODES = {
+  'chat':    { label: '<strong>Chat:</strong> Preguntá sobre arquitectura, endpoints, proveedores o configuración', placeholder: '¿Cómo funciona el proxy de Claude?...' },
+  'improve': { label: '<strong>Mejorar:</strong> Clic en "✨ Mejorar" junto a una sección', placeholder: 'Describí qué agregar...' }
+};
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll('.ai-mode-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('mode-' + mode)?.classList.add('active');
+  if (mode !== 'improve') currentImproveSection = null;
+  const cfg = MODES[mode];
+  if (cfg) {
+    document.getElementById('ai-ctx-label').innerHTML = cfg.label;
+    document.getElementById('aiInput').placeholder = cfg.placeholder;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SISTEMA DE PROVEEDORES AI
+   Idéntico al de los otros HTMLs — Puter / Gemini / Grok / Claude / Ollama
+───────────────────────────────────────────────────────────────── */
+let activeProvider = 'puter';
+
+const PROVIDERS = {
+  puter: { name: 'Puter.js', free: true, needsKey: false, model: 'gemini-2.5-flash-lite', note: '✓ Gratis · Sin configuración' },
+  gemini: { name: 'Google Gemini', free: true, needsKey: true, storageKey: 'key-gemini', placeholder: 'AIzaSy...', keyUrl: 'https://aistudio.google.com', model: 'gemini-2.5-flash', note: 'Key gratis en aistudio.google.com' },
+  grok: { name: 'xAI Grok', free: false, needsKey: true, storageKey: 'key-grok', placeholder: 'xai-...', keyUrl: 'https://console.x.ai', model: 'grok-4.1-fast', note: '$0.20/M tokens' },
+  claude: { name: 'Anthropic Claude', free: false, needsKey: true, storageKey: 'key-claude', placeholder: 'sk-ant-...', keyUrl: 'https://console.anthropic.com/settings/keys', model: 'claude-sonnet-4-20250514', note: 'console.anthropic.com' },
+  ollama: { name: 'Ollama Local', free: true, needsKey: false, model: 'qwen2.5-coder:7b', note: '100% offline · ollama.com' }
+};
+
+function setProvider(id) {
+  activeProvider = id;
+  const cfg = PROVIDERS[id];
+  document.querySelectorAll('.prov-btn').forEach(b => b.classList.toggle('active', b.dataset.prov === id));
+  const keyRow = document.getElementById('keyRow');
+  const keyInp = document.getElementById('provKeyInput');
+  const keyLink = document.getElementById('keyLink');
+  if (cfg.needsKey) {
+    keyRow.classList.add('show');
+    keyInp.placeholder = cfg.placeholder || 'API Key...';
+    const saved = getProvKey(id);
+    keyInp.value = saved ? '••••••••' : '';
+    if (keyLink) { keyLink.href = cfg.keyUrl || '#'; keyLink.textContent = 'Obtener gratis →'; }
+  } else {
+    keyRow.classList.remove('show');
+  }
+  showProviderNote(cfg);
+  try { localStorage.setItem('active-provider', id); } catch(e) {}
+}
+
+function showProviderNote(cfg) {
+  const msgs = document.getElementById('aiMsgs');
+  if (!msgs) return;
+  const note = document.createElement('div');
+  note.style.cssText = 'font-size:.8rem;color:var(--text3);padding:6px 12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);margin:2px 0;text-align:center;';
+  note.textContent = `${cfg.name} · ${cfg.note}`;
+  msgs.appendChild(note);
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => { if (note.parentNode) note.parentNode.removeChild(note); }, 4000);
+}
+
+function getProvKey(provId) {
+  const key = PROVIDERS[provId]?.storageKey;
+  if (!key) return '';
+  try { return localStorage.getItem(key) || ''; } catch(e) { return ''; }
+}
+
+function saveProvKey() {
+  const cfg = PROVIDERS[activeProvider];
+  if (!cfg?.needsKey) return;
+  const inp = document.getElementById('provKeyInput');
+  const val = inp?.value?.trim();
+  if (!val || val === '••••••••') return;
+  try { localStorage.setItem(cfg.storageKey, val); } catch(e) {}
+  inp.value = '••••••••';
+  showFlash('✓ Key guardada');
+}
+
+/* Restaurar proveedor guardado */
+(function() {
+  try {
+    const saved = localStorage.getItem('active-provider');
+    if (saved && PROVIDERS[saved]) setProvider(saved);
+  } catch(e) {}
+})();
+
+/* ─────────────────────────────────────────────────────────────────
+   FUNCIÓN UNIFICADA callAI()
+   Enruta al proveedor activo — misma interfaz para todos
+───────────────────────────────────────────────────────────────── */
+async function callAI(userMsg, systemPrompt, onToken, onDone) {
+  switch (activeProvider) {
+    case 'puter':   return callPuter(userMsg, systemPrompt, onToken, onDone);
+    case 'gemini':  return callGeminiDirect(userMsg, systemPrompt, onToken, onDone);
+    case 'grok':    return callGrok(userMsg, systemPrompt, onToken, onDone);
+    case 'claude':  return callClaudeProxy(userMsg, systemPrompt, onToken, onDone);
+    case 'ollama':  return callOllamaProxy(userMsg, systemPrompt, onToken, onDone);
+    default:        return callPuter(userMsg, systemPrompt, onToken, onDone);
+  }
+}
+
+/* ── PUTER.JS ──────────────────────────────────────────────────── */
+const PUTER_FALLBACK_MODELS = ['gemini-2.5-flash-lite', 'claude-sonnet-4-5', 'gpt-4o-mini', 'gpt-4o'];
+
+async function _puterChat(messages, model, onToken, onDone) {
+  try {
+    const resp = await puter.ai.chat(messages, { model, stream: true });
+    for await (const chunk of resp) {
+      const delta = chunk?.choices?.[0]?.delta?.content || chunk?.text || '';
+      if (delta) onToken(delta);
+    }
+    onDone();
+  } catch (err) {
+    const em = (err.message || '').toLowerCase();
+    if (em.includes('sign') || em.includes('auth') || em.includes('login') || em.includes('account') || em.includes('unauthorized')) throw new Error('__PUTER_AUTH__');
+    if (em.includes('stream') || em.includes('iterator')) {
+      const resp2 = await puter.ai.chat(messages, { model });
+      const text = resp2?.message?.content?.[0]?.text || resp2?.content?.[0]?.text || resp2?.choices?.[0]?.message?.content || String(resp2);
+      for (let i = 0; i < text.length; i += 3) { onToken(text.slice(i, i+3)); await new Promise(r => setTimeout(r, 8)); }
+      onDone();
+    } else throw err;
+  }
+}
+
+async function callPuter(userMsg, systemPrompt, onToken, onDone) {
+  if (!window.puter) throw new Error('__PUTER_NO_LOAD__');
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+  const models = [PROVIDERS.puter.model, ...PUTER_FALLBACK_MODELS.filter(m => m !== PROVIDERS.puter.model)];
+  let lastError;
+  for (const model of models) {
+    try { await _puterChat(messages, model, onToken, onDone); PROVIDERS.puter.model = model; return; }
+    catch (err) {
+      if (err.message === '__PUTER_AUTH__') throw err;
+      const msg = (err.message || '').toLowerCase();
+      if (msg.includes('not found') || msg.includes('model') || msg.includes('invalid') || msg.includes('unsupported')) { lastError = err; continue; }
+      throw err;
+    }
+  }
+  throw lastError || new Error('Ningún modelo de Puter disponible');
+}
+
+/* ── GEMINI DIRECTO ────────────────────────────────────────────── */
+async function callGeminiDirect(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('gemini');
+  if (!key) { addMsg('ai', '⚠️ Guardá tu Gemini API key primero (aistudio.google.com — gratis).'); onDone(); return; }
+  const body = { contents: [{ parts: [{ text: userMsg }] }] };
+  if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:streamGenerateContent?key=${key}&alt=sse`;
+  const resp = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const lines = dec.decode(value).split('\n');
+    for (const line of lines) {
+      if (!line.startsWith('data: ')) continue;
+      try {
+        const d = JSON.parse(line.slice(6));
+        const txt = d?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        if (txt) onToken(txt);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ── GROK DIRECTO ──────────────────────────────────────────────── */
+async function callGrok(userMsg, systemPrompt, onToken, onDone) {
+  const key = getProvKey('grok');
+  if (!key) { addMsg('ai', '⚠️ Guardá tu xAI API key primero (console.x.ai).'); onDone(); return; }
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+  const resp = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'authorization': `Bearer ${key}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ model: PROVIDERS.grok.model, messages, stream: true })
+  });
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const lines = dec.decode(value).split('\n');
+    for (const line of lines) {
+      if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+      try { const d = JSON.parse(line.slice(6)); const txt = d?.choices?.[0]?.delta?.content || ''; if (txt) onToken(txt); } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ── CLAUDE via BACKEND ────────────────────────────────────────── */
+async function callClaudeProxy(userMsg, systemPrompt, onToken, onDone) {
+  const body = { model: PROVIDERS.claude.model, max_tokens: 2048, stream: true, messages: [{ role: 'user', content: userMsg }] };
+  if (systemPrompt) body.system = systemPrompt;
+  const resp = await fetch('/api/claude', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  if (!resp.ok) {
+    const err = await resp.json().catch(() => ({}));
+    throw new Error(err.detail || `Backend error ${resp.status}`);
+  }
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const lines = dec.decode(value).split('\n');
+    for (const line of lines) {
+      if (!line.startsWith('data: ') || line.includes('[DONE]')) continue;
+      try {
+        const d = JSON.parse(line.slice(6));
+        const txt = d?.delta?.text || d?.choices?.[0]?.delta?.content || '';
+        if (txt) onToken(txt);
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ── OLLAMA via BACKEND ────────────────────────────────────────── */
+async function callOllamaProxy(userMsg, systemPrompt, onToken, onDone) {
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+  const resp = await fetch('/api/ollama', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ model: PROVIDERS.ollama.model, messages, stream: true }) });
+  const reader = resp.body.getReader();
+  const dec = new TextDecoder();
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    const lines = dec.decode(value).split('\n').filter(Boolean);
+    for (const line of lines) {
+      try {
+        const d = JSON.parse(line);
+        if (d.error) { addMsg('ai', `⚠️ ${d.error}`); onDone(); return; }
+        const txt = d?.message?.content || '';
+        if (txt) onToken(txt);
+        if (d.done) { onDone(); return; }
+      } catch(e) {}
+    }
+  }
+  onDone();
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   ENVÍO DE MENSAJES Y MANEJO DEL CHAT
+───────────────────────────────────────────────────────────────── */
+
+/* System prompt especializado en arquitectura TutoApp */
+function buildSystemPrompt() {
+  const base = `Sos el asistente técnico especializado en TutoApp, una suite de guías interactivas con AI integrada.
+
+STACK DE TUTOAPP:
+- Backend: FastAPI (server/main.py) + uvicorn + httpx + python-dotenv
+- Frontend: 5 HTMLs auto-contenidos en client/ — sin frameworks, solo vanilla JS
+- Lanzador: start.bat (Windows, ASCII puro, sin Unicode)
+- Proveedores AI: Puter.js (default gratis), Gemini directo, Grok directo, Claude via proxy backend, Ollama via proxy backend
+
+ENDPOINTS DEL BACKEND:
+- GET /api/health → detecta si el backend está activo, devuelve qué providers tienen key
+- POST /api/claude → proxy a Anthropic API con key del .env
+- POST /api/gemini → proxy a Google Gemini API con key del .env
+- POST /api/ollama → proxy a localhost:11434 (CORS fix)
+- POST /api/save-section → inserta HTML generado por AI en el archivo fuente (whitelist: _ALLOWED_FILES)
+- / → StaticFiles sirviendo client/ (va al final para no pisar las rutas /api/)
+
+SEGURIDAD:
+- _ALLOWED_FILES en main.py: whitelist de archivos que /api/save-section puede modificar
+- .env nunca va a Git (en .gitignore)
+- CORS abierto solo porque corre en localhost, no como servicio público
+
+Respondé en español, con ejemplos concretos del código de TutoApp. Sé directo y técnico.`;
+  return base;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('aiInput');
+  const userMsg = input.value.trim();
+  if (!userMsg) return;
+
+  addMsg('user', userMsg);
+  input.value = '';
+  autoResizeInput(input);
+  document.getElementById('aiSend').disabled = true;
+
+  /* Construir el prompt según el modo activo */
+  let prompt = userMsg;
+  let systemPrompt = buildSystemPrompt();
+
+  if (currentMode === 'improve' && currentImproveSection) {
+    systemPrompt += `\n\nSECCIÓN A MEJORAR: "${currentImproveSection.name}" (id="${currentImproveSection.id}")\nCONTENIDO ACTUAL:\n${currentImproveSection.html}\n\nGenerá HTML nuevo en el mismo estilo para agregar contenido a esta sección. Usá las mismas clases CSS (mini-card, callout, has-tb pre, etc.).`;
+  }
+
+  /* Mostrar indicador de escritura */
+  const typingEl = addTypingIndicator();
+  let aiText = '';
+  const aiEl = document.createElement('div');
+  aiEl.className = 'msg-ai';
+  let added = false;
+
+  try {
+    await callAI(prompt, systemPrompt,
+      (token) => {
+        /* onToken: agregar cada fragmento al mensaje AI */
+        aiText += token;
+        if (!added) {
+          typingEl.remove();
+          document.getElementById('aiMsgs').appendChild(aiEl);
+          added = true;
+        }
+        aiEl.innerHTML = formatAIText(aiText);
+        document.getElementById('aiMsgs').scrollTop = document.getElementById('aiMsgs').scrollHeight;
+      },
+      async () => {
+        /* onDone: si es modo improve, ofrecer guardar el HTML generado */
+        if (!added) typingEl.remove();
+        if (currentMode === 'improve' && currentImproveSection && aiText.includes('<')) {
+          const saveBtn = document.createElement('button');
+          saveBtn.style.cssText = 'margin-top:8px;padding:6px 14px;background:var(--acc);color:var(--bg);border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;display:block;';
+          saveBtn.textContent = '💾 Guardar en el archivo HTML';
+          saveBtn.onclick = () => saveSection(currentImproveSection.id, aiText, saveBtn);
+          aiEl.appendChild(saveBtn);
+        }
+        document.getElementById('aiSend').disabled = false;
+      }
+    );
+  } catch(err) {
+    typingEl.remove();
+    if (!added) document.getElementById('aiMsgs').appendChild(aiEl);
+    let msg = '⚠️ Error al conectar con la AI.';
+    if (err.message === '__PUTER_AUTH__') msg = '⚠️ Puter requiere que estés logueado en puter.com. Usá otro proveedor o iniciá sesión.';
+    else if (err.message === '__PUTER_NO_LOAD__') msg = '⚠️ Puter.js no cargó (posible ad blocker). Probá otro proveedor.';
+    else if (err.message) msg += ` ${err.message}`;
+    aiEl.innerHTML = msg;
+    document.getElementById('aiSend').disabled = false;
+  }
+}
+
+/* Guarda el HTML generado por AI en el archivo fuente via /api/save-section */
+async function saveSection(sectionId, html, btn) {
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+  try {
+    const resp = await fetch('/api/save-section', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ filename: 'arquitectura-tecnica.html', sectionId, htmlToAppend: html })
+    });
+    if (resp.ok) { showFlash('✓ Sección guardada en el archivo'); btn.remove(); }
+    else { const err = await resp.json().catch(() => ({})); btn.textContent = `Error: ${err.detail || resp.status}`; btn.disabled = false; }
+  } catch(e) {
+    btn.textContent = 'Error de red — ¿backend activo?';
+    btn.disabled = false;
+  }
+}
+
+/* ─── HELPERS DE UI ────────────────────────────────────────────── */
+
+function addMsg(role, text) {
+  const msgs = document.getElementById('aiMsgs');
+  const el = document.createElement('div');
+  el.className = role === 'user' ? 'msg-user' : 'msg-ai';
+  el.textContent = text;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+function addTypingIndicator() {
+  const msgs = document.getElementById('aiMsgs');
+  const el = document.createElement('div');
+  el.className = 'msg-typing';
+  el.innerHTML = '<div class="dot-loader"><span></span><span></span><span></span></div> Pensando...';
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+/* formatAIText: convierte texto plano con **negrita** y `código` a HTML */
+function formatAIText(text) {
+  return text
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/`(.+?)`/g,'<code style="background:var(--bg3);padding:1px 5px;border-radius:4px;font-family:JetBrains Mono,monospace;font-size:.85em;color:var(--acc)">$1</code>')
+    .replace(/\n/g,'<br>');
+}
+
+function autoResizeInput(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+/* Ajuste automático de altura del textarea mientras el usuario escribe */
+document.getElementById('aiInput')?.addEventListener('input', function() { autoResizeInput(this); });
+
+function showFlash(msg) {
+  const el = document.getElementById('flash');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>

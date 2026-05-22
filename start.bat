@@ -153,25 +153,29 @@ echo   ^|                                                  ^|
 echo   ^|   [4]  Tutorial Mac 2026                        ^|
 echo   ^|        Guia completa de configuracion            ^|
 echo   ^|                                                  ^|
-echo   ^|   [5]  ^>^>^> Abrir las 4 guias juntas ^<^<^<       ^|
+echo   ^|   [5]  Arquitectura Tecnica                      ^|
+echo   ^|        Como funciona TutoApp por dentro          ^|
+echo   ^|                                                  ^|
+echo   ^|   [6]  ^>^>^> Abrir las 5 guias juntas ^<^<^<       ^|
 echo   ^|                                                  ^|
 echo   ^|   [0]  Solo iniciar servidor (sin browser)      ^|
 echo   ^|                                                  ^|
 echo   +===================================================+
 echo.
 
-:: choice /C 012345 -- lee UNA tecla sin necesitar Enter.
-:: /N  -- no imprime la lista "[0,1,2,3,4,5]?" automaticamente.
+:: choice /C 0123456 -- lee UNA tecla sin necesitar Enter.
+:: /N  -- no imprime la lista automaticamente.
 :: /M  -- muestra este prompt antes de esperar la tecla.
 ::
-:: Mapeo ERRORLEVEL que genera choice /C 012345:
-::   Tecla '0' -> ERRORLEVEL 1   (posicion 1 en la cadena "012345")
+:: Mapeo ERRORLEVEL que genera choice /C 0123456:
+::   Tecla '0' -> ERRORLEVEL 1   (posicion 1 en la cadena "0123456")
 ::   Tecla '1' -> ERRORLEVEL 2   (posicion 2)
 ::   Tecla '2' -> ERRORLEVEL 3   (posicion 3)
 ::   Tecla '3' -> ERRORLEVEL 4   (posicion 4)
 ::   Tecla '4' -> ERRORLEVEL 5   (posicion 5)
 ::   Tecla '5' -> ERRORLEVEL 6   (posicion 6)
-choice /C 012345 /N /M "   Tu eleccion (presiona 0, 1, 2, 3, 4 o 5): "
+::   Tecla '6' -> ERRORLEVEL 7   (posicion 7)
+choice /C 0123456 /N /M "   Tu eleccion (presiona 0-6): "
 
 :: Capturar ERRORLEVEL inmediatamente en una variable.
 :: CRITICO: ERRORLEVEL se sobreescribe con CADA comando (incluso los if).
@@ -231,10 +235,12 @@ echo  Servidor listo.
 :: ====================================================================
 :: Recordar mapeo ELECCION (= ERRORLEVEL capturado de choice):
 ::   ELECCION 2 -> tecla '1' -> AI Coding Tools 2026
+::   ELECCION 2 -> tecla '1' -> AI Coding Tools 2026
 ::   ELECCION 3 -> tecla '2' -> Dev Setup Mac M5
 ::   ELECCION 4 -> tecla '3' -> MacBook Pro M5
 ::   ELECCION 5 -> tecla '4' -> Tutorial Mac 2026
-::   ELECCION 6 -> tecla '5' -> las 4 juntas
+::   ELECCION 6 -> tecla '5' -> Arquitectura Tecnica
+::   ELECCION 7 -> tecla '6' -> las 5 juntas
 ::   ELECCION 1 -> tecla '0' -> solo servidor (sin browser)
 :abrir_browser
 if %ELECCION%==2 (
@@ -250,7 +256,10 @@ if %ELECCION%==5 (
     start "" "http://localhost:8000/tutorial_mac_2026.html"
 )
 if %ELECCION%==6 (
-    :: Abrir las 4 con 1 seg de pausa entre cada una.
+    start "" "http://localhost:8000/arquitectura-tecnica.html"
+)
+if %ELECCION%==7 (
+    :: Abrir las 5 con 1 seg de pausa entre cada una.
     :: Sin pausa, algunos browsers las abren en orden incorrecto.
     start "" "http://localhost:8000/ai-coding-tools.html"
     timeout /t 1 /nobreak >nul
@@ -259,6 +268,8 @@ if %ELECCION%==6 (
     start "" "http://localhost:8000/macbook-pro-m5-guia.html"
     timeout /t 1 /nobreak >nul
     start "" "http://localhost:8000/tutorial_mac_2026.html"
+    timeout /t 1 /nobreak >nul
+    start "" "http://localhost:8000/arquitectura-tecnica.html"
 )
 if %ELECCION%==1 (
     echo  Servidor corriendo. Para abrir manualmente:
@@ -266,6 +277,7 @@ if %ELECCION%==1 (
     echo    http://localhost:8000/dev-setup-mac-m5.html
     echo    http://localhost:8000/macbook-pro-m5-guia.html
     echo    http://localhost:8000/tutorial_mac_2026.html
+    echo    http://localhost:8000/arquitectura-tecnica.html
 )
 
 :: ====================================================================
