@@ -7,44 +7,28 @@
 :: POR QUE EXISTE: Punto de entrada unico para usuarios no tecnicos --
 ::                 doble clic y todo funciona sin tocar la terminal.
 :: ENCODING: ASCII puro -- SIN Unicode, SIN tildes, SIN caja dibujada.
-::           Los caracteres especiales (=, -, |, +, *) no necesitan
-::           chcp ni escaping, garantizando compatibilidad total.
 :: DEPENDENCIAS: Python 3.11+, curl (incluido en Windows 10/11).
-:: ARQUITECTURA:
-::   start.bat (esta ventana)
-::     --> server/.venv/Scripts/uvicorn.exe (ventana minimizada)
-::     --> browser (abre las guias cuando el servidor esta listo)
 :: ====================================================================
 
-:: chcp 65001 -- fuerza UTF-8 en esta consola CMD.
-:: >nul -- suprime el mensaje "Pagina de codigos activa: 65001".
-:: Se pone ANTES de cualquier echo para que los paths con acentos
-:: (si los hay) se muestren correctamente.
+:: chcp 65001 fuerza UTF-8 en esta consola.
+:: >nul suprime el mensaje "Pagina de codigos activa: 65001".
 chcp 65001 >nul
 
-:: cd /d "%~dp0server" -- navega al directorio server/ donde esta main.py.
+:: Navegar al directorio server/ donde esta main.py.
 :: %~dp0 = path absoluto del .bat con trailing backslash.
-:: /d    = cambia de unidad si el .bat esta en otro disco (D:, E:, etc.).
-:: Esto garantiza que ".venv\..." resuelva correctamente sin importar
-:: desde donde el usuario ejecuto el .bat.
+:: /d    = cambia de unidad si el .bat esta en otro disco.
 cd /d "%~dp0server"
 
 :: ====================================================================
-:: PASO 1 -- Verificar que Python esta instalado y en el PATH
+:: PASO 1 -- Verificar Python
 :: ====================================================================
-:: python --version >nul 2>&1 -- corre python en modo silencioso.
-:: Si Python no esta en el PATH, el comando falla y errorlevel queda en 1.
-:: errorlevel 1 se cumple si el exit code es >= 1 (falla o no encontrado).
 python --version >nul 2>&1
 if errorlevel 1 (
     echo.
     echo  [ERROR] Python no encontrado en el PATH.
     echo.
-    echo  Instala Python 3.11+ desde:
-    echo    https://www.python.org/downloads/
-    echo.
-    echo  IMPORTANTE: durante la instalacion marca la opcion
-    echo  "Add Python to PATH" antes de hacer clic en Install.
+    echo  Instala Python 3.11+ desde https://www.python.org/downloads/
+    echo  y marca "Add Python to PATH" durante la instalacion.
     echo.
     pause
     exit /b 1
@@ -53,17 +37,12 @@ if errorlevel 1 (
 :: ====================================================================
 :: PASO 2 -- Crear entorno virtual (solo la primera vez)
 :: ====================================================================
-:: Un venv aisla las dependencias del proyecto del Python global.
-:: Si ya existe .venv, este bloque se salta completamente (idempotente).
 if not exist ".venv" (
     echo.
     echo  [Setup 1/2] Creando entorno virtual en server/.venv ...
-    echo              Solo ocurre la primera vez.
     python -m venv .venv
     if errorlevel 1 (
-        echo.
         echo  [ERROR] No se pudo crear el entorno virtual.
-        echo  Asegurate de tener Python 3.11+ correctamente instalado.
         pause
         exit /b 1
     )
@@ -73,11 +52,8 @@ if not exist ".venv" (
 :: ====================================================================
 :: PASO 3 -- Instalar dependencias (solo si uvicorn no existe)
 :: ====================================================================
-:: Por que chequear uvicorn.exe especificamente:
-::   Es la dependencia "final" -- si existe, las demas tambien estan.
-::   Evita llamar a pip en cada arranque (pip contacta PyPI aunque todo
-::   este instalado, lo que es lento y requiere internet innecesariamente).
-:: Si no existe = primera instalacion o venv corrupto.
+:: Si uvicorn.exe existe, las demas dependencias tambien estan instaladas.
+:: Esto evita correr pip en cada arranque, lo que es lento.
 if not exist ".venv\Scripts\uvicorn.exe" (
     echo.
     echo  [Setup 2/2] Instalando dependencias (1-2 minutos la primera vez)...
@@ -86,8 +62,7 @@ if not exist ".venv\Scripts\uvicorn.exe" (
     ".venv\Scripts\pip" install -r requirements.txt
     if errorlevel 1 (
         echo.
-        echo  [ERROR] Fallo la instalacion de dependencias.
-        echo  Verifica tu conexion a internet e intenta de nuevo.
+        echo  [ERROR] Fallo la instalacion. Verifica tu conexion a internet.
         pause
         exit /b 1
     )
@@ -98,9 +73,8 @@ if not exist ".venv\Scripts\uvicorn.exe" (
 :: ====================================================================
 :: PASO 4 -- Crear .env si no existe
 :: ====================================================================
-:: .env.example = template con variables sin valores (va a Git).
+:: .env.example = template sin valores (va a Git).
 :: .env         = API keys reales del usuario (nunca va a Git).
-:: Si ya existe un .env (sesion anterior), NO lo sobreescribimos.
 if not exist ".env" (
     if exist ".env.example" (
         copy ".env.example" ".env" >nul
@@ -113,20 +87,14 @@ if not exist ".env" (
 :: ====================================================================
 :: PASO 5 -- Liberar el puerto 8000 si esta ocupado
 :: ====================================================================
-:: Por que: si una sesion anterior quedo colgada, el puerto sigue
-:: ocupado y uvicorn fallaria al intentar bindear.
-:: PowerShell Get-NetTCPConnection es mas robusto que parsear netstat.
-:: -NoProfile       : no carga el perfil de PS (mas rapido)
-:: -ErrorAction ... : no falla si el puerto esta libre
-:: Stop-Process -Force : cierra sin preguntar
+:: Mata procesos que ocupen el puerto 8000 para que uvicorn pueda arrancar.
 echo.
 echo  Verificando puerto 8000...
-powershell -NoProfile -Command "Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | ForEach-Object { Write-Host '  Puerto 8000 liberado: PID ' $_.OwningProcess; Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }"
+powershell -NoProfile -Command "Get-NetTCPConnection -LocalPort 8000 -ErrorAction SilentlyContinue | ForEach-Object { Stop-Process -Id $_.OwningProcess -Force -ErrorAction SilentlyContinue }"
 
 :: ====================================================================
-:: PASO 6 -- Menu de seleccion (ASCII puro, sin Unicode)
+:: PASO 6 -- Menu de seleccion
 :: ====================================================================
-:: cls -- limpia la pantalla para que el menu se vea centrado y prolijo.
 cls
 echo.
 echo.
@@ -163,50 +131,37 @@ echo   ^|                                                  ^|
 echo   +===================================================+
 echo.
 
-:: choice /C 0123456 -- lee UNA tecla sin necesitar Enter.
-:: /N  -- no imprime la lista automaticamente.
-:: /M  -- muestra este prompt antes de esperar la tecla.
-::
-:: Mapeo ERRORLEVEL que genera choice /C 0123456:
-::   Tecla '0' -> ERRORLEVEL 1   (posicion 1 en la cadena "0123456")
-::   Tecla '1' -> ERRORLEVEL 2   (posicion 2)
-::   Tecla '2' -> ERRORLEVEL 3   (posicion 3)
-::   Tecla '3' -> ERRORLEVEL 4   (posicion 4)
-::   Tecla '4' -> ERRORLEVEL 5   (posicion 5)
-::   Tecla '5' -> ERRORLEVEL 6   (posicion 6)
-::   Tecla '6' -> ERRORLEVEL 7   (posicion 7)
+:: choice /C 0123456 lee UNA tecla sin necesitar Enter.
+:: Mapeo de ERRORLEVEL generado por choice /C 0123456:
+::   '0' -> ERRORLEVEL 1
+::   '1' -> ERRORLEVEL 2
+::   '2' -> ERRORLEVEL 3
+::   '3' -> ERRORLEVEL 4
+::   '4' -> ERRORLEVEL 5
+::   '5' -> ERRORLEVEL 6
+::   '6' -> ERRORLEVEL 7
 choice /C 0123456 /N /M "   Tu eleccion (presiona 0-6): "
 
-:: Capturar ERRORLEVEL inmediatamente en una variable.
-:: CRITICO: ERRORLEVEL se sobreescribe con CADA comando (incluso los if).
-:: Por eso lo guardamos aqui antes de que cualquier if lo cambie.
+:: Guardar ERRORLEVEL inmediatamente.
+:: CRITICO: ERRORLEVEL se sobreescribe con CADA comando posterior (incluso los if).
+:: Por eso lo capturamos aqui antes de que cualquier otro comando lo pise.
 set ELECCION=%ERRORLEVEL%
 
 :: ====================================================================
 :: PASO 7 -- Arrancar uvicorn en ventana separada minimizada
 :: ====================================================================
 :: start "titulo" /min "programa" argumentos
-::   "TutoApp - Servidor" -> titulo visible en la barra de tareas
-::   /min                 -> inicia minimizada (no interrumpe al usuario)
-::   ".venv\Scripts\python" -> Python del venv (comillas por si hay espacios)
-::   -m uvicorn main:app  -> corre uvicorn como modulo de Python
-::   --host 0.0.0.0       -> escucha en todas las interfaces (LAN + localhost)
-::   --port 8000          -> puerto que usan los HTML para conectar
+::   /min   = inicia la ventana minimizada
+::   main:app = modulo:objeto FastAPI que uvicorn debe cargar
 echo.
 echo  Iniciando servidor en http://localhost:8000 ...
-start "TutoApp - Servidor" /min ".venv\Scripts\python" -m uvicorn main:app --host 0.0.0.0 --port 8000
+start "TutoApp - Servidor" /min ".venv\Scripts\uvicorn.exe" main:app --host 0.0.0.0 --port 8000
 
 :: ====================================================================
-:: PASO 8 -- Esperar hasta que el servidor responda en /api/health
+:: PASO 8 -- Esperar hasta que el servidor responda
 :: ====================================================================
-:: Por que esperar: si abrimos el browser antes de que uvicorn este listo,
-:: el browser muestra "conexion rechazada" y el usuario se confunde.
-::
-:: Logica:
-::   INTENTOS cuenta cuantas veces chequeamos. Maximo 30 (~30 seg).
-::   Si supera 30, el servidor probablemente fallo -- mostramos aviso.
-::   curl -s --max-time 2: silencioso, timeout 2s, retorna 0 si ok.
-::   errorlevel 1: curl retorna 7 si "connection refused" -> reintentar.
+:: Logica: curl verifica /api/health cada segundo hasta 30 intentos.
+:: Si supera 30 segundos, abre el browser de todas formas.
 set INTENTOS=0
 
 :wait_server
@@ -215,63 +170,52 @@ set /a INTENTOS+=1
 if %INTENTOS% GTR 30 (
     echo.
     echo  [AVISO] El servidor tarda mas de 30 segundos.
-    echo  Si hay un error, revisa la ventana "TutoApp - Servidor".
-    echo  Intentando abrir el browser de todas formas...
+    echo  Revisa la ventana "TutoApp - Servidor" si hay un error.
     echo.
     goto abrir_browser
 )
 
-:: timeout /t 1 /nobreak -- espera 1 segundo sin capturar teclas
 timeout /t 1 /nobreak >nul
 
-:: Verificar si el servidor ya responde
 curl -s --max-time 2 http://localhost:8000/api/health >nul 2>&1
 if errorlevel 1 goto wait_server
 
 echo  Servidor listo.
 
 :: ====================================================================
-:: PASO 9 -- Abrir browser segun la eleccion del usuario
+:: PASO 9 -- Abrir browser segun la eleccion
 :: ====================================================================
-:: Recordar mapeo ELECCION (= ERRORLEVEL capturado de choice):
-::   ELECCION 2 -> tecla '1' -> AI Coding Tools 2026
-::   ELECCION 2 -> tecla '1' -> AI Coding Tools 2026
-::   ELECCION 3 -> tecla '2' -> Dev Setup Mac M5
-::   ELECCION 4 -> tecla '3' -> MacBook Pro M5
-::   ELECCION 5 -> tecla '4' -> Tutorial Mac 2026
-::   ELECCION 6 -> tecla '5' -> Arquitectura Tecnica
-::   ELECCION 7 -> tecla '6' -> las 5 juntas
-::   ELECCION 1 -> tecla '0' -> solo servidor (sin browser)
+:: Mapeo ELECCION -> URL:
+::   ELECCION 2 (tecla 1) -> ai-coding-tools.html
+::   ELECCION 3 (tecla 2) -> dev-setup-mac-m5.html
+::   ELECCION 4 (tecla 3) -> macbook-pro-m5-guia.html
+::   ELECCION 5 (tecla 4) -> tutorial_mac_2026.html
+::   ELECCION 6 (tecla 5) -> arquitectura-tecnica.html
+::   ELECCION 7 (tecla 6) -> las 5 juntas
+::   ELECCION 1 (tecla 0) -> solo servidor, sin browser
+::
+:: NOTA sobre "start URL":
+::   Se usa sin comillas alrededor de la URL para maxima compatibilidad.
+::   La forma "start http://..." es la mas confiable en CMD de Windows.
 :abrir_browser
-if %ELECCION%==2 (
-    start "" "http://localhost:8000/ai-coding-tools.html"
-)
-if %ELECCION%==3 (
-    start "" "http://localhost:8000/dev-setup-mac-m5.html"
-)
-if %ELECCION%==4 (
-    start "" "http://localhost:8000/macbook-pro-m5-guia.html"
-)
-if %ELECCION%==5 (
-    start "" "http://localhost:8000/tutorial_mac_2026.html"
-)
-if %ELECCION%==6 (
-    start "" "http://localhost:8000/arquitectura-tecnica.html"
-)
+if %ELECCION%==2 start http://localhost:8000/ai-coding-tools.html
+if %ELECCION%==3 start http://localhost:8000/dev-setup-mac-m5.html
+if %ELECCION%==4 start http://localhost:8000/macbook-pro-m5-guia.html
+if %ELECCION%==5 start http://localhost:8000/tutorial_mac_2026.html
+if %ELECCION%==6 start http://localhost:8000/arquitectura-tecnica.html
 if %ELECCION%==7 (
-    :: Abrir las 5 con 1 seg de pausa entre cada una.
-    :: Sin pausa, algunos browsers las abren en orden incorrecto.
-    start "" "http://localhost:8000/ai-coding-tools.html"
+    start http://localhost:8000/ai-coding-tools.html
     timeout /t 1 /nobreak >nul
-    start "" "http://localhost:8000/dev-setup-mac-m5.html"
+    start http://localhost:8000/dev-setup-mac-m5.html
     timeout /t 1 /nobreak >nul
-    start "" "http://localhost:8000/macbook-pro-m5-guia.html"
+    start http://localhost:8000/macbook-pro-m5-guia.html
     timeout /t 1 /nobreak >nul
-    start "" "http://localhost:8000/tutorial_mac_2026.html"
+    start http://localhost:8000/tutorial_mac_2026.html
     timeout /t 1 /nobreak >nul
-    start "" "http://localhost:8000/arquitectura-tecnica.html"
+    start http://localhost:8000/arquitectura-tecnica.html
 )
 if %ELECCION%==1 (
+    echo.
     echo  Servidor corriendo. Para abrir manualmente:
     echo    http://localhost:8000/ai-coding-tools.html
     echo    http://localhost:8000/dev-setup-mac-m5.html
@@ -281,7 +225,7 @@ if %ELECCION%==1 (
 )
 
 :: ====================================================================
-:: PASO 10 -- Mensaje final con instrucciones
+:: PASO 10 -- Mensaje final
 :: ====================================================================
 echo.
 echo  +------------------------------------------------------+
