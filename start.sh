@@ -46,9 +46,15 @@ if [ ! -d ".venv" ]; then
     $PYTHON_CMD -m venv .venv
 fi
 
-# ── 3. Instalar/actualizar dependencias ─────────────────────────────────
-echo "  Instalando dependencias..."
-.venv/bin/pip install -r requirements.txt -q
+# ── 3. Instalar dependencias solo si no estan instaladas ────────────────
+# POR QUE: pip install siempre contacta PyPI aunque todo este OK,
+# lo que puede tardar o parecer colgado con -q (sin output).
+if [ ! -f ".venv/bin/uvicorn" ]; then
+    echo "  [2/2] Instalando dependencias (puede tardar 1-2 minutos)..."
+    .venv/bin/pip install -r requirements.txt
+else
+    echo "  Dependencias OK."
+fi
 
 # ── 4. Copiar .env.example → .env si no existe ──────────────────────────
 # .env es la configuracion local (API keys). .env.example es la plantilla publica.
