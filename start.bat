@@ -56,7 +56,7 @@ if not exist ".venv" (
 :: Esto evita correr pip en cada arranque, lo que es lento.
 if not exist ".venv\Scripts\uvicorn.exe" (
     echo.
-    echo  [Setup 2/2] Instalando dependencias (1-2 minutos la primera vez)...
+    echo  [Setup 2/2] Instalando dependencias ^(1-2 minutos la primera vez^)...
     echo              Paquetes: fastapi, uvicorn, httpx, python-dotenv
     echo.
     ".venv\Scripts\pip" install -r requirements.txt
