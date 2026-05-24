@@ -890,10 +890,8 @@
           💡 <strong>Modo tutor</strong> · explicaciones de Senior Dev
         </div>
       </div>
-      <!-- Original p was here, replaced above -->
-      <p style="display:none"
-        Todas las herramientas, configuraciones y atajos para convertir tu Mac nuevo en una máquina de producción profesional.
-      </p>
+      <!-- Párrafo original oculto — reemplazado por el <p class="i18n"> de arriba -->
+      <p style="display:none">Todas las herramientas, configuraciones y atajos para convertir tu Mac nuevo en una máquina de producción profesional.</p>
       <!-- Tags de acción rápida -->
       <div class="hero-tags">
         <div class="htag" onclick="openAndAsk('chat', currentLang==='es' ? '¿Cuánto tiempo tarda el setup completo en un M5 Pro?' : 'How long does the complete setup take on an M5 Pro?')">⏱ <span class="i18n" data-es="¿Cuánto tiempo?" data-en="How long?">¿Cuánto tiempo?</span></div>
@@ -1271,11 +1269,7 @@
         </div>
       </div>
 
-    </section>
-
-    <!-- ═══════════════════════════════════════════════════
-         FASE 3 — GIT + GITHUB CLI
-    ═══════════════════════════════════════════════════ -->
+      <!-- ─── Bonus: .zshrc recomendado — al final de Fase 2 (Zsh) ── -->
       <h3 class="mt">⚡ .zshrc — Tu archivo de configuración</h3>
       <p style="font-size:.87rem;color:var(--text2)">El archivo <code>~/.zshrc</code> se ejecuta cada vez que abrís una terminal. Es donde guardás tus atajos, configuraciones y variables. El <code>~</code> significa "tu carpeta home".</p>
       <div class="code-wrap has-toolbar">
@@ -1339,7 +1333,11 @@
 <span class="cmd">source ~/.zshrc</span>   <span class="c"># recarga la configuración</span></code></pre>
       </div>
 
+    </section>
 
+    <!-- ═══════════════════════════════════════════════════
+         FASE 3 — GIT + GITHUB CLI
+    ═══════════════════════════════════════════════════ -->
     <section id="phase-3">
       <div class="phase-header" style="--phase-color:var(--p3)">
         <div class="phase-badge" style="background:var(--p3)">3</div>
