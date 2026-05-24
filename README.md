@@ -9,6 +9,29 @@
 
 ---
 
+## 🖼️ Vista previa
+
+<table>
+  <tr>
+    <td align="center"><strong>AI Coding Tools 2026</strong></td>
+    <td align="center"><strong>Dev Setup Mac M5</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshot-ai-tools.png" alt="AI Coding Tools guide" width="420"/></td>
+    <td><img src="assets/screenshot-mac-setup.png" alt="Dev Setup Mac M5 guide" width="420"/></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>MacBook Pro M5</strong></td>
+    <td align="center"><strong>Arquitectura Técnica</strong></td>
+  </tr>
+  <tr>
+    <td><img src="assets/screenshot-macbook.png" alt="MacBook Pro M5 guide" width="420"/></td>
+    <td><img src="assets/screenshot-arquitectura.png" alt="Arquitectura Técnica guide" width="420"/></td>
+  </tr>
+</table>
+
+---
+
 ## ¿Qué es TutoApp?
 
 TutoApp es una colección de **guías técnicas interactivas** que tienen un asistente de IA integrado adentro. No es un chatbot genérico. Cada guía sabe exactamente de qué trata, puede responderte preguntas contextuales, y te permite guardar notas con mejoras generadas por IA sobre cada sección.
