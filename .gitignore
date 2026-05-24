@@ -3,22 +3,47 @@
 # El servidor SÍ sube a git para que el proyecto funcione en cualquier equipo.
 # Lo que NUNCA sube: keys de API (.env) y paquetes instalados (.venv/).
 
-# ── API keys — NUNCA al repositorio ─────────────────────────────────────
-server/.env
+# --- CREDENCIALES Y LLAVES DE ACCESO ---
 .env
-*.env
+.env.local
+.env.*
 !.env.example
 !server/.env.example
+server/.env
+*.pem
+*.key
+*.cert
+secret_*
+credentials.json
 
-# ── Entorno virtual Python — se regenera con el script de arranque ───────
-# ¿Por qué no sube? Pesa cientos de MB y depende del sistema operativo.
-# El script start.bat / start.sh lo crea automáticamente en el otro equipo.
-.venv/
+# --- CONFIGURACIONES DE CLAUDE CODE Y CONFIGS LOCALES ---
+.claude/
+.claude_settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# --- ARCHIVOS DEL SISTEMA OPERATIVO (Basura del PC) ---
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+desktop.ini
+
+# --- ENTORNOS VIRTUALES Y DEPENDENCIAS (No se deben subir) ---
+node_modules/
+bower_components/
 venv/
+.venv/
 env/
-
-# ── Archivos compilados de Python — se generan solos al correr el código ─
 __pycache__/
+*.pyc
 *.py[cod]
 *.pyo
 *.egg-info/
@@ -29,12 +54,6 @@ build/
 *.log
 logs/
 
-# ── Archivos del sistema operativo ───────────────────────────────────────
-.DS_Store
-Thumbs.db
-desktop.ini
-
 # ── Herramientas de desarrollo local (no van al repo) ────────────────────
 client/.playwright-mcp/
-client/.claude/
 front/
