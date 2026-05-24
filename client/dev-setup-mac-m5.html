@@ -692,7 +692,6 @@
     }
 
   </style>
-<script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
 
@@ -1086,7 +1085,7 @@
     
 
 <div class="tip-grid">
-  <div class="tip-card"><h4>🚀 Optimización de Homebrew</h4><p>Si no estás seguro de qué paquetes instalar con Homebrew, prueba con <code>brew search <keyword></code> para encontrar lo que necesitas, o revisa listas de herramientas recomendadas para desarrolladores en Mac.</p></div>
+  <div class="tip-card"><h4>🚀 Optimización de Homebrew</h4><p>Si no estás seguro de qué paquetes instalar con Homebrew, prueba con <code>brew search &lt;keyword&gt;</code> para encontrar lo que necesitas, o revisa listas de herramientas recomendadas para desarrolladores en Mac.</p></div>
 </div>
 
 </section>
@@ -4058,5 +4057,7 @@ window.addEventListener('load', () => {
 });
 </script>
 
+<!-- puter.js al final del body — evita bloqueo de render (render-blocking) -->
+<script src="https://js.puter.com/v2/"></script>
 </body>
 </html>
