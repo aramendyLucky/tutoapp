@@ -692,6 +692,7 @@
     }
 
   </style>
+  <script src="https://js.puter.com/v2/"></script>
 </head>
 <body>
 
@@ -1391,7 +1392,7 @@
 <span class="cmd">ssh-keygen -t ed25519 -C</span> <span class="s">"tu@email.com"</span>
 <span class="cmd">eval "$(ssh-agent -s)"</span>
 <span class="cmd">ssh-add --apple-use-keychain ~/.ssh/id_ed25519</span>
-<span class="cmd">pbcopy < ~/.ssh/id_ed25519.pub</span>
+<span class="cmd">pbcopy &lt; ~/.ssh/id_ed25519.pub</span>
 <span class="c"># Ir a github.com → Settings → SSH Keys → New SSH Key → pegar</span>
 <span class="cmd">ssh -T git@github.com</span>  <span class="c"># → Hi username! You've successfully authenticated</span>
 
@@ -1619,7 +1620,7 @@
 <span class="cmd">npm install express</span>
 
 <span class="c"># 4. Crear el servidor — correr en terminal:</span>
-<span class="cmd">cat</span> > server.js <span class="s"><<'EOF'
+<span class="cmd">cat</span> &gt; server.js <span class="s">&lt;&lt;'EOF'
 const express = require('express');
 const app = express();
 
@@ -4057,7 +4058,5 @@ window.addEventListener('load', () => {
 });
 </script>
 
-<!-- puter.js al final del body — evita bloqueo de render (render-blocking) -->
-<script src="https://js.puter.com/v2/"></script>
 </body>
 </html>
