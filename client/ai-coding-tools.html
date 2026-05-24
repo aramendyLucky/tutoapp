@@ -54,19 +54,16 @@
       --hero-bg: linear-gradient(135deg, #dce8ff 0%, #f5f7ff 60%, #ede8ff 100%);
     }
     [data-theme="minimal"] {
-      /* Fondos crema-pergamino cálidos */
-      --bg: #f6f1e3; --bg2: #fdf9f0; --bg3: #ede5cc; --bg4: #e0d5b0;
-      --border: #c8b880; --border2: #b0a060;
-      /* Texto marrón cálido para máxima legibilidad */
-      --text: #2a1e08; --text2: #5a4520; --text3: #9a8050;
-      /* Verde manzana vibrante como acento principal */
-      --acc: #7cc520; --acc2: #5040b0; --acc3: #d04060;
-      --gold: #c09010;
-      --red: #c02818; --green: #4a9010; --blue: #1858a0; --orange: #c06820;
-      --panel-bg: rgba(246, 241, 227, 0.98);
-      --panel-border: rgba(124, 197, 32, 0.35);
-      --glow: 0 0 25px rgba(124, 197, 32, 0.15);
-      --hero-bg: linear-gradient(135deg, #e4f4a8 0%, #f6f1e3 55%, #f0e8f8 100%);
+      --bg: #f0ead8; --bg2: #faf6eb; --bg3: #e8e0c8; --bg4: #ddd4b8;
+      --border: #c8b898; --border2: #b8a880;
+      --text: #281f10; --text2: #5c4a28; --text3: #9c8860;
+      --acc: #4e8a18; --acc2: #6e4ec8; --acc3: #c83870;
+      --gold: #a07810;
+      --red: #b83020; --green: #407810; --blue: #1858a0; --orange: #c06018;
+      --panel-bg: rgba(240, 234, 216, 0.98);
+      --panel-border: rgba(78, 138, 24, 0.3);
+      --glow: 0 0 20px rgba(78, 138, 24, 0.1);
+      --hero-bg: linear-gradient(135deg, #dce8b8 0%, #f0ead8 60%, #e8d8f0 100%);
     }
 
     /* ─── RESET Y BASE ───────────────────────────────────── */
@@ -656,48 +653,6 @@
     }
     .key-link:hover { color: var(--acc); }
 
-    /* ── ANIMACIONES TEMA MINIMAL ───────────────────────────────────────────
-       QUÉ HACE: Da vida y carácter al tema crema sin tocar Dark ni Light.
-       POR QUÉ AQUÍ: Scoped a [data-theme="minimal"] para no interferir con
-       los otros temas — cada uno tiene su propia personalidad visual.
-       ─────────────────────────────────────────────────────────────────────── */
-    [data-theme="minimal"] .mini-card,
-    [data-theme="minimal"] .tool-card,
-    [data-theme="minimal"] .tip-card,
-    [data-theme="minimal"] .faq-item {
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1),
-                  box-shadow .22s ease;
-    }
-    [data-theme="minimal"] .mini-card:hover,
-    [data-theme="minimal"] .tool-card:hover,
-    [data-theme="minimal"] .tip-card:hover {
-      transform: translateY(-5px) scale(1.015);
-      box-shadow: 0 14px 36px rgba(124,197,32,.18), 0 2px 8px rgba(42,30,8,.06);
-    }
-    [data-theme="minimal"] .callout {
-      transition: transform .18s ease, border-color .2s ease;
-    }
-    [data-theme="minimal"] .callout:hover { transform: translateX(6px); }
-    [data-theme="minimal"] .topbar {
-      background: linear-gradient(90deg,#f6f1e3 0%,#edf7cc 50%,#f6f1e3 100%);
-      background-size: 200% 100%;
-      animation: minTopbar 9s ease infinite;
-    }
-    @keyframes minTopbar {
-      0%,100% { background-position:0 0; }
-      50%     { background-position:100% 0; }
-    }
-    [data-theme="minimal"] .tbtn.on {
-      animation: minBtnPulse 3.5s ease infinite;
-    }
-    @keyframes minBtnPulse {
-      0%,100% { box-shadow:0 0 0 3px rgba(124,197,32,.3); }
-      50%     { box-shadow:0 0 0 7px rgba(124,197,32,.08); }
-    }
-    [data-theme="minimal"] .g2 { gap: 14px; }
-    [data-theme="minimal"] .tbl th { background: rgba(124,197,32,.12); }
-    [data-theme="minimal"] .tbl tr:hover td { background: rgba(124,197,32,.06); }
-
   </style>
 <script src="https://js.puter.com/v2/"></script>
 </head>
@@ -755,6 +710,7 @@
     <a href="#tool-9" class="nav-a"><span class="rnk" style="background:#6c63ff">9</span> Gemini</a>
     <a href="#tool-10" class="nav-a"><span class="rnk" style="background:#6b7a99">10</span> Amazon Q</a>
     <!-- Zona de herramientas agregadas por AI (se añaden dinámicamente) -->
+    <a href="#decision" class="nav-a">🎯 <span class="i18n" data-es="¿Cuál elegir?" data-en="Which to choose?">¿Cuál elegir?</span></a>
     <div id="sidebar-extra"></div>
 
     <div class="nav-sep"></div>
@@ -1023,10 +979,23 @@
             </div>
           </div>
           <div class="tc-body">
-            <p style="font-size:.88rem;color:var(--text2)">El competidor más cercano a Cursor. Mejor tier gratuito de todos los IDEs AI (completions ilimitadas básicas). Modo Cascade para cambios autónomos multi-archivo. 26M+ usuarios via Codeium. Más barato que Cursor en Pro ($15 vs $20).</p>
+            <p style="font-size:.88rem;color:var(--text2)">26M+ usuarios Codeium. Free tier real con completions ilimitadas. Modo <strong>Cascade</strong> para cambios autónomos multi-archivo. En 2026 suma Claude y DeepSeek como backends.</p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Mejor free tier de todos los IDEs AI</li>
+                <li>Cascade: autonomía multi-archivo similar a Cursor</li>
+                <li>$15/mes vs $20 Cursor — 25% más barato</li>
+                <li>Curva de aprendizaje baja para usuarios VS Code</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Agent mode algo menos maduro que Cursor</li>
+                <li>Menos plugins y tutoriales disponibles</li>
+              </ul></div>
+            </div>
             <div class="price-row">
               <span class="pp free">Free (completions ilimitadas)</span>
               <span class="pp paid">Pro $15/mes</span>
+              <span class="pp paid">Teams $35/u/mes</span>
             </div>
           </div>
         </div>
@@ -1103,7 +1072,21 @@
             </div>
           </div>
           <div class="tc-body">
-            <p style="font-size:.88rem;color:var(--text2)">La extensión AI más flexible para VS Code. Sin vendor lock-in — conectate a cualquier modelo (OpenAI, Anthropic, Google, Ollama local). La combinación Continue.dev + Ollama es el stack AI offline más popular para costo $0 y privacidad total.</p>
+            <p style="font-size:.88rem;color:var(--text2)">La extensión AI open source más flexible para VS Code y JetBrains. <strong>Sin vendor lock-in</strong> — conectate a OpenAI, Claude, Gemini o Ollama local. 3 modos: Chat, Edit y Autocomplete en una extensión. Con Ollama: stack AI offline $0 total.</p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>100% gratis y open source — siempre</li>
+                <li>Funciona con Ollama → $0 offline, privacidad total</li>
+                <li>Sin lock-in: cambiás de modelo en 30 segundos</li>
+                <li>Chat + Edit + Autocomplete en una sola extensión</li>
+                <li>VS Code y JetBrains</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>UX menos pulida que Cursor o Copilot</li>
+                <li>Sin modo agente autónomo avanzado (en desarrollo)</li>
+                <li>Configuración manual de modelos</li>
+              </ul></div>
+            </div>
             <div class="price-row"><span class="pp free">100% Gratis · continue.dev</span></div>
           </div>
         </div>
@@ -1122,7 +1105,20 @@
             </div>
           </div>
           <div class="tc-body">
-            <p style="font-size:.88rem;color:var(--text2)">Extensión VS Code open source y model-agnostic. No pagás por la herramienta — solo por la inferencia AI. Soporta cualquier proveedor (incluyendo Ollama). Agente autónomo en VS Code con transparencia total de cambios.</p>
+            <p style="font-size:.88rem;color:var(--text2)">Extensión VS Code BYOK: la herramienta es gratis, pagás solo la API del modelo que usás. Agente autónomo completo: lee/escribe archivos, ejecuta comandos. <strong>Máxima transparencia</strong> — aprobás cada cambio antes de aplicar.</p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Extensión gratis — BYOK sin overhead</li>
+                <li>Agente completo: archivos + comandos + tests</li>
+                <li>Ves exactamente qué va a cambiar antes</li>
+                <li>Soporta Ollama → $0 offline</li>
+                <li>Historial de tokens y costo por sesión</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Costos de API acumulan rápido con modelos cloud</li>
+                <li>UX menos pulida que Cursor</li>
+              </ul></div>
+            </div>
             <div class="price-row">
               <span class="pp free">Extensión gratis</span>
               <span class="pp paid">API: según modelo</span>
@@ -1140,7 +1136,19 @@
             </div>
           </div>
           <div class="tc-body">
-            <p style="font-size:.88rem;color:var(--text2)">La apuesta de Google. Gratis para uso personal. Gemini 3.1 Pro en VS Code y JetBrains. La mejor integración si tu ecosistema es GKE, Cloud Run o BigQuery.</p>
+            <p style="font-size:.88rem;color:var(--text2)">Gratis para individuos sin tarjeta. <strong>Gemini 3.1 Pro</strong> en el free tier con 2M tokens de contexto. Genera tests unitarios automáticamente. Mejor integración con Google Cloud del mercado.</p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Completamente gratis para individuos</li>
+                <li>2M tokens contexto — el más grande disponible</li>
+                <li>Generación automática de tests unitarios</li>
+                <li>Mejor integración GCP del mercado</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Pierde ventaja fuera del ecosistema Google</li>
+                <li>Sin modo agente terminal</li>
+              </ul></div>
+            </div>
             <div class="price-row">
               <span class="pp free">Individual: Gratis</span>
               <span class="pp paid">Enterprise $19/u/mes</span>
@@ -1158,10 +1166,30 @@
             </div>
           </div>
           <div class="tc-body">
-            <p style="font-size:.88rem;color:var(--text2)">La apuesta de Amazon. Plan individual gratuito con sugerencias + escaneo de seguridad. Entiende Lambda, EC2, CDK y CloudFormation mejor que ningún otro. Fuera de AWS, la propuesta baja considerablemente.</p>
+            <div class="tc-metrics">
+              <div class="m-box"><div class="m-label">Individual</div><div class="m-val" style="color:var(--green)">Gratis</div><div class="m-sub">Sin tarjeta</div></div>
+              <div class="m-box"><div class="m-label">Seguridad</div><div class="m-val">SAST</div><div class="m-sub">Análisis estático</div></div>
+              <div class="m-box"><div class="m-label">Ecosistema</div><div class="m-val">AWS-first</div><div class="m-sub">CDK, Lambda, EC2</div></div>
+              <div class="m-box"><div class="m-label">IDE</div><div class="m-val">VS Code</div><div class="m-sub">JetBrains, CLI</div></div>
+            </div>
+            <p style="font-size:.88rem;color:var(--text2)">Amazon Q Developer (antes CodeWhisperer) es la herramienta de AWS para developers. El plan individual es completamente gratuito. Su valor diferencial: <strong>escaneo de seguridad integrado</strong> — detecta vulnerabilidades tipo OWASP en tu código en tiempo real. Entiende servicios AWS de forma nativa: CDK, CloudFormation, Lambda, ECS, EKS. En 2026 agregaron "Q Developer Agent" para refactorización de código legacy. Si tu infraestructura vive en AWS, es una adición gratis que vale la pena tener instalada.</p>
+            <div class="pc-grid">
+              <div class="pc-col pros"><h4 style="color:var(--green)">✓ Pros</h4><ul>
+                <li>Gratis para individuos — sin restricciones</li>
+                <li>Escaneo de seguridad SAST integrado y gratuito</li>
+                <li>Mejor comprensión de servicios AWS del mercado</li>
+                <li>Q Developer Agent para modernización de código legacy</li>
+                <li>VS Code + JetBrains + CLI de AWS</li>
+              </ul></div>
+              <div class="pc-col cons"><h4 style="color:var(--red)">✗ Contras</h4><ul>
+                <li>Mucho más débil fuera del ecosistema AWS</li>
+                <li>Sin modo agente terminal para desarrollo general</li>
+                <li>Autocompletado menos preciso que Copilot en JS/TS</li>
+              </ul></div>
+            </div>
             <div class="price-row">
-              <span class="pp free">Individual: Gratis</span>
-              <span class="pp paid">Pro $19/u/mes</span>
+              <span class="pp free">Individual: Gratis (aws.amazon.com/q/developer)</span>
+              <span class="pp paid">Pro: $19/usuario/mes</span>
             </div>
           </div>
         </div>
@@ -1171,73 +1199,6 @@
       <!-- ZONA DE HERRAMIENTAS GENERADAS POR AI
            Las tarjetas nuevas creadas por AI se inyectan aquí -->
       <div id="ai-added-tools"></div>
-
-      <!-- STACK DEV MAC ESENCIAL 2026
-           Fuentes: usevoicy.com/blog/best-mac-apps-for-developers
-                    polivka-pavel.medium.com (developers guide)
-           Estas apps no son AI tools pero son el entorno donde
-           todo el workflow de AI coding se apoya. -->
-      <div style="margin-top:28px">
-        <h3 class="i18n" style="margin-bottom:6px"
-            data-es="🍎 Stack Dev Mac Esencial 2026"
-            data-en="🍎 Essential Mac Dev Stack 2026">🍎 Stack Dev Mac Esencial 2026</h3>
-        <p style="font-size:.85rem;color:var(--text2);margin-bottom:18px">
-          <span class="i18n"
-            data-es="No son herramientas de AI, pero son el entorno donde todo el AI coding workflow se apoya. Instalación en bloque:"
-            data-en="Not AI tools, but the environment where your entire AI coding workflow runs. Install all at once:">No son herramientas de AI, pero son el entorno donde todo el AI coding workflow se apoya. Instalación en bloque:</span>
-          <code>brew install --cask raycast tableplus docker postman alt-tab maccy rectangle</code>
-        </p>
-        <div class="g2 mt">
-          <div class="mini-card">
-            <h4>⚡ Raycast — Spotlight++</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es="1.300+ extensiones para GitHub, calendarios, snippets, Docker, cálculos y más. La primera app a instalar en cualquier Mac dev."
-               data-en="1,300+ extensions for GitHub, calendars, snippets, Docker, calculations and more. The first app to install on any dev Mac.">1.300+ extensiones para GitHub, calendarios, snippets, Docker, cálculos y más. La primera app a instalar en cualquier Mac dev.</p>
-          </div>
-          <div class="mini-card">
-            <h4 class="i18n" data-es="🗄️ TablePlus — DB Visual" data-en="🗄️ TablePlus — Visual DB Manager">🗄️ TablePlus — DB Visual</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es="Gestor visual para PostgreSQL, MySQL, MongoDB, Redis y 12 tipos más. Edición inline, query editor, import/export. Tier gratuito generoso."
-               data-en="Visual manager for PostgreSQL, MySQL, MongoDB, Redis and 12 more. Inline editing, query editor, import/export. Generous free tier.">Gestor visual para PostgreSQL, MySQL, MongoDB, Redis y 12 tipos más. Edición inline, query editor, import/export. Tier gratuito generoso.</p>
-          </div>
-          <div class="mini-card">
-            <h4>🐳 Docker Desktop M5</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es="Optimizado para Apple Silicon. Contenedores y microservicios con Docker Compose y soporte Kubernetes integrado."
-               data-en="Optimized for Apple Silicon. Containers and microservices with Docker Compose and built-in Kubernetes support.">Optimizado para Apple Silicon. Contenedores y microservicios con Docker Compose y soporte Kubernetes integrado.</p>
-          </div>
-          <div class="mini-card">
-            <h4>🧪 Postman — APIs</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es="Diseñá, testéa y documentá APIs visualmente sin escribir código de prueba. Colecciones compartibles con el equipo."
-               data-en="Design, test and document APIs visually without writing test code. Shareable collections for the whole team.">Diseñá, testéa y documentá APIs visualmente sin escribir código de prueba. Colecciones compartibles con el equipo.</p>
-          </div>
-          <div class="mini-card">
-            <h4 class="i18n" data-es="🌿 Tower — Git Visual" data-en="🌿 Tower — Visual Git Client">🌿 Tower — Git Visual</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es='Cliente Git con drag-and-drop para merge, rebase y cherry-pick. Función "undo" para deshacer acciones que Git no perdona.'
-               data-en='Git client with drag-and-drop for merge, rebase and cherry-pick. "Undo" feature for reverting actions Git can't forgive.'>Cliente Git con drag-and-drop para merge, rebase y cherry-pick. Función "undo" para deshacer acciones que Git no perdona.</p>
-          </div>
-          <div class="mini-card">
-            <h4>🔑 1Password</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es="Guardá API keys, SSH keys, tokens y licencias de software. La única app de pago aquí que vale absolutamente cada peso."
-               data-en="Store API keys, SSH keys, tokens and software licenses. The only paid app here that is absolutely worth every cent.">Guardá API keys, SSH keys, tokens y licencias de software. La única app de pago aquí que vale absolutamente cada peso.</p>
-          </div>
-          <div class="mini-card">
-            <h4 class="i18n" data-es="📋 Maccy — Historial" data-en="📋 Maccy — Clipboard History">📋 Maccy — Historial</h4>
-            <p style="font-size:.84rem"><span class="i18n"
-               data-es="Portapapeles con historial de los últimos 200 items copiados. Abre con"
-               data-en="Clipboard manager with history of the last 200 copied items. Open with">Portapapeles con historial de los últimos 200 items copiados. Abre con</span> <kbd>⌘</kbd><kbd>⇧</kbd><kbd>V</kbd>. <span class="i18n" data-es="Gratis y open source." data-en="Free and open source.">Gratis y open source.</span></p>
-          </div>
-          <div class="mini-card">
-            <h4 class="i18n" data-es="🪟 Rectangle — Ventanas" data-en="🪟 Rectangle — Window Manager">🪟 Rectangle — Ventanas</h4>
-            <p style="font-size:.84rem" class="i18n"
-               data-es="Gestor de ventanas con atajos de teclado. Mitades, tercios, esquinas. La productividad en Mac sin él es la mitad."
-               data-en="Window manager with keyboard shortcuts. Halves, thirds, corners. Mac productivity without it is half of what it could be.">Gestor de ventanas con atajos de teclado. Mitades, tercios, esquinas. La productividad en Mac sin él es la mitad.</p>
-          </div>
-        </div>
-      </div>
 
     </section>
 
@@ -1377,14 +1338,94 @@ response = client.chat.completions.create(
 <span class="c-cmd">open</span> http://localhost:3000
 <span class="c-comment"># Settings → Connections → Ollama URL: http://host.docker.internal:11434</span>
 <div class="code-lang">bash</div></code></pre>
-    
 
-<div class="g2 mt">
-  <div class="mini-card"><h4>🚀 Optimización GPU</h4><p style="font-size:.84rem">Asegurate que <code>ollama ps</code> muestre "GPU" en la columna "Processor". Si dice CPU, revisá la configuración de MLX/Metal en tu Mac.</p></div>
-  <div class="mini-card"><h4>🗄️ Gestión de Modelos</h4><p style="font-size:.84rem">Los modelos ocupan espacio. Usá <code>ollama rm [nombre_modelo]</code> para liberar disco. Modelos más grandes son más lentos pero más precisos.</p></div>
-</div>
+      <h3 class="mt">📖 Guía completa de comandos Ollama</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · ollama mastery</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-ollama-full')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-ollama-full')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-ollama-full"><code><span class="c">━━━ DESCUBRIR MODELOS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Ver todos los modelos disponibles en ollama.com/library</span>
+<span class="cmd">open</span> https://ollama.com/library
 
-</section>
+<span class="c"># Buscar modelos desde terminal</span>
+<span class="cmd">ollama search</span> code              <span class="c"># modelos de código</span>
+<span class="cmd">ollama search</span> llama             <span class="c"># variantes de Llama</span>
+
+<span class="c">━━━ GESTIÓN DE MODELOS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">ollama list</span>                      <span class="c"># modelos instalados y su tamaño</span>
+<span class="cmd">ollama pull qwen2.5-coder:7b</span>   <span class="c"># descargar sin ejecutar</span>
+<span class="cmd">ollama rm llama3.2:3b</span>           <span class="c"># eliminar para liberar espacio</span>
+<span class="cmd">ollama show qwen2.5-coder:7b</span>   <span class="c"># info: parámetros, cuantización, familia</span>
+
+<span class="c">━━━ USAR MODELOS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">ollama run qwen2.5-coder:7b</span>     <span class="c"># chat interactivo</span>
+<span class="cmd">ollama run gemma4</span>                <span class="c"># cambiar de modelo</span>
+<span class="cmd">ollama ps</span>                        <span class="c"># ver modelos cargados (columna: GPU vs CPU)</span>
+<span class="cmd">ollama stop qwen2.5-coder:7b</span>   <span class="c"># descargar modelo de la memoria</span>
+
+<span class="c"># Modo no-interactivo (para scripts)</span>
+<span class="cmd">echo</span> <span class="s">"Explicá async/await en 3 líneas"</span> | <span class="cmd">ollama run</span> qwen2.5-coder:7b
+<span class="cmd">ollama run</span> gemma4 <span class="s">"¿Qué es Docker?"</span>  <span class="c"># respuesta directa sin chat</span>
+
+<span class="c">━━━ RENDIMIENTO EN M5 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Agregar a ~/.zshrc (si instalaste con Homebrew)</span>
+export OLLAMA_KEEP_ALIVE=<span class="s">"-1"</span>        <span class="c"># modelo siempre cargado en memoria</span>
+export OLLAMA_FLASH_ATTENTION=<span class="s">"1"</span>    <span class="c"># velocidad mejorada (M5 lo soporta)</span>
+export OLLAMA_KV_CACHE_TYPE=<span class="s">"q8_0"</span>   <span class="c"># mejor balance calidad/memoria</span>
+export OLLAMA_MAX_LOADED_MODELS=<span class="s">"2"</span>  <span class="c"># tener 2 modelos listos</span>
+
+<span class="c">━━━ API LOCAL (para tu código) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Ollama corre en http://localhost:11434</span>
+<span class="cmd">curl</span> http://localhost:11434/api/chat   -d <span class="s">'{"model":"qwen2.5-coder:7b","messages":[{"role":"user","content":"hola"}]}'</span>
+
+<span class="c"># Compatible con SDK de OpenAI:</span>
+<span class="c"># base_url="http://localhost:11434/v1", api_key="ollama"</span></code></pre>
+      </div>
+
+      <h3 class="mt">🤔 ¿Qué modelo elegir según tu tarea?</h3>
+      <div class="g2">
+        <div class="mini-card">
+          <h4>💻 Para escribir código</h4>
+          <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:1.9">
+            <li><strong>8GB RAM:</strong> <code>qwen2.5-coder:3b</code></li>
+            <li><strong>16GB RAM:</strong> <code>qwen2.5-coder:7b</code> ⭐ recomendado</li>
+            <li><strong>24GB+:</strong> <code>qwen2.5-coder:14b</code></li>
+            <li><strong>48GB+:</strong> <code>qwen2.5-coder:32b</code></li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>💬 Para chat y preguntas generales</h4>
+          <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:1.9">
+            <li><strong>8GB RAM:</strong> <code>llama3.2:3b</code></li>
+            <li><strong>16GB RAM:</strong> <code>gemma4</code> o <code>qwen3:8b</code></li>
+            <li><strong>24GB+:</strong> <code>qwen3:14b</code></li>
+            <li><strong>48GB+:</strong> <code>qwen3:32b</code> (calidad ~GPT-4)</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>🔬 Para razonamiento y matemáticas</h4>
+          <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:1.9">
+            <li><code>deepseek-r2:7b</code> — razonamiento paso a paso</li>
+            <li><code>qwen3:8b</code> — thinking mode activado</li>
+            <li>Usá <code>/think</code> en el chat para activar CoT</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>📄 Para analizar documentos/PDFs</h4>
+          <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:1.9">
+            <li><code>llama3.2-vision</code> — lee imágenes</li>
+            <li><code>gemma4</code> — excelente con contexto largo</li>
+            <li>Combinar con <code>ollama run modelo "$(cat archivo.txt)"</code></li>
+          </ul>
+        </div>
+      </div>
+
+        </section>
 
     <!-- ══════════════════════════════════════════════════
          SECCIÓN 5 — OPENCODE GUÍA COMPLETA
@@ -1471,11 +1512,146 @@ response = client.chat.completions.create(
         <div class="mini-card"><code>/new</code><p>Nueva sesión limpia</p></div>
         <div class="mini-card"><code>/cost</code><p>Tokens y costo de la sesión actual</p></div>
       </div>
-    </section>
+
+      <h3 class="mt">📖 Tutorial paso a paso: tu primer sesión con OpenCode</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · opencode tutorial</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-opencode-tutorial')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-opencode-tutorial')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-opencode-tutorial"><code><span class="c">━━━ SETUP COMPLETO: OpenCode + Ollama (stack gratuito) ━━━━━━━━━━━━━</span>
+
+<span class="c"># PASO 1: Asegurate que Ollama está corriendo con un modelo</span>
+<span class="cmd">open -a Ollama</span>                      <span class="c"># abrí Ollama.app</span>
+<span class="cmd">ollama pull qwen2.5-coder:7b</span>       <span class="c"># descargar el modelo (una sola vez)</span>
+<span class="cmd">ollama ps</span>                           <span class="c"># verificar que dice GPU</span>
+
+<span class="c"># PASO 2: Instalar OpenCode</span>
+<span class="cmd">brew install opencode</span>
+
+<span class="c"># PASO 3: Configurar para usar Ollama</span>
+<span class="cmd">mkdir -p ~/.config/opencode</span>
+<span class="cmd">cat</span> > ~/.config/opencode/config.json <span class="s"><<'EOF'
+{
+  "provider": "ollama",
+  "model": "qwen2.5-coder:7b",
+  "apiBase": "http://localhost:11434"
+}
+EOF</span>
+
+<span class="c"># PASO 4: Ir a tu proyecto y abrir OpenCode</span>
+<span class="cmd">cd</span> ~/mi-proyecto
+<span class="cmd">opencode</span>                            <span class="c"># abre la interfaz TUI</span>
+
+<span class="c">━━━ DENTRO DE LA TUI DE OPENCODE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Primera vez en un proyecto → inicializar contexto:</span>
+/init
+<span class="c"># → OpenCode analiza tu proyecto y genera AGENTS.md</span>
+<span class="c"># → Lee ese archivo para entender QUÉ tiene en mente</span>
+
+<span class="c"># Ejemplos de tareas que podés pedirle:</span>
+<span class="c"># "Creá una función que valide emails en TypeScript"</span>
+<span class="c"># "/plan Refactorizá el módulo de autenticación"  ← muestra el plan antes</span>
+<span class="c"># "Explicame qué hace el archivo utils.ts"</span>
+<span class="c"># "Agregá manejo de errores a la función login"</span>
+<span class="c"># "Creá un README.md para este proyecto"</span>
+
+<span class="c"># Para salir: Ctrl+C o escribir /exit</span></code></pre>
+      </div>
+
+      <div class="g2" style="margin-top:14px">
+        <div class="mini-card" style="border-left:3px solid var(--blue)">
+          <h4>📋 Modo Plan — Cuándo usarlo</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Antes de tareas grandes: <code>/plan refactorizá toda la carpeta src/auth</code> → OpenCode muestra qué va a cambiar sin tocar nada → vos aprobás → recién ahí ejecuta. Evita sorpresas en cambios masivos.</p>
+        </div>
+        <div class="mini-card" style="border-left:3px solid var(--green)">
+          <h4>🔧 Archivo AGENTS.md</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Creado por <code>/init</code>. Editalo para agregar: stack del proyecto, convenciones de código, reglas del equipo. Mientras más info tenga, mejor contexto tiene OpenCode para ayudarte.</p>
+        </div>
+      </div>
+
+        </section>
 
     <!-- ══════════════════════════════════════════════════
          SECCIÓN 6 — FAQ
     ══════════════════════════════════════════════════ -->
+    <!-- QUICK DECISION GUIDE -->
+    <section id="decision">
+      <div class="sec-head">
+        <div class="sec-icon" style="background:rgba(56,217,169,.12)">🎯</div>
+        <div>
+          <h2 class="i18n" data-es="¿Cuál elegir? Guía de Decisión Rápida" data-en="Which to choose? Quick Decision Guide">¿Cuál elegir? Guía de Decisión Rápida</h2>
+          <p class="i18n" data-es="Respondé estas preguntas y encontrá tu stack ideal" data-en="Answer these questions and find your ideal stack">Respondé estas preguntas y encontrá tu stack ideal</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('decision','Guía de Decisión')">✨</button>
+      </div>
+
+      <div class="g2">
+        <div class="card" style="border-left:3px solid var(--gold)">
+          <h4>💰 Presupuesto $0</h4>
+          <p style="font-size:.87rem;color:var(--text2)"><strong>Stack gratuito completo:</strong></p>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px">
+            <li><strong>IDE AI:</strong> Windsurf Free o VS Code + Continue.dev</li>
+            <li><strong>Autocomplete:</strong> GitHub Copilot Free (2000/mes)</li>
+            <li><strong>Agente:</strong> OpenCode → Puter/Gemini</li>
+            <li><strong>Offline:</strong> Ollama + qwen2.5-coder:7b</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:3px solid var(--acc)">
+          <h4>💼 Dev profesional ($20-30/mes)</h4>
+          <p style="font-size:.87rem;color:var(--text2)"><strong>Stack equilibrado:</strong></p>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px">
+            <li><strong>IDE AI:</strong> Cursor Pro $20/mes</li>
+            <li><strong>Autocomplete:</strong> Cursor Supermaven (incluido)</li>
+            <li><strong>Agente terminal:</strong> Claude Code Free tier</li>
+            <li><strong>Offline:</strong> Ollama + Continue.dev</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:3px solid var(--purple)">
+          <h4>🎨 Frontend / React / Next.js</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px">
+            <li>✓ <strong>Cursor</strong> — mejor para frameworks modernos</li>
+            <li>✓ <strong>Windsurf</strong> — alternativa gratuita</li>
+            <li>✓ <strong>GitHub Copilot</strong> — autocompletado JSX</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:3px solid var(--green)">
+          <h4>🐍 Python / Data Science / AI</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px">
+            <li>✓ <strong>Continue.dev + Ollama</strong> — privacidad total</li>
+            <li>✓ <strong>Gemini Code Assist</strong> — gratis, buen contexto</li>
+            <li>✓ <strong>Claude Code</strong> — para proyectos complejos</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:3px solid var(--blue)">
+          <h4>☁️ Backend / AWS / GCP</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px">
+            <li>✓ <strong>AWS:</strong> Amazon Q Developer (gratis)</li>
+            <li>✓ <strong>GCP:</strong> Gemini Code Assist (gratis)</li>
+            <li>✓ <strong>General:</strong> Claude Code para lógica compleja</li>
+          </ul>
+        </div>
+        <div class="card" style="border-left:3px solid var(--orange)">
+          <h4>🔒 Privacidad / NDA / Offline</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px">
+            <li>✓ <strong>Aider + Ollama</strong> — 100% local, Git-first</li>
+            <li>✓ <strong>Continue.dev + Ollama</strong> — VS Code offline</li>
+            <li>✓ <strong>OpenCode + Ollama</strong> — agente terminal offline</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout tip" style="margin-top:18px">
+        <div class="callout-ico">🏆</div>
+        <div><strong>La combinación más popular en 2026 (developers senior):</strong>
+        <strong>Cursor Pro</strong> para desarrollo diario + <strong>Claude Code</strong> para arquitectura y refactoring + <strong>Continue.dev + Ollama</strong> para trabajo offline/privado.
+        No existe "la mejor" herramienta — existe la mejor combinación para tu flujo específico.</div>
+      </div>
+    </section>
+
     <section id="faq">
       <div class="sec-head">
         <div class="sec-icon" style="background:rgba(108,99,255,.12)">❓</div>
@@ -1483,17 +1659,42 @@ response = client.chat.completions.create(
         <button class="improve-btn" onclick="openImprove('faq', 'FAQ')">✨ Mejorar</button>
       </div>
 
+      <!-- FAQ expandido — 9 preguntas -->
       <div class="faq-item">
-        <div class="faq-q">¿Cuál modelo de Ollama recomendás para un Mac M5 Pro 24GB?</div>
-        <div class="faq-a">Para coding: <code>qwen2.5-coder:14b</code>. Para chat general: <code>gemma4</code> o <code>qwen3:14b</code>. Con 24GB podés tener dos modelos de 7B cargados simultáneamente con <code>OLLAMA_MAX_LOADED_MODELS=2</code>.</div>
+        <div class="faq-q">¿Cuál herramienta elijo si soy principiante absoluto?</div>
+        <div class="faq-a"><strong>GitHub Copilot</strong> (free tier, 2000 completions/mes). Es la más usada, tiene más tutoriales, y funciona dentro de VS Code sin cambiar tu flujo. Cuando te sentís cómodo, agregá Cursor para tareas más complejas. No intentes usar todas a la vez.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">¿Cursor o Claude Code? ¿Cuál instalo primero?</div>
-        <div class="faq-a">Si preferís GUI y ya usás VS Code → empezá con <strong>Cursor</strong>. Si vivís en la terminal y trabajás en proyectos grandes → <strong>Claude Code</strong>. La recomendación 2026 es usar los dos: Cursor para el flujo diario, Claude Code para tareas complejas.</div>
+        <div class="faq-a">Depende del flujo: si trabajás principalmente con GUI y venís de VS Code → <strong>Cursor</strong>. Si vivís en la terminal y trabajás en proyectos grandes o complejos → <strong>Claude Code</strong>. La recomendación 2026 es combinar los dos: Cursor para el desarrollo diario, Claude Code para refactorizaciones masivas o arquitectura.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cuál es el stack más barato sin sacrificar calidad?</div>
+        <div class="faq-a"><strong>Puter.js + Gemini</strong> en el panel AI de esta guía ($0 total), <strong>GitHub Copilot free tier</strong> para autocomplete en VS Code, y <strong>Ollama + qwen2.5-coder:7b</strong> para trabajo offline. Con solo estas tres herramientas gratuitas tenés un stack muy competente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cuál modelo de Ollama recomendás para un Mac M5 Pro 24GB?</div>
+        <div class="faq-a">Para coding: <code>qwen2.5-coder:14b</code> — excelente calidad en 24GB. Para chat general: <code>gemma4</code> o <code>qwen3:14b</code>. Con 24GB podés tener dos modelos de 7B simultáneos con <code>OLLAMA_MAX_LOADED_MODELS=2</code>. Si tenés M5 Max con 48GB+, probá <code>qwen3:32b</code> para calidad cercana a GPT-5.</div>
       </div>
       <div class="faq-item">
         <div class="faq-q">¿Cómo usar Claude en OpenCode si Anthropic lo bloqueó?</div>
-        <div class="faq-a">Tres opciones: (1) GitHub Copilot como proveedor, (2) OpenCode Go ($10/mes), (3) DeepSeek API como alternativa de calidad a $2-5/mes.</div>
+        <div class="faq-a">Tres opciones: (1) <strong>GitHub Copilot</strong> como proveedor en OpenCode — si ya tenés suscripción; (2) <strong>OpenCode Go</strong> ($10/mes) que incluye acceso a Claude; (3) <strong>DeepSeek API</strong> como alternativa de calidad a $2-5/mes para uso normal.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿La AI va a reemplazar a los developers?</div>
+        <div class="faq-a">No en el corto plazo — va a reemplazar las tareas repetitivas y mecánicas. Los developers que usen AI como multiplicador de productividad van a ser 5-10x más productivos que los que no la usen. La habilidad clave no es escribir código a mano, sino saber qué pedir, revisar lo que genera la AI, y entender la arquitectura del sistema.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Vale la pena pagar $20/mes por Cursor si ya tengo Copilot?</div>
+        <div class="faq-a">Si trabajás en proyectos medianos-grandes con múltiples archivos: sí. Cursor Pro agrega Composer mode (edita múltiples archivos coherentemente), contexto de repositorio más profundo, y Supermaven (el autocompletado más rápido del mercado). Si solo hacés proyectos pequeños o scripts, Copilot $10/mes es suficiente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo sé si la AI está generando código correcto o inventando cosas?</div>
+        <div class="faq-a">Nunca copies código de AI sin leerlo. Reglas básicas: (1) si genera imports de librerías que no conocés, googlealos antes de instalar; (2) si genera lógica compleja, pedile que la explique línea a línea; (3) ejecutá los tests después de cada cambio; (4) usá el botón <strong>📖 Explicar</strong> de esta guía para que la AI te explique cualquier comando antes de correrlo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Mis datos de código son privados cuando uso estas herramientas?</div>
+        <div class="faq-a">Depende: <strong>Copilot/Cursor/Claude</strong> envían tu código a servidores en la nube (leé las políticas de privacidad). <strong>Continue.dev + Ollama</strong> y <strong>Aider + Ollama</strong> corren 100% local — tu código nunca sale de tu Mac. Para proyectos con NDA o datos sensibles, usá el stack offline con Ollama.</div>
       </div>
     </section>
 
@@ -1605,23 +1806,50 @@ response = client.chat.completions.create(
 ─────────────────────────────────────────────────────────────────── */
 let currentLang = 'es';
 
+/* setLang(l): cambia el idioma activo del documento.
+   QUÉ HACE:
+     1. Actualiza currentLang y el atributo data-lang en <html>
+     2. Aplica las traducciones a todos los elementos .i18n
+     3. Activa el botón del idioma seleccionado (clase .on)
+     4. Actualiza el contexto del panel AI
+   CÓMO SE USA: elementos usan data-es / data-en como atributos.
+   VALORES: l = 'es' | 'en'
+   ERROR HANDLING: try/catch por elemento para que un fallo no
+   detenga la actualización del resto de la página. */
 function setLang(l) {
   currentLang = l;
   document.documentElement.setAttribute('data-lang', l);
-  try { localStorage.setItem('guide-lang', l); } catch(e) {}
-  // Actualizar todos los textos bilingues
+  try { localStorage.setItem('guide-lang', l); } catch(e) { /* localStorage bloqueado en algunos navegadores */ }
+
+  /* Actualizar todos los textos bilingues.
+     data-es / data-en contienen texto plano (no HTML) en todos los elementos
+     de esta guía, por lo que textContent es seguro y correcto. */
   document.querySelectorAll('.i18n').forEach(el => {
-    const v = el.dataset[l];
-    if (v !== undefined) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = v;
-      else el.textContent = v;
+    try {
+      const v = el.dataset[l]; // busca data-es o data-en según l
+      if (v === undefined) return; // no tiene traducción para este idioma → dejar intacto
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = v;
+      } else {
+        /* innerHTML permite HTML en las traducciones (ej: <strong>, <code>).
+           Los valores están hardcodeados en el HTML y no contienen input del usuario
+           por lo que no hay riesgo de XSS. */
+        el.innerHTML = v;
+      }
+    } catch(err) {
+      /* Error silencioso por elemento — no detiene el loop */
+      console.warn('[setLang] Error en elemento:', el, err);
     }
   });
-  // Botones de idioma
+
+  /* Actualizar clase .on en los botones de idioma
+     data-lang="es" | data-lang="en" identifica cada botón */
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('on', b.dataset.lang === l);
   });
-  // Actualizar contexto del modo AI actual si el panel existe
+
+  /* Actualizar el label de contexto del panel AI si ya está definido.
+     Puede no estar definido en el primer render (antes del script completo). */
   if (typeof updateModeContext === 'function') updateModeContext();
 }
 
@@ -1745,23 +1973,13 @@ function openAndAsk(mode, msg) {
   }, 200); // pequeño delay para que el panel termine de abrir
 }
 
-// Abre el panel en modo improve capturando el HTML actual de la sección como contexto
+// Abre el panel en modo improve ya cargado con el contexto de la sección
 function openImprove(sectionId, sectionName) {
   openMode('improve');
-  const sectionEl = document.getElementById(sectionId);
-  let sectionHtml = '';
-  if (sectionEl) {
-    const clone = sectionEl.cloneNode(true);
-    clone.querySelector('.sec-head')?.remove();
-    sectionHtml = clone.innerHTML.trim().slice(0, 4000);
-  }
-  // Capturar primer elemento real como ejemplo de estilo para la AI
-  const firstReal = [...(sectionEl?.children || [])].find(el => !el.classList.contains('sec-head'));
-  const styleExample = firstReal ? firstReal.outerHTML.slice(0, 800) : '';
-  currentImproveSection = { id: sectionId, name: sectionName, html: sectionHtml, example: styleExample };
+  currentImproveSection = { id: sectionId, name: sectionName };
   document.getElementById('ai-ctx-label').innerHTML =
-    `<strong>Agregar:</strong> Sección "<strong style="color:var(--acc)">${sectionName}</strong>" — describí qué querés agregar o escribí "agregar más contenido"`;
-  document.getElementById('aiInput').placeholder = `¿Qué querés agregar a "${sectionName}"?`;
+    `<strong>Mejorar:</strong> Sección "<strong style="color:var(--acc)">${sectionName}</strong>" — describí qué querés mejorar o escribí "mejorar todo"`;
+  document.getElementById('aiInput').placeholder = `¿Cómo querés mejorar "${sectionName}"?`;
   document.getElementById('aiInput').focus();
 }
 
@@ -1773,6 +1991,11 @@ function openImprove(sectionId, sectionName) {
 ─────────────────────────────────────────────────────────────────── */
 let currentMode = 'chat';
 let currentImproveSection = null; // sección activa para mejorar
+/* _pendingImproveCalloutHtml: almacena el HTML del callout listo para
+   guardar en disco. Se setea en handleImproveResponse y se consume
+   en applyImprovement. Necesario porque el botón "Aplicar y Guardar"
+   no tiene referencia directa al contenido generado. */
+let _pendingImproveCalloutHtml = '';
 
 // Configuración de cada modo
 // Configuración bilingüe de modos — cada modo tiene texto ES e EN
@@ -1900,7 +2123,7 @@ const PROVIDERS = {
     name: 'Puter + Gemini',
     free: true,
     needsKey: false,
-    model: 'gemini-2.5-flash-lite',
+    model: 'google/gemini-flash-2.0',  // modelo gratuito en Puter.js
     note: '✓ Gratis · Sin configuración'
   },
   gemini: {
@@ -2028,81 +2251,48 @@ async function callAI(userMsg, systemPrompt, onToken, onDone) {
 }
 
 /* ─── 1. PUTER.JS (GRATIS, SIN KEY) ─────────────────────────────────
-   Intenta modelos en orden hasta encontrar uno disponible.
-   Si uno falla por "model not found", pasa al siguiente automáticamente.
+   Usa window.puter de la librería Puter.js (cargada en el head).
+   Soporta streaming via async iterator.
+   Modelos disponibles: google/gemini-flash-2.0, gemini-3-flash-preview,
+   claude-3-5-sonnet, gpt-4o-mini y más.
 ──────────────────────────────────────────────────────────────────── */
-const PUTER_FALLBACK_MODELS = [
-  'gemini-2.5-flash-lite',
-  'claude-sonnet-4-5',
-  'gpt-4o-mini',
-  'gpt-4o'
-];
-
-async function _puterChat(messages, model, onToken, onDone) {
-  try {
-    const resp = await puter.ai.chat(messages, { model, stream: true });
-    for await (const chunk of resp) {
-      const delta = chunk?.choices?.[0]?.delta?.content || chunk?.text || '';
-      if (delta) onToken(delta);
-    }
-    onDone();
-  } catch (streamErr) {
-    // Detectar errores de autenticación ANTES de intentar el fallback sin streaming.
-    // POR QUÉ: si el usuario no está logueado en puter.com, todos los modelos fallarán
-    // con el mismo error. Propagamos inmediatamente en vez de perder tiempo probando
-    // los 4 modelos de fallback con el mismo resultado.
-    const em = (streamErr.message || '').toLowerCase();
-    if (
-      em.includes('sign') || em.includes('auth')   || em.includes('login')  ||
-      em.includes('account') || em.includes('popup') || em.includes('blocked') ||
-      em.includes('unauthorized') || em.includes('unauthenticated')
-    ) {
-      throw new Error('__PUTER_AUTH__');
-    }
-    // Fallback sin streaming: algunos modelos no soportan el iterador async
-    if (streamErr.message?.includes('stream') || streamErr.message?.includes('iterator')) {
-      const resp2 = await puter.ai.chat(messages, { model });
-      const text = resp2?.message?.content?.[0]?.text
-                || resp2?.content?.[0]?.text
-                || resp2?.choices?.[0]?.message?.content
-                || String(resp2);
-      for (let i = 0; i < text.length; i += 3) {
-        onToken(text.slice(i, i + 3));
-        await new Promise(r => setTimeout(r, 8));
-      }
-      onDone();
-    } else { throw streamErr; }
-  }
-}
-
 async function callPuter(userMsg, systemPrompt, onToken, onDone) {
-  // Verificar que puter.js cargó desde CDN (puede fallar por ad blocker o CDN caído)
-  if (!window.puter) throw new Error('__PUTER_NO_LOAD__');
+  if (!window.puter) throw new Error('Puter.js no cargó. Verificá tu conexión a internet.');
 
   const messages = [];
   if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
   messages.push({ role: 'user', content: userMsg });
 
-  const modelsToTry = [PROVIDERS.puter.model, ...PUTER_FALLBACK_MODELS.filter(m => m !== PROVIDERS.puter.model)];
-  let lastError;
-  for (const model of modelsToTry) {
-    try {
-      await _puterChat(messages, model, onToken, onDone);
-      PROVIDERS.puter.model = model; // recordar el modelo que funcionó para la próxima vez
-      return;
-    } catch (err) {
-      // Error de auth: propagar inmediatamente, no tiene sentido probar otros modelos
-      if (err.message === '__PUTER_AUTH__') throw err;
-      const msg = (err.message || '').toLowerCase();
-      // Continuar al siguiente modelo solo si el error es de modelo no disponible
-      if (msg.includes('not found') || msg.includes('model') || msg.includes('invalid') || msg.includes('unsupported')) {
-        lastError = err; continue;
+  try {
+    const resp = await puter.ai.chat(messages, {
+      model: PROVIDERS.puter.model,
+      stream: true
+    });
+
+    // Puter devuelve un async iterator cuando stream: true
+    for await (const chunk of resp) {
+      const delta = chunk?.choices?.[0]?.delta?.content || chunk?.text || '';
+      if (delta) onToken(delta);
+    }
+    onDone();
+  } catch (err) {
+    // Puter puede no soportar streaming en todos los entornos — fallback no-stream
+    if (err.message?.includes('stream') || err.message?.includes('iterator')) {
+      const resp2 = await puter.ai.chat(messages, { model: PROVIDERS.puter.model });
+      const text = resp2?.message?.content?.[0]?.text
+                || resp2?.content?.[0]?.text
+                || resp2?.choices?.[0]?.message?.content
+                || String(resp2);
+      // Simular streaming: enviar el texto en chunks de 3 caracteres
+      for (let i = 0; i < text.length; i += 3) {
+        onToken(text.slice(i, i + 3));
+        await new Promise(r => setTimeout(r, 8));
       }
-      // Cualquier otro error (red, timeout, etc.) se propaga hacia arriba
+      onDone();
+    } else {
       throw err;
     }
   }
-  throw lastError || new Error('Ningún modelo de Puter.js disponible. Intentá más tarde.');
 }
 
 /* ─── 2. GEMINI DIRECTO (GRATIS CON KEY DE AISTUDIO) ────────────────
@@ -2301,46 +2491,7 @@ async function callOllama(userMsg, systemPrompt, onToken, onDone) {
 ──────────────────────────────────────────────────────────────────── */
 function handleAIError(err, aiBubble) {
   const m = err.message || '';
-
-  if (m === '__PUTER_AUTH__') {
-    // Puter.js cargó pero el usuario no está autenticado en puter.com.
-    // Mostramos un botón de login que SE LLAMA DIRECTO desde onclick —
-    // esto preserva el "user gesture" del click y evita que el browser
-    // bloquee el popup de puter.com.
-    aiBubble.innerHTML = `
-      <div style="margin-bottom:10px;font-size:.88rem;color:var(--text2)">
-        🌟 <strong>Puter.js</strong> necesita que inicies sesión una vez para usar AI gratis.
-        <br><span style="font-size:.78rem;color:var(--text3)">Cuenta gratuita · Sin tarjeta · Solo en tu navegador</span>
-      </div>
-      <button onclick="puterLogin()" style="
-        background:var(--acc);color:var(--bg, #080d18);border:none;
-        padding:7px 16px;border-radius:8px;font-size:12px;font-weight:700;
-        cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:8px;">
-        Iniciar sesión en Puter →
-      </button>
-      <button onclick="setProvider('gemini')" style="
-        background:var(--bg3);color:var(--text2);border:1px solid var(--border);
-        padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;
-        cursor:pointer;font-family:'DM Sans',sans-serif;">
-        Usar Gemini (gratis con key)
-      </button>`;
-
-  } else if (m === '__PUTER_NO_LOAD__') {
-    // El script de puter.js no cargó desde CDN (ad blocker, sin internet, CDN caído)
-    aiBubble.innerHTML = `
-      <span style="color:var(--red, #ff4d6d)">⚠ Puter.js no cargó</span><br><br>
-      <span style="font-size:.84rem;color:var(--text2)">
-        Posibles causas: ad blocker activo, sin conexión a internet, o CDN de puter.com caído.<br>
-        Probá desactivar el ad blocker para <code>localhost:8000</code>,
-        o usá otro proveedor de AI:<br><br>
-        <button onclick="setProvider('gemini')" style="
-          background:var(--acc);color:var(--bg, #080d18);border:none;
-          padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">
-          Cambiar a Gemini (gratis con key)
-        </button>
-      </span>`;
-
-  } else if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
+  if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
     const provId = m.replace('__NEEDS_KEY_', '').replace('__NETWORK__', activeProvider);
     const cfg = PROVIDERS[provId] || PROVIDERS[activeProvider];
     aiBubble.innerHTML = `
@@ -2355,37 +2506,10 @@ function handleAIError(err, aiBubble) {
         </button>
         ${cfg.keyUrl ? `<a href="${cfg.keyUrl}" target="_blank" style="font-size:11px;color:var(--text3)">Obtener gratis →</a>` : ''}
         <br><br>
-        <em style="font-size:.78rem;color:var(--text3)">O usá 🌟 Puter — gratis (requiere login en puter.com)</em>
+        <em style="font-size:.78rem;color:var(--text3)">O cambiá a 🌟 Puter — 100% gratis, sin key</em>
       </span>`;
   } else {
     aiBubble.innerHTML = `<span style="color:var(--red, #ff4d6d)">⚠ ${m || 'Error desconocido'}</span>`;
-  }
-}
-
-/* puterLogin — abre el popup de autenticación de puter.com
-   CRÍTICO: debe llamarse DIRECTAMENTE desde un onclick (no desde async).
-   POR QUÉ: los browsers bloquean window.open/popups si no hay un
-   "user gesture" activo. Los async/await pierden ese contexto.
-   Al llamar desde onclick="puterLogin()" el gesture se preserva. */
-function puterLogin() {
-  if (!window.puter) { showFlash('⚠ Puter.js no está cargado'); return; }
-  if (typeof puter.auth?.signIn === 'function') {
-    puter.auth.signIn()
-      .then(() => showFlash('✓ Conectado a Puter — AI lista para usar'))
-      .catch((e) => {
-        const msg = e?.message || '';
-        // Popup bloqueado: el browser bloqueó la ventana de puter.com
-        if (msg.toLowerCase().includes('popup') || msg.toLowerCase().includes('blocked')) {
-          showFlash('⚠ Popup bloqueado — permitir popups para localhost:8000');
-        } else {
-          showFlash('⚠ ' + (msg || 'Error de login en Puter'));
-        }
-      });
-  } else {
-    // Versión de puter.js que no expone puter.auth.signIn —
-    // abrimos puter.com manualmente para que el usuario inicie sesión
-    window.open('https://puter.com', '_blank');
-    showFlash('Iniciá sesión en puter.com y volvé aquí para continuar');
   }
 }
 
@@ -2522,33 +2646,11 @@ El usuario describirá una herramienta de AI coding. Tu tarea es:
 Usa colores únicos para el rank badge. Completa con información real y precisa de la herramienta.
 DEVUELVE SOLO EL HTML, NADA MÁS.`,
 
-  'improve': `Sos un experto en herramientas AI coding 2026.
-TAREA: Generar HTML nuevo para AGREGAR al final de una sección de una guía interactiva.
-
-COMPONENTES DISPONIBLES — usá EXACTAMENTE estas estructuras:
-
-Grid de mini-cards (2 columnas):
-<div class="g2 mt">
-  <div class="mini-card"><h4>🔧 Título</h4><p style="font-size:.84rem">Descripción técnica concisa y útil.</p></div>
-  <div class="mini-card"><h4>⚡ Título</h4><p style="font-size:.84rem">Descripción técnica concisa y útil.</p></div>
-</div>
-
-Callout informativo:
-<div class="callout tip"><div class="callout-ico">💡</div><div><strong>Pro tip:</strong> Texto del consejo.</div></div>
-<div class="callout info"><div class="callout-ico">📊</div><div><strong>Dato clave:</strong> Texto informativo con <strong>énfasis</strong>.</div></div>
-<div class="callout warn"><div class="callout-ico">⚠️</div><div><strong>Atención:</strong> Texto de aviso importante.</div></div>
-
-Tabla comparativa:
-<div style="overflow-x:auto;border-radius:12px;border:1px solid var(--border)"><table class="tbl"><thead><tr><th>Columna</th><th>Columna</th></tr></thead><tbody><tr><td>Dato</td><td>Dato</td></tr></tbody></table></div>
-
-FAQ item:
-<div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Pregunta ❓</div><div class="faq-a">Respuesta detallada con <code>código</code> si aplica.</div></div>
-
-REGLAS:
-- NO repetir contenido ya existente en la sección
-- NO usar <section> ni encabezados <h1>/<h2>
-- Respondé en ${currentLang === 'en' ? 'inglés' : 'español'}
-- DEVOLVÉ SOLO HTML PURO — sin markdown, sin backticks, sin explicaciones
+  'improve': `Eres un experto en documentación técnica de herramientas de AI coding 2026.
+El usuario quiere mejorar una sección de la guía. 
+Respondé en ${currentLang === 'en' ? 'English' : 'español'} con contenido mejorado, más detallado y actualizado.
+Formato: texto claro con **negrita** para énfasis, \`código\` para comandos.
+Máximo 250 palabras. Sé específico, concreto y útil.
 ${GUIDE_CONTEXT}`
 };
 
@@ -2589,15 +2691,9 @@ async function sendMessage() {
   let userPrompt = msg;
   let systemPrompt = SYSTEM_PROMPTS[currentMode];
 
-  // En modo improve: incluir ejemplo de estilo + HTML actual para que la AI genere contenido coherente
+  // En modo improve, agregar contexto de la sección específica
   if (currentMode === 'improve' && currentImproveSection) {
-    const exampleCtx = currentImproveSection.example
-      ? `\n\nELEMENTO EXISTENTE DE REFERENCIA (imitá este estilo exacto):\n${currentImproveSection.example}`
-      : '';
-    const secCtx = currentImproveSection.html
-      ? `\n\nCONTENIDO ACTUAL (NO repetir):\n${currentImproveSection.html}`
-      : '';
-    userPrompt = `Agregar contenido nuevo a la sección "${currentImproveSection.name}". Instrucción: ${msg}${exampleCtx}${secCtx}`;
+    userPrompt = `Mejorar la sección "${currentImproveSection.name}" de la guía. Instrucción del usuario: ${msg}`;
   }
 
   let fullResponse = '';
@@ -2704,79 +2800,124 @@ function injectNewTool(htmlResponse, bubble) {
   showFlash('✓ ' + toolName + ' agregada al ranking');
 }
 
-/* ─── 8. AGREGAR A SECCIÓN ──────────────────────────────────────────
-   La AI genera HTML nuevo para agregar. Se muestra preview y el usuario
-   confirma con el botón antes de que se inserte en el DOM real.
+/* ─── 8. MEJORAR SECCIÓN ────────────────────────────────────────────
+   FLUJO COMPLETO:
+   1. handleImproveResponse(response, bubble): recibe texto de la AI,
+      lo convierte a HTML de callout, lo guarda en _pendingImproveCalloutHtml
+      y muestra un preview con botón "✓ Aplicar y Guardar".
+   2. applyImprovement(sectionId, btn): al hacer clic:
+      a) inserta el callout en el DOM (visible de inmediato)
+      b) llama POST /api/save-section para persistir en el archivo HTML
+         (sobrevive a recarga de página)
+   POR QUÉ DOS PASOS: el usuario revisa el contenido antes de guardar
+   permanentemente. Si cancela, el archivo queda intacto.
 ─────────────────────────────────────────────────────────────────── */
-let _pendingImproveHtml = '';
-
 function handleImproveResponse(response, bubble) {
   const section = currentImproveSection;
   if (!section) return;
 
-  // Limpiar posibles backticks markdown que la AI pueda agregar
-  const clean = response.replace(/```html\n?/gi, '').replace(/```\n?/g, '').trim();
-  _pendingImproveHtml = clean;
+  /* Convertir markdown simple a HTML legible (negrita y código inline) */
+  const formatted = response
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
 
-  // Preview: renderizar el HTML directamente (así se ve como quedará)
+  /* Construir el HTML del callout que se insertará en la sección.
+     Se guarda en _pendingImproveCalloutHtml para que applyImprovement
+     pueda enviarlo a /api/save-section sin depender del DOM. */
+  _pendingImproveCalloutHtml = `
+<div class="callout tip" style="margin:0 0 16px">
+  <div class="callout-ico">✨</div>
+  <div><strong>Mejora AI — ${section.name}:</strong><br>${formatted}</div>
+</div>`.trim();
+
+  /* Mostrar preview + botón de acción en el panel AI */
   bubble.innerHTML = `
-    <div style="margin-bottom:8px;font-size:.82rem;color:var(--text3)">
-      ✦ Nuevo contenido para "<strong style="color:var(--acc)">${section.name}</strong>":
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text3)">
+      ✨ Contenido generado para <strong style="color:var(--acc)">${section.name}</strong>:
     </div>
-    <div style="padding:10px 14px;background:var(--bg4);border-radius:8px;margin-bottom:12px;
-                font-size:.85rem;line-height:1.7;max-height:240px;overflow-y:auto;
-                border:1px solid var(--border)">
-      ${clean}
+    <div style="padding:10px 14px;background:var(--bg4);border:1px solid var(--border);
+                border-radius:8px;margin-bottom:12px;font-size:.85rem;line-height:1.7;
+                max-height:220px;overflow-y:auto">
+      ${formatted}
     </div>
     <button onclick="applyImprovement('${section.id}', this)"
       style="background:var(--acc);color:var(--bg);border:none;padding:7px 16px;
              border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
-             font-family:'DM Sans',sans-serif;">
-      ✦ Agregar a la sección
-    </button>`;
+             font-family:'DM Sans',sans-serif;margin-right:8px">
+      ✓ Aplicar y Guardar
+    </button>
+    <span style="font-size:10px;color:var(--text3)">Persiste al recargar</span>`;
 }
 
-/* Agrega el HTML al DOM y lo persiste en el archivo fuente via backend */
+/* applyImprovement(sectionId, btn):
+   QUÉ HACE: inserta el callout en el DOM y llama /api/save-section
+   POR QUÉ: DOM solo = se pierde al recargar. Save-section = persiste en el HTML.
+   CÓMO: usa _pendingImproveCalloutHtml para no depender de la estructura del DOM */
 function applyImprovement(sectionId, btn) {
+  /* Validar que la sección existe en el DOM */
   const sectionEl = document.getElementById(sectionId);
-  if (!sectionEl) { btn.textContent = '⚠ Sección no encontrada'; return; }
-  if (!_pendingImproveHtml) { btn.textContent = '⚠ Sin contenido'; return; }
+  if (!sectionEl) {
+    btn.textContent = '⚠ Sección no encontrada';
+    return;
+  }
 
-  const htmlToSave = _pendingImproveHtml;
+  /* Validar que hay HTML pendiente de guardar */
+  if (!_pendingImproveCalloutHtml) {
+    btn.textContent = '⚠ Sin contenido generado';
+    return;
+  }
 
-  // 1. Aplicar al DOM inmediatamente
+  const htmlToSave = _pendingImproveCalloutHtml;
+  _pendingImproveCalloutHtml = ''; // limpiar para próxima vez
+
+  /* PASO 1: insertar en DOM para feedback inmediato al usuario */
   const wrapper = document.createElement('div');
   wrapper.innerHTML = htmlToSave;
-  const fragment = document.createDocumentFragment();
-  while (wrapper.firstChild) fragment.appendChild(wrapper.firstChild);
-  sectionEl.appendChild(fragment);
-  _pendingImproveHtml = '';
+  const secHead = sectionEl.querySelector('.sec-head');
+  if (secHead) {
+    secHead.insertAdjacentElement('afterend', wrapper.firstElementChild);
+  } else {
+    sectionEl.appendChild(wrapper.firstElementChild);
+  }
 
-  btn.textContent = '⏳ Guardando...';
+  /* Scroll suave hasta el contenido nuevo */
+  setTimeout(() => {
+    const inserted = secHead
+      ? secHead.nextElementSibling
+      : sectionEl.lastElementChild;
+    inserted?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+
+  /* PASO 2: feedback de "guardando..." y llamada al backend */
+  btn.textContent = '⏳ Guardando en archivo...';
   btn.disabled = true;
 
-  setTimeout(() => sectionEl.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
-
-  // 2. Persistir en el archivo HTML via backend
+  /* POST /api/save-section: inserta el HTML antes del </section> en el
+     archivo fuente. Así el contenido sobrevive a una recarga de página. */
   fetch('/api/save-section', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      filename: location.pathname.split('/').pop(),
+      /* location.pathname.split('/').pop() retorna el filename del HTML
+         actual (ej: "ai-coding-tools.html") sin necesidad de hardcodearlo */
+      filename: location.pathname.split('/').pop() || 'ai-coding-tools.html',
       sectionId,
       htmlToAppend: htmlToSave
     })
   })
-  .then(r => r.ok ? r.json() : Promise.reject(r.status))
+  .then(r => r.ok ? r.json() : r.json().then(e => Promise.reject(e)))
   .then(() => {
-    btn.textContent = '✓ Guardado en archivo';
-    btn.style.opacity = '.5';
-    showFlash('✦ Guardado permanentemente en ' + (currentImproveSection?.name || sectionId));
+    /* Éxito: quitar el botón y mostrar flash de confirmación */
+    showFlash('✓ Guardado en ' + (currentImproveSection?.name || sectionId));
+    btn.remove();
   })
-  .catch(() => {
-    btn.textContent = '✓ En DOM (sin backend)';
-    btn.style.opacity = '.5';
-    showFlash('✦ Agregado al DOM — reiniciá el servidor para guardar en archivo');
+  .catch(err => {
+    /* Error de red o backend: mostrar detalle y permitir reintentar */
+    btn.textContent = `Error: ${err.detail || '¿Backend activo?'}`;
+    btn.disabled = false;
+    btn.style.background = 'var(--red, #ff5370)';
+    btn.style.color = '#fff';
   });
 }
 
@@ -2820,343 +2961,6 @@ function handleKey(e) {
     <button class="ak-skip" onclick="document.getElementById('akOverlay').classList.remove('show')">✕ Cerrar</button>
   </div>
 </div>
-
-<!-- ═══════════════════════════════════════════════════════════════════
-     BACKEND INTEGRATION + UX ENHANCEMENTS
-     Parche no-destructivo agregado sobre el código original.
-     Backend local: http://localhost:8000 (arrancar con back/start.bat)
-     Si el backend no está corriendo, Puter.js funciona igual (gratis).
-════════════════════════════════════════════════════════════════════ -->
-<style>
-/* ─── SCROLL ANIMATIONS ─────────────────────────────────────────── */
-.reveal { opacity: 0; transform: translateY(28px); }
-.reveal.visible { opacity: 1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
-
-/* ─── TOPBAR SHRINK ON SCROLL ────────────────────────────────────── */
-.topbar { transition: height .3s ease, padding .3s ease; }
-.topbar.scrolled { height: 44px !important; }
-
-/* ─── TYPING INDICATOR (3 dots) ──────────────────────────────────── */
-.typing-dots { display: inline-flex; gap: 5px; align-items: center; padding: 10px 14px; }
-.typing-dots span {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--acc); opacity: .4;
-  animation: typingBounce 1.3s ease-in-out infinite;
-}
-.typing-dots span:nth-child(2) { animation-delay: .18s; }
-.typing-dots span:nth-child(3) { animation-delay: .36s; }
-@keyframes typingBounce {
-  0%, 60%, 100% { transform: translateY(0); opacity: .4; }
-  30% { transform: translateY(-8px); opacity: 1; }
-}
-
-/* ─── BACKEND BADGE ──────────────────────────────────────────────── */
-.backend-badge {
-  display: none; align-items: center; gap: 5px;
-  font-size: 10px; font-weight: 700; letter-spacing: .02em;
-  color: var(--green, #4de8a0);
-  background: rgba(77, 232, 160, .08);
-  border: 1px solid rgba(77, 232, 160, .2);
-  border-radius: 20px; padding: 3px 10px;
-  margin: 6px 16px 0;
-}
-.backend-badge.show { display: flex; }
-.backend-badge::before {
-  content: '●'; font-size: 8px;
-  animation: beaconPulse 2.2s ease-in-out infinite;
-}
-@keyframes beaconPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
-
-/* ─── CARDS: hover glow mejorado ─────────────────────────────────── */
-.card-tool {
-  transition: transform .25s ease, box-shadow .25s ease !important;
-}
-.card-tool:hover {
-  transform: translateY(-5px) scale(1.01) !important;
-  box-shadow: 0 16px 48px rgba(0,0,0,.3), 0 0 28px rgba(77,232,194,.12) !important;
-}
-
-/* ─── SECTION: línea izquierda animada ───────────────────────────── */
-.section { position: relative; }
-.section::before {
-  content: ''; position: absolute; left: -1px; top: 10%; bottom: 10%;
-  width: 2px;
-  background: linear-gradient(to bottom, transparent, var(--acc), transparent);
-  opacity: 0; transition: opacity .4s ease;
-  border-radius: 2px;
-}
-.section:focus-within::before,
-.section:hover::before { opacity: .45; }
-
-/* ─── AI PANEL: entrada más fluida ───────────────────────────────── */
-.ai-panel {
-  transition: transform .38s cubic-bezier(.4,0,.2,1), opacity .32s ease !important;
-}
-
-/* ─── CODE BLOCK: pulse en copy ──────────────────────────────────── */
-@keyframes copyGlow {
-  0% { box-shadow: 0 0 0 0 var(--acc); }
-  60% { box-shadow: 0 0 0 8px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
-}
-.code-copied { animation: copyGlow .5s ease forwards; }
-</style>
-
-<script>
-/* ════════════════════════════════════════════════════════════════
-   BACKEND LOCAL — detección automática y proxy de proveedores
-   Si localhost:8000 no está corriendo, Puter.js sigue funcionando.
-════════════════════════════════════════════════════════════════ */
-let backendAvailable = false;
-const BACKEND_URL = 'http://localhost:8000';
-
-async function checkBackend() {
-  try {
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 1800);
-    const resp = await fetch(`${BACKEND_URL}/api/health`, { signal: ctrl.signal, cache: 'no-store' });
-    clearTimeout(tid);
-    if (!resp.ok) return;
-    const data = await resp.json();
-    backendAvailable = true;
-    showBackendBadge(data.providers || {});
-    patchProvidersForBackend(data.providers || {});
-  } catch(e) { /* backend no está corriendo — modo solo-browser */ }
-}
-
-function showBackendBadge(providers) {
-  if (document.getElementById('backendBadge')) return;
-  const badge = document.createElement('div');
-  badge.id = 'backendBadge';
-  badge.className = 'backend-badge show';
-  badge.title = 'Backend local activo — API keys protegidas en .env';
-  const parts = ['Backend local'];
-  if (providers.claude) parts.push('Claude ✓');
-  if (providers.gemini) parts.push('Gemini ✓');
-  badge.textContent = parts.join(' · ');
-  const provBar = document.getElementById('provBar');
-  if (provBar) provBar.parentNode.insertBefore(badge, provBar.nextSibling);
-}
-
-function patchProvidersForBackend(providers) {
-  /* Override callClaude → usa proxy backend (key queda en .env) */
-  if (providers.claude && typeof callClaude === 'function') {
-    window.callClaude = async function(userMsg, systemPrompt, onToken, onDone) {
-      const body = {
-        model: PROVIDERS?.claude?.model || 'claude-sonnet-4-20250514',
-        max_tokens: 1200, stream: true,
-        system: systemPrompt,
-        messages: [{ role: 'user', content: userMsg }]
-      };
-      const resp = await fetch(`${BACKEND_URL}/api/claude`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      if (!resp.ok) throw new Error('Claude proxy error ' + resp.status);
-      const reader = resp.body.getReader();
-      const dec = new TextDecoder();
-      let buf = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += dec.decode(value, { stream: true });
-        const lines = buf.split('\n'); buf = lines.pop();
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          try { const j = JSON.parse(line.slice(6)); if (j.type === 'content_block_delta' && j.delta?.text) onToken(j.delta.text); } catch(e) {}
-        }
-      }
-      onDone();
-    };
-  }
-
-  /* Override callGemini → usa proxy backend */
-  if (providers.gemini && typeof callGemini === 'function') {
-    window.callGemini = async function(userMsg, systemPrompt, onToken, onDone) {
-      const body = {
-        _model: PROVIDERS?.gemini?.model || 'gemini-2.5-flash',
-        contents: [{ role: 'user', parts: [{ text: userMsg }] }],
-        generationConfig: { maxOutputTokens: 1200 }
-      };
-      if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
-      const resp = await fetch(`${BACKEND_URL}/api/gemini`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      if (!resp.ok) throw new Error('Gemini proxy error ' + resp.status);
-      const reader = resp.body.getReader();
-      const dec = new TextDecoder();
-      let buf = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += dec.decode(value, { stream: true });
-        const lines = buf.split('\n'); buf = lines.pop();
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          try { const j = JSON.parse(line.slice(6)); const t = j.candidates?.[0]?.content?.parts?.[0]?.text; if (t) onToken(t); } catch(e) {}
-        }
-      }
-      onDone();
-    };
-  }
-
-  /* Override callOllama → usa proxy backend (soluciona CORS de :11434) */
-  if (typeof callOllama === 'function') {
-    window.callOllama = async function(userMsg, systemPrompt, onToken, onDone) {
-      const resp = await fetch(`${BACKEND_URL}/api/ollama`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: PROVIDERS?.ollama?.model || 'qwen2.5-coder:7b', stream: true,
-          messages: [
-            ...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []),
-            { role: 'user', content: userMsg }
-          ]
-        })
-      });
-      if (!resp.ok) throw new Error('Ollama proxy error ' + resp.status);
-      const reader = resp.body.getReader();
-      const dec = new TextDecoder();
-      let buf = '';
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += dec.decode(value, { stream: true });
-        const lines = buf.split('\n').filter(Boolean); buf = '';
-        for (const line of lines) {
-          try { const j = JSON.parse(line); if (j.message?.content) onToken(j.message.content); if (j.done) { onDone(); return; } } catch(e) {}
-        }
-      }
-      onDone();
-    };
-  }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   UX ENHANCEMENTS — scroll animations + topbar shrink
-════════════════════════════════════════════════════════════════ */
-function initScrollAnimations() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        obs.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
-
-  document.querySelectorAll('.section, .card-tool, .compare-row, .faq-item').forEach((el, i) => {
-    el.classList.add('reveal');
-    el.style.transitionDelay = (i % 4) * 0.05 + 's';
-    obs.observe(el);
-  });
-}
-
-function initTopbarShrink() {
-  const topbar = document.querySelector('.topbar');
-  if (!topbar) return;
-  window.addEventListener('scroll', () => {
-    topbar.classList.toggle('scrolled', window.scrollY > 50);
-  }, { passive: true });
-}
-
-// ─── i18n COMPREHENSIVO — cubre elementos sin clase .i18n ────────────────
-const _i18n_AI = {
-  es: {
-    logoSub: '/ Guía Viva', aiBtn: '🤖 Asistente AI',
-    flash: '✓ Sección actualizada con AI',
-    navHeads: ['Guía','Top 10 Herramientas','Comparativa','Ollama en M5','OpenCode'],
-    heroBadge: 'Guía Viva · Actualizable con AI · Mayo 2026',
-    heroP: 'Top 10 herramientas de AI coding, guía completa de Ollama en Mac M5 y OpenCode desde cero. Esta guía es <strong>viva</strong> — usá el Asistente AI para actualizarla, agregar herramientas o hacer preguntas.',
-    heroTags: ['💬 Preguntarle a la AI','➕ Agregar herramienta al Top 10','✨ Mejorar una sección','🆓 Stack gratis offline','🔍 Comparar herramientas'],
-    secH2: ['Panorama AI Coding 2026','Top 10 Herramientas AI Coding','Tabla Comparativa Maestra','Ollama en Mac M5','OpenCode — Agente Terminal','FAQ — Preguntas Frecuentes'],
-    secDesc: ['El mercado explotó — terminales, IDEs nativos, agentes cloud y open source','Ranking actualizado — benchmarks reales, no demos de juguete','Precios, límites y casos de uso de un vistazo','Stack offline completo para Mac M5','El agente terminal open source — setup y uso','Preguntas frecuentes sobre AI coding'],
-    improveBtn: '✨ Mejorar sección', addToolBtn: '➕ Agregar herramienta',
-    provBarLabel: 'Proveedor AI',
-  },
-  en: {
-    logoSub: '/ Living Guide', aiBtn: '🤖 AI Assistant',
-    flash: '✓ Section updated with AI',
-    navHeads: ['Guide','Top 10 Tools','Comparison','Ollama on M5','OpenCode'],
-    heroBadge: 'Living Guide · AI-updatable · May 2026',
-    heroP: 'Top 10 AI coding tools, complete Ollama guide on Mac M5 and OpenCode from scratch. This guide is <strong>live</strong> — use the AI Assistant to update it, add tools or ask questions.',
-    heroTags: ['💬 Ask the AI','➕ Add tool to Top 10','✨ Improve a section','🆓 Free offline stack','🔍 Compare tools'],
-    secH2: ['AI Coding Landscape 2026','Top 10 AI Coding Tools','Master Comparison Table','Ollama on Mac M5','OpenCode — Terminal Agent','FAQ — Frequently Asked Questions'],
-    secDesc: ['The market exploded — terminal agents, native IDEs, cloud agents and open source','Updated ranking — real benchmarks, not toy demos','Prices, limits and use cases at a glance','Complete offline stack for Mac M5','The open source terminal agent — setup and usage','Frequently asked questions about AI coding'],
-    improveBtn: '✨ Improve section', addToolBtn: '➕ Add tool',
-    provBarLabel: 'AI Provider',
-  }
-};
-
-function applyI18nPatch(l) {
-  const t = _i18n_AI[l] || _i18n_AI.es;
-  // Topbar
-  const logoSpan = document.querySelector('.topbar-logo span');
-  if (logoSpan) logoSpan.textContent = t.logoSub;
-  const aiBtn = document.querySelector('.ai-toggle-btn');
-  if (aiBtn) { const pulse = aiBtn.querySelector('.ai-pulse'); aiBtn.textContent = t.aiBtn; if (pulse) aiBtn.prepend(pulse); }
-  const flash = document.getElementById('flash');
-  if (flash) flash.textContent = t.flash;
-  // Sidebar nav heads
-  document.querySelectorAll('.nav-head').forEach((h, i) => { if (t.navHeads[i] !== undefined) h.textContent = t.navHeads[i]; });
-  // Hero
-  const chip = document.querySelector('.hero-chip');
-  if (chip) chip.textContent = t.heroBadge;
-  const heroP = document.querySelector('.hero > p');
-  if (heroP) heroP.innerHTML = t.heroP;
-  document.querySelectorAll('.hero .htag').forEach((tag, i) => { if (t.heroTags[i]) tag.textContent = t.heroTags[i]; });
-  // Sections
-  document.querySelectorAll('section .sec-head h2').forEach((h2, i) => { if (t.secH2[i]) h2.textContent = t.secH2[i]; });
-  document.querySelectorAll('section .sec-head p:not(.i18n)').forEach((p, i) => { if (t.secDesc[i]) p.textContent = t.secDesc[i]; });
-  // Improve buttons
-  document.querySelectorAll('.improve-btn').forEach(b => {
-    if (b.textContent.includes('Mejorar') || b.textContent.includes('Improve')) b.textContent = t.improveBtn;
-    if (b.textContent.includes('Agregar') || b.textContent.includes('Add')) b.textContent = t.addToolBtn;
-  });
-}
-
-// Parchear setLang para incluir i18n comprehensivo
-(function() {
-  const _orig = window.setLang || (typeof setLang === 'function' ? setLang : null);
-  if (_orig) {
-    window.setLang = function(l) { _orig(l); applyI18nPatch(l); };
-  }
-})();
-
-window.addEventListener('load', () => {
-  checkBackend();
-  initScrollAnimations();
-  initTopbarShrink();
-
-  // Verificar si puter.js cargó correctamente desde CDN.
-  // POR QUÉ: el <script src="https://js.puter.com/v2/"> puede fallar
-  // silenciosamente (ad blocker, CDN caído, sin internet) y el usuario
-  // no se enteraría hasta intentar enviar un mensaje.
-  // Solo avisamos si el proveedor activo es puter (no queremos ruido innecesario).
-  if (!window.puter && activeProvider === 'puter') {
-    const msgs = document.getElementById('aiMsgs');
-    if (msgs) {
-      const warn = document.createElement('div');
-      warn.style.cssText = [
-        'padding:10px 14px',
-        'background:rgba(255,180,0,.08)',
-        'border:1px solid rgba(255,180,0,.25)',
-        'border-radius:10px',
-        'font-size:.82rem',
-        'color:var(--text2)',
-        'margin:4px 0'
-      ].join(';');
-      warn.innerHTML = '⚠ <strong>Puter.js no cargó</strong> — puede estar bloqueado por un ad blocker.<br>'
-        + 'Desactivá el bloqueador para <code>localhost:8000</code> o cambiá de proveedor AI.';
-      msgs.appendChild(warn);
-    }
-  }
-
-  // Aplicar idioma guardado del localStorage
-  const savedLang = localStorage.getItem('guide-lang');
-  if (savedLang && savedLang !== 'es') applyI18nPatch(savedLang);
-});
-</script>
 
 </body>
 </html>

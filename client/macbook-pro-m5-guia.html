@@ -72,19 +72,16 @@
       --kbd-bg:#e8e8f8;--kbd-bd:#b0b0e0;--kbd-text:#484c88;
     }
     [data-theme="minimal"] {
-      /* Fondos crema-pergamino cálidos */
-      --bg:#f6f1e3;--bg2:#fdf9f0;--bg3:#ede5cc;--bg4:#e0d5b0;
-      --border:#c8b880;--border2:#b0a060;
-      --text:#2a1e08;--text2:#5a4520;--text3:#9a8050;
-      /* Verde manzana vibrante */
-      --acc:#7cc520;--acc2:#5040b0;--acc3:#d04060;
-      --gold:#c09010;--red:#c02818;--green:#4a9010;
-      --blue:#1858a0;--orange:#c06820;--purple:#5040b0;
-      --panel-bg:rgba(246,241,227,.98);
-      --panel-bd:rgba(124,197,32,.35);
-      --hero:linear-gradient(135deg,#e4f4a8 0%,#f6f1e3 55%,#f0e8f8 100%);
-      /* Teclado en tonos crema cálidos */
-      --kbd-bg:#e0d5b0;--kbd-bd:#b0a060;--kbd-text:#5a4520;
+      --bg:#ece8dc;--bg2:#f8f4e8;--bg3:#e4deca;--bg4:#d8d0b8;
+      --border:#c8bc98;--border2:#b8aa80;
+      --text:#241c08;--text2:#584428;--text3:#988870;
+      --acc:#7848b0;--acc2:#3858a8;--acc3:#3a7820;
+      --gold:#a07010;--red:#b82010;--green:#3a7010;
+      --blue:#1040a0;--orange:#b85018;--purple:#7848b0;
+      --panel-bg:rgba(236,232,220,.98);
+      --panel-bd:rgba(120,72,176,.25);
+      --hero:linear-gradient(135deg,#e8d8f8 0%,#ece8dc 55%,#d8e8f0 100%);
+      --kbd-bg:#d8d0b8;--kbd-bd:#b0a880;--kbd-text:#584428;
     }
 
     /* ── RESET ──────────────────────────────────── */
@@ -610,47 +607,6 @@
     }
     .key-link:hover { color: var(--acc); }
 
-    /* ── ANIMACIONES TEMA MINIMAL ───────────────────────────────────────────
-       Scoped a [data-theme="minimal"] — no afecta Dark ni Light. */
-    [data-theme="minimal"] .mini-card,
-    [data-theme="minimal"] .sc-card {
-      transition: transform .22s cubic-bezier(.34,1.56,.64,1),
-                  box-shadow .22s ease;
-    }
-    [data-theme="minimal"] .mini-card:hover {
-      transform: translateY(-5px) scale(1.015);
-      box-shadow: 0 14px 36px rgba(124,197,32,.18), 0 2px 8px rgba(42,30,8,.06);
-    }
-    [data-theme="minimal"] .sc-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(124,197,32,.14);
-    }
-    [data-theme="minimal"] .callout {
-      transition: transform .18s ease;
-    }
-    [data-theme="minimal"] .callout:hover { transform: translateX(6px); }
-    [data-theme="minimal"] .topbar {
-      background: linear-gradient(90deg,#f6f1e3 0%,#edf7cc 50%,#f6f1e3 100%);
-      background-size: 200% 100%;
-      animation: minTopbar 9s ease infinite;
-    }
-    @keyframes minTopbar {
-      0%,100% { background-position:0 0; }
-      50%     { background-position:100% 0; }
-    }
-    [data-theme="minimal"] .tbtn.on { animation: minBtnPulse 3.5s ease infinite; }
-    @keyframes minBtnPulse {
-      0%,100% { box-shadow:0 0 0 3px rgba(124,197,32,.3); }
-      50%     { box-shadow:0 0 0 7px rgba(124,197,32,.08); }
-    }
-    /* Teclas de atajo con acento verde en minimal */
-    [data-theme="minimal"] kbd {
-      background: var(--kbd-bg);
-      border: 1px solid var(--acc);
-      color: var(--text2);
-      box-shadow: 0 2px 0 var(--acc);
-    }
-
   </style>
 <script src="https://js.puter.com/v2/"></script>
 </head>
@@ -745,6 +701,18 @@
     <a href="#s9" class="nav-a">
       <span class="sec-ico" style="background:rgba(232,121,249,.15)">🤫</span>
       Tips &amp; <span class="i18n" data-es="Secretos" data-en="Secrets">Secretos</span>
+    </a>
+    <a href="#s10" class="nav-a">
+      <span class="sec-ico" style="background:rgba(56,217,169,.15)">⚙️</span>
+      <span class="i18n" data-es="Configuración Sistema" data-en="System Config">Configuración Sistema</span>
+    </a>
+    <a href="#s10-hotcorners" class="nav-sub">↳ Hot Corners</a>
+    <a href="#s10-dock" class="nav-sub">↳ Dock</a>
+    <a href="#s10-privacy" class="nav-sub">↳ <span class="i18n" data-es="Privacidad" data-en="Privacy">Privacidad</span></a>
+    <a href="#s10-apps" class="nav-sub">↳ Apps esenciales</a>
+    <a href="#s11" class="nav-a">
+      <span class="sec-ico" style="background:rgba(108,99,255,.15)">❓</span>
+      FAQ
     </a>
     <div id="sidebar-extra"></div>
 
@@ -855,64 +823,7 @@ Magnification → Medium
 Minimize using → Scale Effect  <span class="c"># más rápido que Genie</span>
 Show recent apps in Dock → OFF</code></pre>
       </div>
-    
-
-<div class="subsec">
-  <h4>🚀 <span data-es="Optimización para Desarrolladores" data-en="Developer Optimization">Optimización para Desarrolladores</span></h4>
-  <p class="i18n" data-es="Aprovechá al máximo tu M5 con estas optimizaciones clave para el desarrollo." data-en="Maximize your M5's potential with these key developer optimizations.">Aprovechá al máximo tu M5 con estas optimizaciones clave para el desarrollo.</p>
-</div>
-
-<div class="shortcuts-grid">
-  <div class="mini-card">
-    <h4>💻 <span class="i18n" data-es="Homebrew (Gestor de Paquetes)" data-en="Homebrew (Package Manager)">Homebrew (Gestor de Paquetes)</span></h4>
-    <p class="i18n" data-es="Instalar herramientas esenciales: `brew install wget git node yarn python3 ...`" data-en="Install essential tools: `brew install wget git node yarn python3 ...`">Instalar herramientas esenciales: `brew install wget git node yarn python3 ...`</p>
-  </div>
-  <div class="mini-card">
-    <h4>📦 <span class="i18n" data-es="Gestión de Entornos Virtuales" data-en="Virtual Environment Management">Gestión de Entornos Virtuales</span></h4>
-    <p class="i18n" data-es="Usa `venv` para Python o `nvm` para Node.js. Aislamiento de dependencias." data-en="Use `venv` for Python or `nvm` for Node.js. Dependency isolation.">Usa `venv` para Python o `nvm` para Node.js. Aislamiento de dependencias.</p>
-  </div>
-  <div class="mini-card">
-    <h4>🗄️ <span class="i18n" data-es="Configuración de Dock" data-en="Dock Configuration">Configuración de Dock</span></h4>
-    <p class="i18n" data-es="Mantén tu Dock limpio. Agregá apps de desarrollo y el Monitor de Actividad." data-en="Keep your Dock clean. Add development apps and Activity Monitor.">Mantén tu Dock limpio. Agregá apps de desarrollo y el Monitor de Actividad.</p>
-  </div>
-  <div class="mini-card">
-    <h4>💡 <span class="i18n" data-es="Gestos del Trackpad Personalizados" data-en="Custom Trackpad Gestures">Gestos del Trackpad Personalizados</span></h4>
-    <p class="i18n" data-es="Configurá gestos para Mission Control, App Exposé y Launchpad para mayor fluidez." data-en="Configure gestures for Mission Control, App Exposé, and Launchpad for smoother workflow.">Configurá gestos para Mission Control, App Exposé y Launchpad para mayor fluidez.</p>
-  </div>
-</div>
-
-<div class="callout info">
-  <div class="callout-ico">ℹ️</div>
-  <div class="i18n" data-es="Para una experiencia de desarrollo óptima, considera instalar XCode desde la App Store. Incluye las herramientas de línea de comandos de Apple." data-en="For an optimal development experience, consider installing XCode from the App Store. It includes Apple's command-line tools.">Para una experiencia de desarrollo óptima, considera instalar XCode desde la App Store. Incluye las herramientas de línea de comandos de Apple.</div>
-</div>
-
-
-
-<div class="subsec">
-  <div class="subsec-header">
-    <h4 class="i18n" data-es="Personalización y Eficiencia" data-en="Personalization and Efficiency">Personalización y Eficiencia</h4>
-  </div>
-  <div class="shortcuts-grid">
-    <div class="mini-card">
-      <kbd class="kbd">System Settings</kbd>
-      <p class="i18n" data-es="<strong>Dock & Menu Bar:</strong> Ajusta el tamaño y la magnificación del Dock para un acceso rápido a tus aplicaciones. La 'Magnificación' puede ser útil para identificar iconos pequeños." data-en="<strong>Dock & Menu Bar:</strong> Adjust Dock size and magnification for quick app access. 'Magnification' can help identify small icons."><strong>Dock & Menu Bar:</strong> Ajusta el tamaño y la magnificación del Dock para un acceso rápido a tus aplicaciones. La 'Magnificación' puede ser útil para identificar iconos pequeños.</p>
-    </div>
-    <div class="mini-card">
-      <kbd class="kbd">System Settings</kbd>
-      <p class="i18n" data-es="<strong>Desktop & Dock:</strong> Configura 'Hot Corners' (Esquinas de acceso rápido) para activar Mission Control, mostrar el escritorio, o iniciar el salvapantallas con el ratón, mejorando la navegación." data-en="<strong>Desktop & Dock:</strong> Configure 'Hot Corners' to activate Mission Control, show desktop, or start the screensaver with your mouse, enhancing navigation."><strong>Desktop & Dock:</strong> Configura 'Hot Corners' (Esquinas de acceso rápido) para activar Mission Control, mostrar el escritorio, o iniciar el salvapantallas con el ratón, mejorando la navegación.</p>
-    </div>
-    <div class="mini-card">
-      <kbd class="kbd">System Settings</kbd>
-      <p class="i18n" data-es="<strong>Accessibility → Pointer Control → Trackpad Options:</strong> Habilita 'Drag with three fingers' (Arrastrar con tres dedos) para una manipulación de elementos más fluida y ergonómica." data-en="<strong>Accessibility → Pointer Control → Trackpad Options:</strong> Enable 'Drag with three fingers' for smoother and more ergonomic item manipulation."><strong>Accessibility → Pointer Control → Trackpad Options:</strong> Habilita 'Arrastrar con tres dedos' para una manipulación de elementos más fluida y ergonómica.</p>
-    </div>
-    <div class="mini-card">
-      <kbd class="kbd">System Settings</kbd>
-      <p class="i18n" data-es="<strong>Keyboard → Keyboard Shortcuts:</strong> Revisa y personaliza los atajos de teclado para acelerar tus flujos de trabajo. Considera asignar atajos para aplicaciones o funciones usadas frecuentemente." data-en="<strong>Keyboard → Keyboard Shortcuts:</strong> Review and customize keyboard shortcuts to speed up your workflows. Consider assigning shortcuts for frequently used apps or functions."><strong>Keyboard → Keyboard Shortcuts:</strong> Revisa y personaliza los atajos de teclado para acelerar tus flujos de trabajo. Considera asignar atajos para aplicaciones o funciones usadas frecuentemente.</p>
-    </div>
-  </div>
-</div>
-
-</section>
+    </section>
 
     <!-- ═══════════════════════════════════════════
          S1 — ATAJOS DE TECLADO
@@ -936,6 +847,35 @@ Show recent apps in Dock → OFF</code></pre>
           <kbd>⌃</kbd> Control &nbsp;
           <kbd>fn</kbd> Function &nbsp;
           <kbd>⌫</kbd> Delete/Backspace
+        </div>
+      </div>
+
+      <!-- TRACKPAD GESTURES — missing from original -->
+      <div class="subsec" id="s1-trackpad">
+        <h3>🖱 Trackpad — Gestos esenciales</h3>
+        <p style="font-size:.88rem;color:var(--text2)">El trackpad del MacBook Pro M5 es de los mejores del mercado. Aprendé estos gestos y multiplicá tu velocidad de trabajo.</p>
+
+        <div class="shortcuts-grid">
+          <div class="sc-card"><span class="sc-desc">Scroll natural</span><div class="sc-keys"><span style="font-size:.8rem">2 dedos arriba/abajo</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Click derecho (menú contextual)</span><div class="sc-keys"><span style="font-size:.8rem">2 dedos tap</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Mission Control (todas las apps)</span><div class="sc-keys"><span style="font-size:.8rem">3 dedos arriba</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Mostrar escritorio</span><div class="sc-keys"><span style="font-size:.8rem">4 dedos separar</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Cambiar entre apps</span><div class="sc-keys"><span style="font-size:.8rem">3 dedos izquierda/derecha</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Launchpad (todas las apps)</span><div class="sc-keys"><span style="font-size:.8rem">4 dedos juntar</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Zoom en página web/imagen</span><div class="sc-keys"><span style="font-size:.8rem">2 dedos pellizcar</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Notificaciones (centro)</span><div class="sc-keys"><span style="font-size:.8rem">2 dedos desde borde derecho</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Mover ventana con 3 dedos</span><div class="sc-keys"><kbd>⌥</kbd> <span style="font-size:.8rem">+ 3 dedos drag</span></div></div>
+          <div class="sc-card"><span class="sc-desc">Tap to click (sin presionar)</span><div class="sc-keys"><span style="font-size:.8rem">1 dedo tap → Settings → Trackpad</span></div></div>
+        </div>
+
+        <div class="callout tip">
+          <div class="callout-ico">⚙️</div>
+          <div><strong>Activar "Tap to Click":</strong> System Settings → Trackpad → Point & Click → Tap to click: ON. Así clickeás con un toque suave sin presionar. Mucho menos esfuerzo para toda la jornada de trabajo.</div>
+        </div>
+
+        <div class="callout info">
+          <div class="callout-ico">💡</div>
+          <div><strong>Venís de Windows?</strong> El scroll natural de Mac va al revés que Windows. Para cambiarlo: System Settings → Trackpad → Scroll & Zoom → Natural scrolling: OFF. Aunque en 2-3 días te acostumbrás y el estilo Mac empieza a sentirse más intuitivo.</div>
         </div>
       </div>
 
@@ -1063,11 +1003,7 @@ Show recent apps in Dock → OFF</code></pre>
         <div class="mini-card"><h4>📅 <span class="i18n" data-es="Fechas y Horas" data-en="Dates and Times">Fechas</span></h4><p><code>what time is it in tokyo</code><br><code>days until christmas</code></p></div>
         <div class="mini-card"><h4>⚡ <span class="i18n" data-es="Truco Pro" data-en="Pro Trick">Truco Pro</span></h4><p><span class="i18n" data-es="Cmd+Space, escribí el nombre de un contacto. Podés llamar, enviar mail o mensaje directamente." data-en="Cmd+Space, type a contact name. You can call, email or message directly."><kbd>⌘</kbd>+Space → nombre de contacto → llamar/mail directo</span></p></div>
       </div>
-    
-
-<p>test</p>
-
-</section>
+    </section>
 
     <!-- ═══════════════════════════════════════════
          S3 — MISSION CONTROL & SPACES
@@ -1108,27 +1044,7 @@ Show recent apps in Dock → OFF</code></pre>
 <span class="c"># Crear un nuevo Space rápido:</span>
 <span class="c"># Ctrl+↑ (Mission Control) → clic en "+" esquina superior derecha</span></code></pre>
       </div>
-    
-
-<div class="subsec">
-        <h3 class="i18n" data-es="Trucos de Mission Control para Developers" data-en="Mission Control Tricks for Developers">Trucos de Mission Control para Developers</h3>
-        <div class="shortcuts-grid">
-          <div class="mini-card">
-            <div class="mini-card-title">Navegar entre Spaces con Teclado</div>
-            <div class="mini-card-content">
-              <p>Usa <kbd>Ctrl</kbd> + <kbd>&larr;</kbd> / <kbd>&rarr;</kbd> para moverte entre tus espacios de trabajo (Spaces) de forma fluida sin interrumpir tu flujo.</p>
-            </div>
-          </div>
-          <div class="mini-card">
-            <div class="mini-card-title">Arrastrar Ventanas entre Spaces</div>
-            <div class="mini-card-content">
-              <p>Entra en Mission Control (<kbd>Ctrl</kbd> + <kbd>&uarr;</kbd>), haz clic y arrastra cualquier ventana de un Space a otro en la vista superior.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-</section>
+    </section>
 
     <!-- ═══════════════════════════════════════════
          S4 — FINDER AVANZADO
@@ -1148,14 +1064,7 @@ Show recent apps in Dock → OFF</code></pre>
         <div class="mini-card"><h4>🏷 Tags</h4><p><span class="i18n" data-es="Clic derecho → Tag para etiquetar archivos. Después buscá por tag en Spotlight. Ideal para organizar proyectos." data-en="Right-click → Tag to label files. Then search by tag in Spotlight. Great for organizing projects.">Clic derecho → Tag. Buscalos en Spotlight. Ideal para organizar proyectos.</span></p></div>
         <div class="mini-card"><h4>🔍 Smart Folders</h4><p><span class="i18n" data-es="File → New Smart Folder. Guardá búsquedas frecuentes como carpetas virtuales (ej: archivos modificados hoy)." data-en="File → New Smart Folder. Save frequent searches as virtual folders (e.g. files modified today).">File → New Smart Folder. Guardá búsquedas como carpetas virtuales.</span></p></div>
       </div>
-    
-
-<div class="g2">
-  <div class="mini-card"><h4>⬆️ Volver al padre</h4><p>Seleccioná una carpeta → apretá la tecla `Comando` + la flecha hacia arriba para subir un nivel en la jerarquía.</p></div>
-  <div class="mini-card"><h4>📝 Barra de ruta</h4><p>Hacé clic derecho en la barra superior (donde se ve la ruta) para ver la jerarquía y navegar rápidamente entre carpetas.</p></div>
-</div>
-
-</section>
+    </section>
 
     <!-- ═══════════════════════════════════════════
          S5 — TERMINAL & ZSH
@@ -1270,6 +1179,41 @@ Show recent apps in Dock → OFF</code></pre>
 <span class="cmd">curl ifconfig.me</span>                     <span class="c"># IP pública</span></code></pre>
         </div>
       </div>
+
+      <!-- NETWORK COMMANDS -->
+      <div class="subsec" id="s5-network">
+        <h3>🌐 Red y Conectividad</h3>
+        <div class="code-wrap has-toolbar">
+          <div class="code-toolbar">
+            <span class="code-lang-badge">bash · network</span>
+            <div class="code-btns">
+              <button class="code-btn" onclick="copyCode('code-network')">📋 Copiar</button>
+              <button class="code-btn explain" onclick="explainCode('code-network')">📖 Explicar</button>
+            </div>
+          </div>
+          <pre id="code-network"><code><span class="c"># ── Ver IPs ──────────────────────────────────────────────────</span>
+<span class="cmd">ipconfig getifaddr en0</span>     <span class="c"># tu IP local (WiFi)</span>
+<span class="cmd">curl ifconfig.me</span>           <span class="c"># tu IP pública</span>
+<span class="cmd">networksetup -getairportnetwork en0</span>  <span class="c"># red WiFi actual</span>
+
+<span class="c"># ── Diagnóstico de red ────────────────────────────────────────</span>
+<span class="cmd">ping google.com</span>            <span class="c"># verificar conectividad (Ctrl+C para parar)</span>
+<span class="cmd">traceroute google.com</span>      <span class="c"># ver ruta hasta un servidor</span>
+<span class="cmd">nslookup google.com</span>        <span class="c"># resolver DNS</span>
+<span class="cmd">networkQuality</span>             <span class="c"># test de velocidad nativo de macOS</span>
+
+<span class="c"># ── Puertos y conexiones ──────────────────────────────────────</span>
+<span class="cmd">lsof -i :3000</span>              <span class="c"># ver qué usa el puerto 3000</span>
+<span class="cmd">netstat -an | grep LISTEN</span>  <span class="c"># todos los puertos en escucha</span>
+<span class="cmd">ss -tlnp</span>                   <span class="c"># alternativa moderna a netstat</span>
+
+<span class="c"># ── Descargas desde terminal ──────────────────────────────────</span>
+<span class="cmd">curl -O</span> https://ejemplo.com/archivo.zip  <span class="c"># descargar archivo</span>
+<span class="cmd">curl -L</span> https://url.com -o salida.html   <span class="c"># con nombre personalizado</span>
+<span class="cmd">wget</span> https://ejemplo.com/archivo.zip     <span class="c"># alternativa a curl</span></code></pre>
+        </div>
+      </div>
+
     </section>
 
     <!-- ═══════════════════════════════════════════
@@ -1358,6 +1302,31 @@ Show recent apps in Dock → OFF</code></pre>
 <span class="c">━━━ DIAGNÓSTICO: Ver por qué está denegado ━━━━━━━━━━━━━━━━━━━━</span>
 <span class="cmd">ls -la</span> /Users/otro-usuario/     <span class="c"># ver permisos del home</span>
 <span class="cmd">ls -le</span> /Users/otro-usuario/proyecto/ <span class="c"># ver ACLs extendidos</span></code></pre>
+
+      <h3 class="mt">🔢 Entendiendo los permisos: chmod en profundidad</h3>
+      <p style="font-size:.88rem;color:var(--text2)">Los permisos en Unix son 3 grupos de 3 bits: dueño, grupo, otros. Cada grupo puede tener: leer (r=4), escribir (w=2), ejecutar (x=1).</p>
+
+      <div style="overflow-x:auto;border-radius:11px;border:1px solid var(--border);margin:14px 0">
+        <table style="width:100%;border-collapse:collapse;font-size:.85rem">
+          <thead>
+            <tr style="background:var(--bg3)">
+              <th style="padding:10px 14px;text-align:left;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border)">Número</th>
+              <th style="padding:10px 14px;text-align:left;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border)">Permisos</th>
+              <th style="padding:10px 14px;text-align:left;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border)">Descripción</th>
+              <th style="padding:10px 14px;text-align:left;font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);border-bottom:1px solid var(--border)">Cuándo usarlo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:9px 14px;border-bottom:1px solid var(--border)"><code>chmod 755</code></td><td style="padding:9px 14px;border-bottom:1px solid var(--border)">rwxr-xr-x</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Dueño: todo. Grupo/Otros: leer+ejecutar</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Scripts, ejecutables, carpetas de proyectos</td></tr>
+            <tr><td style="padding:9px 14px;border-bottom:1px solid var(--border)"><code>chmod 644</code></td><td style="padding:9px 14px;border-bottom:1px solid var(--border)">rw-r--r--</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Dueño: leer+escribir. Otros: solo leer</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Archivos de configuración, HTML, CSS</td></tr>
+            <tr><td style="padding:9px 14px;border-bottom:1px solid var(--border)"><code>chmod 600</code></td><td style="padding:9px 14px;border-bottom:1px solid var(--border)">rw-------</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Solo el dueño puede leer y escribir</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">.env, SSH private keys, archivos con contraseñas</td></tr>
+            <tr><td style="padding:9px 14px;border-bottom:1px solid var(--border)"><code>chmod 700</code></td><td style="padding:9px 14px;border-bottom:1px solid var(--border)">rwx------</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Solo el dueño puede todo</td><td style="padding:9px 14px;border-bottom:1px solid var(--border);color:var(--text2)">Carpeta .ssh, scripts privados</td></tr>
+            <tr><td style="padding:9px 14px"><code>chmod 777</code></td><td style="padding:9px 14px">rwxrwxrwx</td><td style="padding:9px 14px;color:var(--red)">⚠ Todos pueden hacer todo</td><td style="padding:9px 14px;color:var(--text2)">Nunca en producción. Solo temporal en desarrollo</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:.83rem;color:var(--text2)"><strong>Regla mnemotécnica:</strong> 7 = rwx (todo), 6 = rw- (leer+escribir), 5 = r-x (leer+ejecutar), 4 = r-- (solo leer), 0 = --- (nada).</p>
+
       </div>
     </section>
 
@@ -1555,54 +1524,246 @@ Host mi-servidor
           <span class="i18n" data-es="Raycast (Spotlight++), Rectangle (ventanas), Maccy (portapapeles), AltTab (selector ventanas), iTerm2 (terminal), Cursor/VS Code (editor). Todo gratis o casi." data-en="Raycast (Spotlight++), Rectangle (windows), Maccy (clipboard), AltTab (window switcher), iTerm2 (terminal), Cursor/VS Code (editor). All free or nearly.">Raycast · Rectangle · Maccy · AltTab · iTerm2 · Cursor/VS Code — todo gratis o casi</span>
         </div>
       </div>
+    </section>
 
-      <!-- APPS INDISPENSABLES PARA DEVS MAC 2026
-           Fuentes: usevoicy.com/blog/best-mac-apps-for-developers
-                    polivka-pavel.medium.com (developers guide)
-                    developer.apple.com/macos/get-started (Instruments) -->
-      <div class="subsec" style="margin-top:24px">
-        <h3 class="i18n" data-es="🛠 Apps Indispensables para Devs Mac 2026" data-en="🛠 Must-Have Dev Apps for Mac 2026">🛠 Apps Indispensables para Devs Mac 2026</h3>
-        <div class="g2">
+    <!-- Zona para secciones agregadas por AI -->
+
+    <!-- ═══════════════════════════════════════════
+         S10 — CONFIGURACIÓN DEL SISTEMA (NUEVO)
+         Hot Corners, Dock, Privacidad, AirDrop
+    ═══════════════════════════════════════════ -->
+    <section id="s10">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(56,217,169,.12)">⚙️</div>
+        <div>
+          <h2 class="i18n" data-es="Configuración del Sistema para Developers" data-en="System Configuration for Developers">Configuración del Sistema para Developers</h2>
+          <p class="i18n" data-es="Hot Corners, Dock optimizado, Privacidad y AirDrop" data-en="Hot Corners, optimized Dock, Privacy and AirDrop">Hot Corners, Dock optimizado, Privacidad y AirDrop</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s10','Configuración del Sistema')">✨</button>
+      </div>
+
+      <!-- Hot Corners -->
+      <div class="subsec" id="s10-hotcorners">
+        <h3>↖️ <span class="i18n" data-es="Hot Corners (Esquinas Activas)" data-en="Hot Corners">Hot Corners (Esquinas Activas)</span></h3>
+        <p style="font-size:.88rem;color:var(--text2)" class="i18n"
+          data-es="Las Hot Corners ejecutan una acción cuando llevás el cursor a una esquina de la pantalla. Son uno de los atajos más subestimados de macOS."
+          data-en="Hot Corners execute an action when you move the cursor to a screen corner. They are one of the most underrated shortcuts in macOS.">
+          Las Hot Corners ejecutan una acción cuando llevás el cursor a una esquina. Son uno de los atajos más subestimados de macOS.</p>
+        <p style="font-size:.82rem;color:var(--text3)" class="i18n"
+          data-es="Configurar en: System Settings → Desktop &amp; Dock → Mission Control → Hot Corners (abajo del todo)"
+          data-en="Configure at: System Settings → Desktop &amp; Dock → Mission Control → Hot Corners (bottom)">
+          📍 System Settings → Desktop &amp; Dock → Mission Control → <strong>Hot Corners</strong></p>
+
+        <div class="g2" style="margin-top:12px">
           <div class="mini-card">
-            <h4>💊 Amphetamine</h4>
-            <p style="font-size:.82rem" class="i18n"
-               data-es="Mantiene el Mac despierto con un clic. Esencial durante builds largos, deploys o descarga de datasets. Gratis en App Store."
-               data-en="Keeps your Mac awake with one click. Essential during long builds, deploys or large dataset downloads. Free on the App Store.">Mantiene el Mac despierto con un clic. Esencial durante builds largos, deploys o descarga de datasets. Gratis en App Store.</p>
+            <h4>🔧 <span class="i18n" data-es="Configuración recomendada" data-en="Recommended setup">Configuración recomendada</span></h4>
+            <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:2.1">
+              <li><strong class="i18n" data-es="Esquina superior izquierda" data-en="Top left corner">↖ Superior izq</strong> → Mission Control</li>
+              <li><strong class="i18n" data-es="Esquina superior derecha" data-en="Top right corner">↗ Superior der</strong> → Notification Center</li>
+              <li><strong class="i18n" data-es="Esquina inferior izquierda" data-en="Bottom left corner">↙ Inferior izq</strong> → Launchpad</li>
+              <li><strong class="i18n" data-es="Esquina inferior derecha" data-en="Bottom right corner">↘ Inferior der</strong> → Lock Screen</li>
+            </ul>
           </div>
           <div class="mini-card">
-            <h4>🔑 1Password</h4>
-            <p style="font-size:.82rem" class="i18n"
-               data-es="Guardá API keys, SSH keys, tokens y licencias. Integración con Terminal para autofill de SSH. La única app de pago que vale cada peso."
-               data-en="Store API keys, SSH keys, tokens and licenses. Native Terminal integration for SSH autofill. The only paid app here worth every cent.">Guardá API keys, SSH keys, tokens y licencias. Integración con Terminal para autofill de SSH. La única app de pago que vale cada peso.</p>
-          </div>
-          <div class="mini-card">
-            <h4 class="i18n" data-es="🌿 Tower — Git Visual" data-en="🌿 Tower — Visual Git Client">🌿 Tower — Git Visual</h4>
-            <p style="font-size:.82rem" class="i18n"
-               data-es="Git con drag-and-drop. Undo de commits, cherry-pick visual, merge interactivo. Para cuando el CLI de Git se complica."
-               data-en="Git with drag-and-drop. Commit undo, visual cherry-pick, interactive merge. For when the Git CLI gets complicated.">Git con drag-and-drop. Undo de commits, cherry-pick visual, merge interactivo. Para cuando el CLI de Git se complica.</p>
-          </div>
-          <div class="mini-card">
-            <h4 class="i18n" data-es="🧊 Ice — Barra de Menú" data-en="🧊 Ice — Menu Bar Manager">🧊 Ice — Barra de Menú</h4>
-            <p style="font-size:.82rem"><span class="i18n"
-               data-es="Oculta íconos de la barra de menú para mantener el espacio limpio. Alternativa gratis y open source a Bartender."
-               data-en="Hides menu bar icons to keep your screen clean. Free, open source alternative to Bartender.">Oculta íconos de la barra de menú para mantener el espacio limpio. Alternativa gratis y open source a Bartender.</span> <code>brew install --cask jordanbaird-ice</code></p>
+            <h4>💡 <span class="i18n" data-es="Tips para Hot Corners" data-en="Hot Corners tips">Tips</span></h4>
+            <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:2.1">
+              <li class="i18n" data-es="Mantener ⌥ mientras configurás → se activa solo con ⌥+esquina (evita activaciones accidentales)" data-en="Hold ⌥ while configuring → activates only with ⌥+corner (avoids accidental activations)">Mantener <kbd>⌥</kbd> al configurar → se activa solo con <kbd>⌥</kbd>+esquina</li>
+              <li class="i18n" data-es="'Bloquear pantalla' en inferior derecha = seguridad rápida al salir del escritorio" data-en="'Lock Screen' in bottom right = quick security when leaving your desk">Esquina lock screen = hábito de seguridad excelente</li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <div class="callout info" style="margin-top:14px">
-        <div class="callout-ico">🍎</div>
-        <div>
-          <strong>Xcode Instruments:</strong> <span class="i18n"
-            data-es="La herramienta de profiling más poderosa del ecosistema Apple — incluida gratis con Xcode. Detecta memory leaks, analiza CPU, GPU y I/O de cualquier app. Abrila con"
-            data-en="The most powerful profiling tool in the Apple ecosystem — included free with Xcode. Detects memory leaks, analyzes CPU, GPU and I/O of any app. Open it with">La herramienta de profiling más poderosa del ecosistema Apple — incluida gratis con Xcode. Detecta memory leaks, analiza CPU, GPU y I/O de cualquier app. Abrila con</span> <kbd>⌘</kbd><kbd>I</kbd> <span class="i18n"
-            data-es='desde Xcode o buscá "Instruments" en Spotlight.'
-            data-en='from Xcode or search "Instruments" in Spotlight.'>desde Xcode o buscá "Instruments" en Spotlight.</span>
+      <!-- Dock Optimizado -->
+      <div class="subsec" id="s10-dock">
+        <h3>🪄 <span class="i18n" data-es="Dock Optimizado para Developers" data-en="Optimized Dock for Developers">Dock Optimizado para Developers</span></h3>
+        <div class="code-wrap has-toolbar">
+          <div class="code-toolbar">
+            <span class="code-lang-badge">bash · dock tweaks</span>
+            <div class="code-btns">
+              <button class="code-btn" onclick="copyCode('code-dock-tweaks')">📋 <span class="i18n" data-es="Copiar" data-en="Copy">Copiar</span></button>
+              <button class="code-btn explain" onclick="explainCode('code-dock-tweaks')">📖 <span class="i18n" data-es="Explicar" data-en="Explain">Explicar</span></button>
+            </div>
+          </div>
+          <pre id="code-dock-tweaks"><code><span class="c"># ── Dock más pequeño y rápido ─────────────────────────────────</span>
+<span class="c"># Aparición del Dock: instantánea (no hay delay al pasar el mouse)</span>
+<span class="cmd">defaults write com.apple.dock autohide-delay</span> -float <span class="n">0</span>
+<span class="cmd">defaults write com.apple.dock autohide-time-modifier</span> -float <span class="n">0.2</span>
+
+<span class="c"># Desactivar el bounce al abrir apps (más profesional)</span>
+<span class="cmd">defaults write com.apple.dock launchanim</span> -bool false
+
+<span class="c"># Apps ocultas aparecen más transparentes en el Dock</span>
+<span class="cmd">defaults write com.apple.dock showhidden</span> -bool true
+
+<span class="c"># Deshabilitar "Apps recientes" en el Dock (quita 3 íconos innecesarios)</span>
+<span class="cmd">defaults write com.apple.dock show-recents</span> -bool false
+
+<span class="c"># Efecto de minimizar: Scale en vez de Genie (más rápido visualmente)</span>
+<span class="cmd">defaults write com.apple.dock mineffect</span> -string <span class="s">"scale"</span>
+
+<span class="c"># Aplicar todos los cambios</span>
+<span class="cmd">killall Dock</span></code></pre>
+        </div>
+
+        <div class="callout tip">
+          <div class="callout-ico">💡</div>
+          <div class="i18n"
+            data-es="Tip: mantené solo las apps que usás todos los días en el Dock. Máximo 10 íconos. El resto: abrí con Spotlight (Cmd+Space) o Raycast. Un Dock limpio = mente más despejada."
+            data-en="Tip: keep only apps you use every day in the Dock. Maximum 10 icons. The rest: open with Spotlight (Cmd+Space) or Raycast. A clean Dock = clearer mind.">
+            <strong>Tip:</strong> Mantené solo las apps que usás todos los días en el Dock. Máximo 10 íconos. Un Dock limpio reduce la distracción visual.</div>
+        </div>
+      </div>
+
+      <!-- Privacidad y Seguridad -->
+      <div class="subsec" id="s10-privacy">
+        <h3>🔒 <span class="i18n" data-es="Privacidad y Seguridad — Configuración esencial" data-en="Privacy and Security — Essential setup">Privacidad y Seguridad</span></h3>
+        <div class="g2">
+          <div class="mini-card">
+            <h4>🔒 FileVault (Obligatorio)</h4>
+            <p style="font-size:.83rem;color:var(--text2)" class="i18n"
+              data-es="Cifra todo el disco. Si te roban el Mac, nadie puede acceder a tu código. System Settings → Privacy & Security → FileVault → Turn On. Guardá la recovery key en un lugar seguro (1Password)."
+              data-en="Encrypts the entire disk. If your Mac is stolen, nobody can access your code. System Settings → Privacy &amp; Security → FileVault → Turn On. Save the recovery key somewhere safe.">
+              Cifra todo el disco. System Settings → Privacy &amp; Security → FileVault → <strong>Turn On</strong>. Guardá la recovery key en 1Password.</p>
+          </div>
+          <div class="mini-card">
+            <h4>🔥 Firewall</h4>
+            <p style="font-size:.83rem;color:var(--text2)" class="i18n"
+              data-es="Activa el Firewall: System Settings → Network → Firewall → On. Bloquea conexiones entrantes no autorizadas. Essential en redes WiFi públicas (cafeterías, aeropuertos)."
+              data-en="Enable Firewall: System Settings → Network → Firewall → On. Blocks unauthorized incoming connections. Essential on public WiFi.">
+              System Settings → Network → Firewall → <strong>On</strong>. Esencial en WiFi públicas.</p>
+          </div>
+          <div class="mini-card">
+            <h4>📍 Localización — Solo lo esencial</h4>
+            <p style="font-size:.83rem;color:var(--text2)" class="i18n"
+              data-es="System Settings → Privacy & Security → Location Services. Desactivá todo excepto: Maps, Find My Mac, y las apps que realmente lo necesitan. Los 'servicios del sistema' de Apple también consumen ubicación — reviewalos en la lista."
+              data-en="System Settings → Privacy &amp; Security → Location Services. Disable all except: Maps, Find My Mac, and apps that truly need it.">
+              System Settings → Privacy → Location. Desactivá todo excepto Maps y Find My. Revisá también "System Services".</p>
+          </div>
+          <div class="mini-card">
+            <h4>🖥 Full Disk Access para Terminal</h4>
+            <p style="font-size:.83rem;color:var(--text2)" class="i18n"
+              data-es="System Settings → Privacy & Security → Full Disk Access → agregar Terminal.app e iTerm2. Esto permite que la terminal acceda a todos tus archivos, incluyendo los de otras cuentas de usuario — necesario para algunas tareas de dev."
+              data-en="System Settings → Privacy &amp; Security → Full Disk Access → add Terminal.app and iTerm2. Allows terminal to access all files including other user accounts.">
+              Privacy → Full Disk Access → agregar <strong>Terminal.app</strong> e <strong>iTerm2</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AirDrop y Continuidad -->
+      <div class="subsec" id="s10-airdrop">
+        <h3>📡 <span class="i18n" data-es="AirDrop y Continuidad" data-en="AirDrop and Continuity">AirDrop y Continuidad</span></h3>
+        <div class="g2">
+          <div class="mini-card">
+            <h4>📤 AirDrop entre dispositivos</h4>
+            <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:1.9">
+              <li class="i18n" data-es="Activar: Control Center → AirDrop → Contacts Only" data-en="Enable: Control Center → AirDrop → Contacts Only">Control Center → AirDrop → <strong>Contacts Only</strong></li>
+              <li class="i18n" data-es="Transferir archivos entre Mac, iPhone, iPad sin cable ni internet" data-en="Transfer files between Mac, iPhone, iPad without cable or internet">Sin cable ni internet — instantáneo</li>
+              <li class="i18n" data-es="Clic derecho en cualquier archivo → Share → AirDrop" data-en="Right click any file → Share → AirDrop">Clic derecho → Share → AirDrop</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>🔗 Handoff — continuar en otro dispositivo</h4>
+            <ul style="font-size:.83rem;color:var(--text2);padding-left:14px;line-height:1.9">
+              <li class="i18n" data-es="Empezar un email en iPhone, continuarlo en Mac automáticamente" data-en="Start an email on iPhone, continue it on Mac automatically">Email en iPhone → continuar en Mac</li>
+              <li class="i18n" data-es="System Settings → General → AirDrop & Handoff → Handoff: On" data-en="System Settings → General → AirDrop & Handoff → Handoff: On">Settings → General → Handoff → <strong>On</strong></li>
+              <li class="i18n" data-es="Copiar en iPhone, pegar en Mac (Universal Clipboard)" data-en="Copy on iPhone, paste on Mac (Universal Clipboard)">Universal Clipboard: copiar en iPhone, pegar en Mac</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apps Recomendadas -->
+      <div class="subsec" id="s10-apps">
+        <h3>🚀 <span class="i18n" data-es="Apps Esenciales para Developers (todas gratuitas)" data-en="Essential Apps for Developers (all free)">Apps Esenciales para Developers</span></h3>
+        <div class="g2">
+          <div class="mini-card">
+            <h4>🔧 Rectangle — Gestor de ventanas</h4>
+            <p style="font-size:.82rem;color:var(--text2)" class="i18n"
+              data-es="La app más útil de todas. Atajos para mover ventanas a mitades, tercios, cuartos y esquinas. Gratis y open source. brew install --cask rectangle"
+              data-en="The most useful app of all. Shortcuts to move windows to halves, thirds, quarters and corners. Free and open source.">La más útil de todas. Atajos para mover ventanas. <code>brew install --cask rectangle</code></p>
+          </div>
+          <div class="mini-card">
+            <h4>🎨 Raycast — Spotlight con superpoderes</h4>
+            <p style="font-size:.82rem;color:var(--text2)" class="i18n"
+              data-es="Reemplazá Spotlight. Busca apps, GitHub repos, snippets, calcula, convierte monedas, abre URLs. Extensiones para todo. Gratis. brew install --cask raycast"
+              data-en="Replace Spotlight. Search apps, GitHub repos, snippets, calculate, convert currencies, open URLs. Extensions for everything. Free.">Reemplazá Spotlight. Extensiones para GitHub, Jira, Linear. <code>brew install --cask raycast</code></p>
+          </div>
+          <div class="mini-card">
+            <h4>📋 Maccy — Historial de portapapeles</h4>
+            <p style="font-size:.82rem;color:var(--text2)" class="i18n"
+              data-es="Guarda los últimos 200 items copiados. Abre con Cmd+Shift+V. Indispensable cuando tenés que copiar múltiples cosas. brew install --cask maccy"
+              data-en="Saves last 200 copied items. Open with Cmd+Shift+V. Indispensable when copying multiple things.">Últimos 200 copiados. <kbd>Cmd+Shift+V</kbd>. <code>brew install --cask maccy</code></p>
+          </div>
+          <div class="mini-card">
+            <h4>🪟 AltTab — Selector de ventanas</h4>
+            <p style="font-size:.82rem;color:var(--text2)" class="i18n"
+              data-es="Alt+Tab con miniaturas de TODAS las ventanas abiertas, como Windows. No solo las apps. brew install --cask alt-tab"
+              data-en="Alt+Tab with thumbnails of ALL open windows, like Windows. Not just apps.">Miniaturas de TODAS las ventanas, no solo apps. <code>brew install --cask alt-tab</code></p>
+          </div>
+          <div class="mini-card">
+            <h4>🌡 Stats — Monitor de sistema en menubar</h4>
+            <p style="font-size:.82rem;color:var(--text2)" class="i18n"
+              data-es="CPU, RAM, GPU, temperatura, red — todo en la barra de menús. Perfecto para monitorear Docker y Ollama. brew install --cask stats"
+              data-en="CPU, RAM, GPU, temperature, network — all in the menu bar. Perfect for monitoring Docker and Ollama.">CPU, RAM, GPU, temp en barra de menú. <code>brew install --cask stats</code></p>
+          </div>
+          <div class="mini-card">
+            <h4>📱 Instalarlas todas de una vez</h4>
+            <div class="code-wrap has-toolbar" style="margin:6px 0 0">
+              <div class="code-toolbar">
+                <span class="code-lang-badge">bash</span>
+                <div class="code-btns">
+                  <button class="code-btn" onclick="copyCode('code-apps-all')">📋</button>
+                </div>
+              </div>
+              <pre id="code-apps-all" style="margin:0"><code><span class="cmd">brew install --cask</span>   rectangle raycast maccy   alt-tab stats</code></pre>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Zona para secciones agregadas por AI -->
+        <!-- FAQ SECTION -->
+    <section id="s11">
+      <div class="sec-head">
+        <div class="sec-head-icon" style="background:rgba(108,99,255,.12)">❓</div>
+        <div>
+          <h2 class="i18n" data-es="Preguntas Frecuentes" data-en="Frequently Asked Questions">Preguntas Frecuentes</h2>
+          <p class="i18n" data-es="Las dudas más comunes al usar Mac por primera vez" data-en="Most common questions when using Mac for the first time">Las dudas más comunes al usar Mac por primera vez</p>
+        </div>
+        <button class="improve-btn" onclick="openImprove('s11','FAQ')">✨</button>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" class="i18n" data-es="¿Cómo fuerzo el cierre de una app que se congeló?" data-en="How do I force quit a frozen app?">¿Cómo fuerzo el cierre de una app que se congeló?</div>
+        <div class="faq-a"><kbd>Cmd+Option+Esc</kbd> → seleccioná la app → Force Quit. O desde el menú Apple (🍎) → Force Quit. Como último recurso: <code>kill -9 PID</code> en la terminal (el PID lo encontrás con <code>pgrep nombre-app</code>).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Por qué no puedo instalar apps que descargo de internet?</div>
+        <div class="faq-a">macOS bloquea apps "no verificadas" por Gatekeeper. Para abrirlas: clic derecho → Open (no doble clic). Si sigue bloqueando: <code>sudo xattr -rd com.apple.quarantine /Applications/LaApp.app</code>. Solo hacé esto con apps que conocés y confiás.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo cambio la contraseña del administrador?</div>
+        <div class="faq-a">System Settings → Users &amp; Groups → clic en tu usuario → Change Password. Si la olvidaste: reiniciá manteniendo el botón de encendido → Recovery Mode → Terminal → <code>resetpassword</code>.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo veo los archivos ocultos en Finder?</div>
+        <div class="faq-a">En Finder: <kbd>Cmd+Shift+.</kbd> muestra/oculta archivos que empiezan con punto (como <code>.env</code>, <code>.gitignore</code>, <code>.zshrc</code>). En terminal: <code>ls -la</code> siempre los muestra. Para que sean permanentemente visibles: <code>defaults write com.apple.finder AppleShowAllFiles true && killall Finder</code>.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Mi Mac se pone lenta cuando corro Docker u Ollama. ¿Qué hago?</div>
+        <div class="faq-a">Es normal con modelos grandes o muchos contenedores. Tips: (1) En Docker Desktop → Settings → Resources → limitar CPU y RAM disponibles; (2) Para Ollama: <code>ollama stop nombre-modelo</code> cuando no lo uses; (3) Cerrá aplicaciones que no usás; (4) <code>sudo purge</code> libera caché de memoria (temporal). El M5 Pro/Max con 24GB+ maneja bien estas cargas.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo hago que el Mac no entre en sleep cuando estoy corriendo procesos largos?</div>
+        <div class="faq-a">Tres opciones: (1) <code>caffeinate -i tu-comando</code> — mantiene despierto mientras corre el comando; (2) <code>caffeinate &</code> y luego <code>kill %1</code> cuando terminás; (3) System Settings → Battery → desactivar "Enable Power Nap". Ideal para builds largos, trainings de ML u Ollama descargando modelos.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">¿Cómo comparto mi pantalla con otro Mac o con alguien remotamente?</div>
+        <div class="faq-a">Para Mac a Mac en la misma red: Finder → Network → seleccioná el Mac → Share Screen. Para acceso remoto con alguien externo: System Settings → General → Sharing → Screen Sharing. Para developers: <strong>VS Code Live Share</strong> (extensión) es mejor para pair programming porque comparte solo el editor con los permisos que elijas.</div>
+      </div>
+    </section>
+
     <div id="ai-added-sections"></div>
 
     <div style="text-align:center;padding:28px 0;color:var(--text3);font-size:.82rem;border-top:1px solid var(--border);margin-top:28px">
@@ -1691,38 +1852,61 @@ let currentMode = 'chat';
 let panelOpen   = false;
 let activeSection = null;
 
-/* ─── IDIOMA ──────────────────────────────────────────────── */
+/* ─── IDIOMA ──────────────────────────────────────────────────────────
+   setLang(l): cambia el idioma activo del documento.
+   PARÁMETRO: l = 'es' | 'en'
+   QUÉ HACE:
+     1. Actualiza currentLang y data-lang en <html> (CSS puede usar [data-lang])
+     2. Aplica traducciones a todos los elementos con clase .i18n
+        (usan data-es / data-en como atributos)
+     3. Actualiza el <title> del documento si tiene data-es/data-en
+     4. Activa el botón correcto (clase .on = gradiente de bandera)
+     5. Actualiza el contexto del panel AI y el placeholder del buscador
+   ERROR HANDLING: cada elemento en un try/catch para que un error
+   puntual no detenga la actualización del resto de la página.
+─────────────────────────────────────────────────────────────────── */
 function setLang(l) {
   currentLang = l;
   document.documentElement.setAttribute('data-lang', l);
-  try { localStorage.setItem('guide-lang', l); } catch(e) {}
+  try { localStorage.setItem('guide-lang', l); } catch(e) { /* localStorage puede estar deshabilitado */ }
 
-  // Actualizar todos los textos .i18n
+  /* Actualizar todos los textos bilingues.
+     innerHTML (vs textContent) para que traducciones con HTML (ej: <strong>)
+     se rendericen correctamente. No hay XSS ya que los valores son hardcoded. */
   document.querySelectorAll('.i18n').forEach(el => {
-    const v = el.dataset[l];
-    if (v !== undefined) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = v;
-      else el.textContent = v;
+    try {
+      const v = el.dataset[l]; // data-es o data-en según el idioma
+      if (v === undefined) return; // sin traducción → mantener contenido actual
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = v;
+      } else {
+        el.innerHTML = v;
+      }
+    } catch(err) {
+      console.warn('[setLang] Error en elemento:', el, err);
     }
   });
 
-  // Actualizar <title>
+  /* Actualizar <title> del documento si tiene traducciones */
   const t = document.querySelector('title');
   if (t && t.dataset[l]) t.textContent = t.dataset[l];
 
-  // Actualizar botones de idioma:
-  // El botón activo usa la clase .on que activa el gradiente de bandera
-  // Se busca por data-lang="es/en" en lugar de por textContent
+  /* Activar el botón del idioma seleccionado.
+     CSS aplica gradiente de bandera con .lang-btn[data-lang="X"].on */
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('on', b.dataset.lang === l);
   });
 
-  // Actualizar contexto del modo AI
-  updateModeCtx();
+  /* Actualizar el contexto del modo AI en el panel.
+     Se protege con try/catch ya que puede llamarse antes de que el
+     panel esté completamente inicializado. */
+  try { updateModeCtx(); } catch(e) { /* panel no inicializado aún */ }
 
-  // Actualizar placeholder del shortcut finder en topbar
+  /* Actualizar placeholder del shortcut finder en topbar */
   const sf = document.getElementById('shortcut-input');
-  if (sf) sf.placeholder = l === 'es' ? 'Buscar atajo... (ej: captura pantalla)' : 'Find shortcut... (ex: screenshot)';
+  if (sf) sf.placeholder = l === 'es'
+    ? 'Buscar atajo... (ej: captura pantalla)'
+    : 'Find shortcut... (ex: screenshot)';
 }
 
 /* ─── TEMAS ───────────────────────────────────────────────── */
@@ -1751,24 +1935,11 @@ function openAndAsk(mode, msg) {
 }
 function openImprove(sid, name) {
   openMode('chat');
-  const sectionEl = document.getElementById(sid);
-  let sectionHtml = '';
-  if (sectionEl) {
-    const clone = sectionEl.cloneNode(true);
-    clone.querySelector('.sec-head')?.remove();
-    sectionHtml = clone.innerHTML.trim().slice(0, 4000);
-  }
-  // Capturar primer elemento real como ejemplo de estilo para la AI
-  const firstReal = [...(sectionEl?.children || [])].find(el => !el.classList.contains('sec-head'));
-  const styleExample = firstReal ? firstReal.outerHTML.slice(0, 800) : '';
-  activeSection = { id: sid, name, html: sectionHtml, example: styleExample };
+  activeSection = { id: sid, name };
   document.getElementById('ai-ctx-label').innerHTML =
     currentLang === 'es'
-      ? `<strong>Agregar:</strong> Sección "<strong style="color:var(--acc)">${name}</strong>" — describí qué querés agregar`
-      : `<strong>Add to:</strong> Section "<strong style="color:var(--acc)">${name}</strong>" — describe what to add`;
-  document.getElementById('aiInput').placeholder = currentLang === 'es'
-    ? `¿Qué querés agregar a "${name}"?`
-    : `What do you want to add to "${name}"?`;
+      ? `<strong>Mejorar:</strong> Sección "<strong style="color:var(--acc)">${name}</strong>"`
+      : `<strong>Improve:</strong> Section "<strong style="color:var(--acc)">${name}</strong>"`;
   document.getElementById('aiInput').focus();
 }
 
@@ -1965,7 +2136,7 @@ const PROVIDERS = {
     name: 'Puter + Gemini',
     free: true,
     needsKey: false,
-    model: 'gemini-2.5-flash-lite',
+    model: 'google/gemini-flash-2.0',  // modelo gratuito en Puter.js
     note: '✓ Gratis · Sin configuración'
   },
   gemini: {
@@ -2092,60 +2263,49 @@ async function callAI(userMsg, systemPrompt, onToken, onDone) {
   }
 }
 
-/* ─── 1. PUTER.JS (GRATIS, SIN KEY) — con fallback automático de modelos ──
-   Intenta modelos en orden. Si falla por modelo no encontrado, prueba el siguiente.
-──────────────────────────────────────────────────────────────────────────── */
-const PUTER_FALLBACK_MODELS = ['gemini-2.5-flash-lite', 'claude-sonnet-4-5', 'gpt-4o-mini', 'gpt-4o'];
+/* ─── 1. PUTER.JS (GRATIS, SIN KEY) ─────────────────────────────────
+   Usa window.puter de la librería Puter.js (cargada en el head).
+   Soporta streaming via async iterator.
+   Modelos disponibles: google/gemini-flash-2.0, gemini-3-flash-preview,
+   claude-3-5-sonnet, gpt-4o-mini y más.
+──────────────────────────────────────────────────────────────────── */
+async function callPuter(userMsg, systemPrompt, onToken, onDone) {
+  if (!window.puter) throw new Error('Puter.js no cargó. Verificá tu conexión a internet.');
 
-async function _puterChat(messages, model, onToken, onDone) {
+  const messages = [];
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: userMsg });
+
   try {
-    const resp = await puter.ai.chat(messages, { model, stream: true });
+    const resp = await puter.ai.chat(messages, {
+      model: PROVIDERS.puter.model,
+      stream: true
+    });
+
+    // Puter devuelve un async iterator cuando stream: true
     for await (const chunk of resp) {
       const delta = chunk?.choices?.[0]?.delta?.content || chunk?.text || '';
       if (delta) onToken(delta);
     }
     onDone();
-  } catch (streamErr) {
-    // Detectar errores de autenticación y propagarlos inmediatamente.
-    // Si el usuario no está logueado, todos los modelos fallarán igual.
-    const em = (streamErr.message || '').toLowerCase();
-    if (
-      em.includes('sign') || em.includes('auth')   || em.includes('login')  ||
-      em.includes('account') || em.includes('popup') || em.includes('blocked') ||
-      em.includes('unauthorized') || em.includes('unauthenticated')
-    ) {
-      throw new Error('__PUTER_AUTH__');
-    }
-    // Fallback sin streaming para modelos que no soportan el iterador async
-    if (streamErr.message?.includes('stream') || streamErr.message?.includes('iterator')) {
-      const resp2 = await puter.ai.chat(messages, { model });
-      const text = resp2?.message?.content?.[0]?.text || resp2?.content?.[0]?.text
-                || resp2?.choices?.[0]?.message?.content || String(resp2);
-      for (let i = 0; i < text.length; i += 3) { onToken(text.slice(i, i + 3)); await new Promise(r => setTimeout(r, 8)); }
+  } catch (err) {
+    // Puter puede no soportar streaming en todos los entornos — fallback no-stream
+    if (err.message?.includes('stream') || err.message?.includes('iterator')) {
+      const resp2 = await puter.ai.chat(messages, { model: PROVIDERS.puter.model });
+      const text = resp2?.message?.content?.[0]?.text
+                || resp2?.content?.[0]?.text
+                || resp2?.choices?.[0]?.message?.content
+                || String(resp2);
+      // Simular streaming: enviar el texto en chunks de 3 caracteres
+      for (let i = 0; i < text.length; i += 3) {
+        onToken(text.slice(i, i + 3));
+        await new Promise(r => setTimeout(r, 8));
+      }
       onDone();
-    } else { throw streamErr; }
-  }
-}
-
-async function callPuter(userMsg, systemPrompt, onToken, onDone) {
-  // Verificar que puter.js cargó desde CDN (puede fallar por ad blocker o CDN caído)
-  if (!window.puter) throw new Error('__PUTER_NO_LOAD__');
-  const messages = [];
-  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
-  messages.push({ role: 'user', content: userMsg });
-  const modelsToTry = [PROVIDERS.puter.model, ...PUTER_FALLBACK_MODELS.filter(m => m !== PROVIDERS.puter.model)];
-  let lastError;
-  for (const model of modelsToTry) {
-    try { await _puterChat(messages, model, onToken, onDone); PROVIDERS.puter.model = model; return; }
-    catch (err) {
-      // Error de auth: no tiene sentido probar otros modelos
-      if (err.message === '__PUTER_AUTH__') throw err;
-      const msg = (err.message || '').toLowerCase();
-      if (msg.includes('not found') || msg.includes('model') || msg.includes('invalid') || msg.includes('unsupported')) { lastError = err; continue; }
+    } else {
       throw err;
     }
   }
-  throw lastError || new Error('Ningún modelo de Puter.js disponible. Intentá más tarde.');
 }
 
 /* ─── 2. GEMINI DIRECTO (GRATIS CON KEY DE AISTUDIO) ────────────────
@@ -2344,41 +2504,7 @@ async function callOllama(userMsg, systemPrompt, onToken, onDone) {
 ──────────────────────────────────────────────────────────────────── */
 function handleAIError(err, aiBubble) {
   const m = err.message || '';
-
-  if (m === '__PUTER_AUTH__') {
-    aiBubble.innerHTML = `
-      <div style="margin-bottom:10px;font-size:.88rem;color:var(--text2)">
-        🌟 <strong>Puter.js</strong> necesita que inicies sesión una vez para usar AI gratis.
-        <br><span style="font-size:.78rem;color:var(--text3)">Cuenta gratuita · Sin tarjeta · Solo en tu navegador</span>
-      </div>
-      <button onclick="puterLogin()" style="
-        background:var(--acc);color:var(--bg, #080d18);border:none;
-        padding:7px 16px;border-radius:8px;font-size:12px;font-weight:700;
-        cursor:pointer;font-family:'DM Sans',sans-serif;margin-right:8px;">
-        Iniciar sesión en Puter →
-      </button>
-      <button onclick="setProvider('gemini')" style="
-        background:var(--bg3);color:var(--text2);border:1px solid var(--border);
-        padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;
-        cursor:pointer;font-family:'DM Sans',sans-serif;">
-        Usar Gemini (gratis con key)
-      </button>`;
-
-  } else if (m === '__PUTER_NO_LOAD__') {
-    aiBubble.innerHTML = `
-      <span style="color:var(--red, #ff4d6d)">⚠ Puter.js no cargó</span><br><br>
-      <span style="font-size:.84rem;color:var(--text2)">
-        Posibles causas: ad blocker activo, sin internet, o CDN de puter.com caído.<br>
-        Probá desactivar el ad blocker para <code>localhost:8000</code>
-        o usá otro proveedor:<br><br>
-        <button onclick="setProvider('gemini')" style="
-          background:var(--acc);color:var(--bg, #080d18);border:none;
-          padding:6px 14px;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">
-          Cambiar a Gemini (gratis con key)
-        </button>
-      </span>`;
-
-  } else if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
+  if (m.startsWith('__NEEDS_KEY_') || m === '__NETWORK__') {
     const provId = m.replace('__NEEDS_KEY_', '').replace('__NETWORK__', activeProvider);
     const cfg = PROVIDERS[provId] || PROVIDERS[activeProvider];
     aiBubble.innerHTML = `
@@ -2393,31 +2519,10 @@ function handleAIError(err, aiBubble) {
         </button>
         ${cfg.keyUrl ? `<a href="${cfg.keyUrl}" target="_blank" style="font-size:11px;color:var(--text3)">Obtener gratis →</a>` : ''}
         <br><br>
-        <em style="font-size:.78rem;color:var(--text3)">O usá 🌟 Puter — gratis (requiere login en puter.com)</em>
+        <em style="font-size:.78rem;color:var(--text3)">O cambiá a 🌟 Puter — 100% gratis, sin key</em>
       </span>`;
   } else {
     aiBubble.innerHTML = `<span style="color:var(--red, #ff4d6d)">⚠ ${m || 'Error desconocido'}</span>`;
-  }
-}
-
-/* puterLogin — DEBE llamarse directamente desde onclick para preservar
-   el "user gesture" y evitar que el browser bloquee el popup de puter.com */
-function puterLogin() {
-  if (!window.puter) { showFlash('⚠ Puter.js no está cargado'); return; }
-  if (typeof puter.auth?.signIn === 'function') {
-    puter.auth.signIn()
-      .then(() => showFlash('✓ Conectado a Puter — AI lista para usar'))
-      .catch((e) => {
-        const msg = e?.message || '';
-        if (msg.toLowerCase().includes('popup') || msg.toLowerCase().includes('blocked')) {
-          showFlash('⚠ Popup bloqueado — permitir popups para localhost:8000');
-        } else {
-          showFlash('⚠ ' + (msg || 'Error de login en Puter'));
-        }
-      });
-  } else {
-    window.open('https://puter.com', '_blank');
-    showFlash('Iniciá sesión en puter.com y volvé aquí para continuar');
   }
 }
 
@@ -2488,56 +2593,12 @@ async function sendMessage() {
   const aiBubble = document.createElement('div');
   aiBubble.className = 'msg-ai';
   let full = '';
-  // Capturar activeSection localmente antes de la llamada async
-  const _capturedSection = activeSection;
-
-  let sys = SYS_PROMPTS[currentMode](currentLang);
+  const sys = SYS_PROMPTS[currentMode](currentLang);
   let prompt = raw;
-
-  // Si hay sección activa, sobreescribir prompt y system para modo agregar
-  if (_capturedSection) {
-    sys = currentLang === 'es'
-      ? `Sos un experto en macOS para desarrolladores.
-TAREA: Generar HTML nuevo para AGREGAR al final de una sección de una guía interactiva.
-
-COMPONENTES DISPONIBLES — usá EXACTAMENTE estas estructuras:
-
-Grid de mini-cards (2 columnas):
-<div class="g2">
-  <div class="mini-card"><h4>🔧 Título</h4><p style="font-size:.82rem">Descripción concisa y útil.</p></div>
-  <div class="mini-card"><h4>⚡ Título</h4><p style="font-size:.82rem">Descripción concisa y útil.</p></div>
-</div>
-
-Callout informativo:
-<div class="callout tip"><div class="callout-ico">💡</div><div><strong>Pro tip:</strong> Texto del consejo.</div></div>
-<div class="callout info"><div class="callout-ico">ℹ️</div><div><strong>Nota:</strong> Texto informativo.</div></div>
-<div class="callout warn"><div class="callout-ico">⚠️</div><div><strong>Atención:</strong> Texto de aviso.</div></div>
-
-Subsección con atajos de teclado:
-<div class="subsec">
-  <h3>⌨️ Título subsección</h3>
-  <div class="shortcuts-grid">
-    <div class="sc-card"><span class="sc-desc">Descripción del atajo</span><span class="sc-keys"><kbd>⌘</kbd><kbd>K</kbd></span></div>
-  </div>
-</div>
-
-Subsección con grid:
-<div class="subsec"><h3>🔍 Título</h3><div class="g2">...</div></div>
-
-REGLAS:
-- NO repetir contenido ya existente en la sección
-- NO usar <section>, <h1>, <h2> ni .sec-head
-- Devolvé SOLO HTML puro, sin markdown, sin explicaciones, sin backticks`
-      : `You are a macOS developer expert. Generate HTML to ADD to a guide section. Use these exact structures: <div class="g2"><div class="mini-card"><h4>Title</h4><p>Text</p></div></div> or callouts: <div class="callout tip"><div class="callout-ico">💡</div><div>Text</div></div>. Return ONLY pure HTML.`;
-    const exampleCtx = _capturedSection.example
-      ? `\n\nELEMENTO EXISTENTE DE REFERENCIA (imitá este estilo exacto):\n${_capturedSection.example}`
-      : '';
-    const secCtx = _capturedSection.html
-      ? `\n\nCONTENIDO ACTUAL (NO repetir):\n${_capturedSection.html}`
-      : '';
-    prompt = currentLang === 'es'
-      ? `Agregar contenido nuevo a la sección "${_capturedSection.name}". Instrucción: ${raw}${exampleCtx}${secCtx}`
-      : `Add new content to section "${_capturedSection.name}". Instruction: ${raw}${exampleCtx}${secCtx}`;
+  if (activeSection) {
+    prompt = currentLang==='es'
+      ? `Mejorar sección "${activeSection.name}": ${raw}`
+      : `Improve section "${activeSection.name}": ${raw}`;
   }
 
   try {
@@ -2555,20 +2616,143 @@ REGLAS:
         msgs.scrollTop = msgs.scrollHeight;
       },
       () => {
+        /* onDone: fin del streaming → post-procesado según modo activo */
         document.getElementById('aiSend').disabled = false;
-        if (currentMode === 'add-section') injectSection(full, aiBubble);
-        else if (currentMode === 'generate') addCopyBtn(full, aiBubble);
-        else if (_capturedSection) handleImproveResponse(full, aiBubble, _capturedSection);
+        if (currentMode === 'add-section') {
+          /* Modo agregar: inyectar nueva sección HTML generada */
+          injectSection(full, aiBubble);
+        } else if (currentMode === 'generate') {
+          /* Modo generar: agregar botón para copiar el script generado */
+          addCopyBtn(full, aiBubble);
+        } else if (activeSection) {
+          /* Modo improve (chat con sección activa): mostrar preview
+             con botón "Aplicar y Guardar" para persistir el contenido.
+             IMPORTANTE: pasar activeSection ANTES de limpiarlo abajo. */
+          handleImproveResponse(full, aiBubble, activeSection);
+        }
+        /* Limpiar sección activa después de procesarla */
         activeSection = null;
         msgs.scrollTop = msgs.scrollHeight;
       }
     );
   } catch(err) {
     if (typing.parentNode) typing.replaceWith(aiBubble);
-        if (typing && typing.parentNode) typing.replaceWith(aiBubble);
+    if (typing && typing.parentNode) typing.replaceWith(aiBubble);
     handleAIError(err, aiBubble);
     document.getElementById('aiSend').disabled = false;
   }
+}
+
+/* ─── MEJORAR SECCIÓN — FLUJO COMPLETO ───────────────────────────────
+   handleImproveResponse: recibe respuesta de texto de la AI, la convierte
+   a HTML de callout, la guarda en _pendingImproveCalloutHtml y muestra
+   preview + botón en el panel AI.
+   applyImprovement: al confirmar, inserta en DOM Y llama /api/save-section
+   para que el cambio sobreviva a recarga de página.
+
+   _pendingImproveCalloutHtml: variable global que transfiere el HTML
+   desde handleImproveResponse hasta applyImprovement sin depender del DOM.
+─────────────────────────────────────────────────────────────────── */
+let _pendingImproveCalloutHtml = '';
+
+function handleImproveResponse(response, bubble, section) {
+  /* Convertir markdown simple a HTML (negrita, código inline) */
+  const formatted = renderMd(response);
+
+  /* Construir el callout HTML que se insertará en la sección.
+     Se usa un callout .tip para coherencia visual con el resto de la guía. */
+  _pendingImproveCalloutHtml = `
+<div class="callout tip" style="margin:0 0 16px">
+  <div class="callout-ico">✨</div>
+  <div><strong>Mejora AI — ${section.name}:</strong><br>${formatted}</div>
+</div>`.trim();
+
+  /* Mostrar preview en el chat con botón de confirmación */
+  bubble.innerHTML = `
+    <div style="margin-bottom:10px;font-size:.82rem;color:var(--text3)">
+      ✨ Contenido generado para
+      <strong style="color:var(--acc)">${section.name}</strong>:
+    </div>
+    <div style="padding:10px 14px;background:var(--bg2);border:1px solid var(--border);
+                border-radius:8px;margin-bottom:12px;font-size:.84rem;line-height:1.7;
+                max-height:220px;overflow-y:auto">
+      ${formatted}
+    </div>
+    <button onclick="applyImprovement('${section.id}', this)"
+      style="background:var(--acc);color:#fff;border:none;padding:7px 16px;
+             border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
+             font-family:'DM Sans',sans-serif;margin-right:8px">
+      ✓ Aplicar y Guardar
+    </button>
+    <span style="font-size:10px;color:var(--text3)">Persiste al recargar</span>`;
+}
+
+/* applyImprovement(sectionId, btn):
+   PASO 1 → inserta el callout en el DOM (visual inmediato)
+   PASO 2 → POST /api/save-section (persistencia en el archivo HTML)
+   POR QUÉ DOS PASOS: el DOM solo dura hasta recargar. El backend
+   escribe en el archivo fuente para que el cambio sea permanente. */
+function applyImprovement(sectionId, btn) {
+  const sectionEl = document.getElementById(sectionId);
+  if (!sectionEl) {
+    btn.textContent = '⚠ Sección no encontrada';
+    return;
+  }
+  if (!_pendingImproveCalloutHtml) {
+    btn.textContent = '⚠ Sin contenido pendiente';
+    return;
+  }
+
+  const htmlToSave = _pendingImproveCalloutHtml;
+  _pendingImproveCalloutHtml = ''; // limpiar para la próxima operación
+
+  /* PASO 1: insertar en el DOM para feedback inmediato */
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = htmlToSave;
+  /* Insertar después del sec-head o al final de la sección */
+  const secHead = sectionEl.querySelector('.sec-head');
+  if (secHead) {
+    secHead.insertAdjacentElement('afterend', wrapper.firstElementChild);
+  } else {
+    sectionEl.appendChild(wrapper.firstElementChild);
+  }
+
+  /* Scroll suave al contenido insertado */
+  setTimeout(() => {
+    const inserted = secHead ? secHead.nextElementSibling : sectionEl.lastElementChild;
+    inserted?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 100);
+
+  /* Feedback de carga */
+  btn.textContent = '⏳ Guardando en archivo...';
+  btn.disabled = true;
+
+  /* PASO 2: persistir en el archivo fuente via el backend */
+  fetch('/api/save-section', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      /* Obtener el filename del HTML actual desde la URL.
+         location.pathname = "/macbook-pro-m5-guia.html"
+         .split('/').pop() = "macbook-pro-m5-guia.html" */
+      filename: location.pathname.split('/').pop() || 'macbook-pro-m5-guia.html',
+      sectionId,
+      htmlToAppend: htmlToSave
+    })
+  })
+  .then(r => r.ok ? r.json() : r.json().then(e => Promise.reject(e)))
+  .then(() => {
+    /* Éxito: quitar botón y mostrar toast de confirmación */
+    showToast('✓ Guardado permanentemente en ' + sectionId);
+    btn.remove();
+  })
+  .catch(err => {
+    /* Error: mostrar mensaje y permitir reintentar */
+    btn.textContent = `Error: ${err.detail || '¿Backend activo?'}`;
+    btn.disabled = false;
+    btn.style.background = 'var(--red, #ff5370)';
+    btn.style.color = '#fff';
+  });
 }
 
 /* ─── INJECT SECTION ─────────────────────────────────────── */
@@ -2607,68 +2791,6 @@ function addCopyBtn(content, bubble) {
     cursor:pointer;font-family:'DM Sans',sans-serif;display:block`;
   btn.onclick = () => { navigator.clipboard.writeText(content); showToast('✓ Script copiado'); };
   bubble.appendChild(btn);
-}
-
-/* ─── AGREGAR A SECCIÓN (improve) ────────────────────────── */
-let _pendingImproveHtml = '';
-
-function handleImproveResponse(response, bubble, section) {
-  const clean = response.replace(/```html\n?/gi, '').replace(/```\n?/g, '').trim();
-  _pendingImproveHtml = clean;
-  bubble.innerHTML = `
-    <div style="margin-bottom:8px;font-size:.82rem;color:var(--text2)">
-      ✦ Nuevo contenido para "<strong style="color:var(--acc)">${section.name}</strong>":
-    </div>
-    <div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:8px;
-                margin-bottom:12px;font-size:.84rem;line-height:1.7;
-                max-height:240px;overflow-y:auto;border:1px solid var(--border)">
-      ${clean}
-    </div>
-    <button onclick="applyImprovement('${section.id}', this)"
-      style="background:var(--acc,#5b8af5);color:#fff;border:none;padding:7px 16px;
-             border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;
-             font-family:'DM Sans',sans-serif">
-      ✦ Agregar a la sección
-    </button>`;
-}
-
-function applyImprovement(sectionId, btn) {
-  const sectionEl = document.getElementById(sectionId);
-  if (!sectionEl) { btn.textContent = '⚠ Sección no encontrada'; return; }
-  if (!_pendingImproveHtml) { btn.textContent = '⚠ Sin contenido'; return; }
-
-  const htmlToSave = _pendingImproveHtml;
-
-  const wrapper = document.createElement('div');
-  wrapper.innerHTML = htmlToSave;
-  const fragment = document.createDocumentFragment();
-  while (wrapper.firstChild) fragment.appendChild(wrapper.firstChild);
-  sectionEl.appendChild(fragment);
-  _pendingImproveHtml = '';
-
-  btn.textContent = '⏳ Guardando...';
-  btn.disabled = true;
-  setTimeout(() => sectionEl.lastElementChild?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 150);
-
-  fetch('/api/save-section', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      filename: location.pathname.split('/').pop(),
-      sectionId,
-      htmlToAppend: htmlToSave
-    })
-  })
-  .then(r => r.ok ? r.json() : Promise.reject(r.status))
-  .then(() => {
-    btn.textContent = '✓ Guardado en archivo';
-    btn.style.opacity = '.5';
-    showToast('✦ Guardado permanentemente');
-  })
-  .catch(() => {
-    btn.textContent = '✓ En DOM (sin backend)';
-    btn.style.opacity = '.5';
-  });
 }
 
 /* ─── HELPERS ─────────────────────────────────────────────── */
@@ -2753,174 +2875,6 @@ function handleKey(e) {
     <button class="ak-skip" onclick="document.getElementById('akOverlay').classList.remove('show')">✕ Cerrar</button>
   </div>
 </div>
-
-<!-- ═══════════════════════════════════════════════════════════════════
-     BACKEND INTEGRATION + UX ENHANCEMENTS
-════════════════════════════════════════════════════════════════════ -->
-<style>
-.reveal { opacity: 0; transform: translateY(28px); }
-.reveal.visible { opacity: 1; transform: translateY(0); transition: opacity .55s ease, transform .55s ease; }
-.topbar { transition: height .3s ease; }
-.topbar.scrolled { height: 44px !important; }
-.typing-dots { display: inline-flex; gap: 5px; align-items: center; padding: 10px 14px; }
-.typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); opacity: .4; animation: typingBounce 1.3s ease-in-out infinite; }
-.typing-dots span:nth-child(2) { animation-delay: .18s; }
-.typing-dots span:nth-child(3) { animation-delay: .36s; }
-@keyframes typingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-8px); opacity: 1; } }
-.backend-badge { display: none; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: var(--green, #40d080); background: rgba(64,208,128,.08); border: 1px solid rgba(64,208,128,.2); border-radius: 20px; padding: 3px 10px; margin: 6px 16px 0; }
-.backend-badge.show { display: flex; }
-.backend-badge::before { content: '●'; font-size: 8px; animation: beaconPulse 2.2s ease-in-out infinite; }
-@keyframes beaconPulse { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
-.shortcut-card { transition: transform .2s ease, box-shadow .2s ease !important; }
-.shortcut-card:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,.22) !important; }
-.section { position: relative; }
-.section::before { content: ''; position: absolute; left: -1px; top: 10%; bottom: 10%; width: 2px; background: linear-gradient(to bottom, transparent, var(--acc), transparent); opacity: 0; transition: opacity .4s; border-radius: 2px; }
-.section:hover::before { opacity: .4; }
-.ai-panel { transition: transform .38s cubic-bezier(.4,0,.2,1), opacity .32s ease !important; }
-</style>
-<script>
-let backendAvailable = false;
-const BACKEND_URL = 'http://localhost:8000';
-
-async function checkBackend() {
-  try {
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 1800);
-    const resp = await fetch(`${BACKEND_URL}/api/health`, { signal: ctrl.signal, cache: 'no-store' });
-    clearTimeout(tid);
-    if (!resp.ok) return;
-    const data = await resp.json();
-    backendAvailable = true;
-    showBackendBadge(data.providers || {});
-    patchProvidersForBackend(data.providers || {});
-  } catch(e) {}
-}
-
-function showBackendBadge(providers) {
-  if (document.getElementById('backendBadge')) return;
-  const badge = document.createElement('div');
-  badge.id = 'backendBadge';
-  badge.className = 'backend-badge show';
-  badge.title = 'Backend local activo — API keys protegidas en .env';
-  const parts = ['Backend local'];
-  if (providers.claude) parts.push('Claude ✓');
-  if (providers.gemini) parts.push('Gemini ✓');
-  badge.textContent = parts.join(' · ');
-  const provBar = document.getElementById('provBar');
-  if (provBar) provBar.parentNode.insertBefore(badge, provBar.nextSibling);
-}
-
-function patchProvidersForBackend(providers) {
-  if (providers.claude && typeof callClaude === 'function') {
-    window.callClaude = async function(userMsg, systemPrompt, onToken, onDone) {
-      const body = { model: PROVIDERS?.claude?.model || 'claude-sonnet-4-20250514', max_tokens: 1200, stream: true, system: systemPrompt, messages: [{ role: 'user', content: userMsg }] };
-      const resp = await fetch(`${BACKEND_URL}/api/claude`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      if (!resp.ok) throw new Error('Claude proxy error ' + resp.status);
-      const reader = resp.body.getReader(); const dec = new TextDecoder(); let buf = '';
-      while (true) { const { done, value } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop(); for (const line of lines) { if (!line.startsWith('data: ')) continue; try { const j = JSON.parse(line.slice(6)); if (j.type === 'content_block_delta' && j.delta?.text) onToken(j.delta.text); } catch(e) {} } }
-      onDone();
-    };
-  }
-  if (providers.gemini && typeof callGemini === 'function') {
-    window.callGemini = async function(userMsg, systemPrompt, onToken, onDone) {
-      const body = { _model: PROVIDERS?.gemini?.model || 'gemini-2.5-flash', contents: [{ role: 'user', parts: [{ text: userMsg }] }], generationConfig: { maxOutputTokens: 1200 } };
-      if (systemPrompt) body.systemInstruction = { parts: [{ text: systemPrompt }] };
-      const resp = await fetch(`${BACKEND_URL}/api/gemini`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      if (!resp.ok) throw new Error('Gemini proxy error ' + resp.status);
-      const reader = resp.body.getReader(); const dec = new TextDecoder(); let buf = '';
-      while (true) { const { done, value } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true }); const lines = buf.split('\n'); buf = lines.pop(); for (const line of lines) { if (!line.startsWith('data: ')) continue; try { const j = JSON.parse(line.slice(6)); const t = j.candidates?.[0]?.content?.parts?.[0]?.text; if (t) onToken(t); } catch(e) {} } }
-      onDone();
-    };
-  }
-  if (typeof callOllama === 'function') {
-    window.callOllama = async function(userMsg, systemPrompt, onToken, onDone) {
-      const resp = await fetch(`${BACKEND_URL}/api/ollama`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: PROVIDERS?.ollama?.model || 'qwen2.5-coder:7b', stream: true, messages: [...(systemPrompt ? [{ role: 'system', content: systemPrompt }] : []), { role: 'user', content: userMsg }] }) });
-      if (!resp.ok) throw new Error('Ollama proxy error ' + resp.status);
-      const reader = resp.body.getReader(); const dec = new TextDecoder(); let buf = '';
-      while (true) { const { done, value } = await reader.read(); if (done) break; buf += dec.decode(value, { stream: true }); const lines = buf.split('\n').filter(Boolean); buf = ''; for (const line of lines) { try { const j = JSON.parse(line); if (j.message?.content) onToken(j.message.content); if (j.done) { onDone(); return; } } catch(e) {} } }
-      onDone();
-    };
-  }
-}
-
-function initScrollAnimations() {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); obs.unobserve(entry.target); } });
-  }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
-  document.querySelectorAll('.section, .shortcut-card, .tip-card, .faq-item').forEach((el, i) => {
-    el.classList.add('reveal'); el.style.transitionDelay = (i % 4) * 0.05 + 's'; obs.observe(el);
-  });
-}
-
-function initTopbarShrink() {
-  const topbar = document.querySelector('.topbar');
-  if (!topbar) return;
-  window.addEventListener('scroll', () => topbar.classList.toggle('scrolled', window.scrollY > 50), { passive: true });
-}
-
-// ─── i18n COMPREHENSIVO ──────────────────────────────────────────────────
-const _i18n_MAC = {
-  es: {
-    aiBtn: '🤖 Asistente AI',
-    navHeads: ['Navegación','AI Acciones'],
-    heroBadge: 'Guía Viva · AI Integrada · Mayo 2026',
-    heroP: 'Atajos, Terminal, Finder, permisos, seguridad y secretos del sistema. Búsqueda de atajos con AI integrada.',
-    heroTags: ['⌨️ Buscar atajo','🔴 Resolver problema','📝 Generar script','➕ Agregar sección'],
-    secH2: ['Bienvenida al M5','Atajos de Teclado','Spotlight Pro','Mission Control','Finder Avanzado','Terminal & Zsh','Usuarios & Permisos','Seguridad','Personalización','Tips & Secretos'],
-    secDesc: ['Tu nuevo MacBook Pro M5 — primeros pasos','Los shortcuts que cambian todo','Buscar cualquier cosa al instante','Gestión de escritorios y ventanas','El Finder como nunca lo viste','Comandos y configuración avanzada','Permisos y usuarios múltiples','SIP, SSH, Firewall y privacidad','defaults write — personalización profunda','Los secretos que ningún tutorial cuenta'],
-    improveBtn: '✨ Mejorar sección',
-  },
-  en: {
-    aiBtn: '🤖 AI Assistant',
-    navHeads: ['Navigation','AI Actions'],
-    heroBadge: 'Living Guide · AI Integrated · May 2026',
-    heroP: 'Shortcuts, Terminal, Finder, permissions, security and system secrets. AI-powered shortcut finder — type what you want to do.',
-    heroTags: ['⌨️ Find shortcut','🔴 Fix problem','📝 Generate script','➕ Add section'],
-    secH2: ['Welcome to M5','Keyboard Shortcuts','Spotlight Pro','Mission Control','Advanced Finder','Terminal & Zsh','Users & Permissions','Security','Customization','Tips & Secrets'],
-    secDesc: ['Your new MacBook Pro M5 — first steps','The shortcuts that change everything','Find anything instantly','Desktop and window management','Finder like you never saw it','Advanced commands and configuration','Permissions and multiple users','SIP, SSH, Firewall and privacy','defaults write — deep customization','The secrets no tutorial ever tells'],
-    improveBtn: '✨ Improve section',
-  }
-};
-
-function applyI18nPatch(l) {
-  const t = _i18n_MAC[l] || _i18n_MAC.es;
-  const aiBtn = document.querySelector('.ai-open-btn, .ai-toggle-btn');
-  if (aiBtn) { const pulse = aiBtn.querySelector('.pulse,.ai-pulse'); aiBtn.textContent = t.aiBtn; if (pulse) aiBtn.prepend(pulse); }
-  document.querySelectorAll('.nav-head').forEach((h, i) => { if (t.navHeads[i]) h.textContent = t.navHeads[i]; });
-  const badge = document.querySelector('.hero-badge, .hero-chip');
-  if (badge) { const span = badge.querySelector('span.i18n'); if (span) span.textContent = t.heroBadge; else badge.textContent = t.heroBadge; }
-  const heroP = document.querySelector('.hero p.i18n, .hero > p:not(.hero-badge)');
-  if (heroP) heroP.textContent = t.heroP;
-  document.querySelectorAll('.hero .htag').forEach((tag, i) => { if (t.heroTags[i]) { const span = tag.querySelector('span.i18n'); if (span) span.textContent = t.heroTags[i].replace(/^[^\s]+\s/,''); else tag.textContent = t.heroTags[i]; } });
-  document.querySelectorAll('section .sec-head h2, section h2').forEach((h2, i) => { if (t.secH2[i]) h2.textContent = t.secH2[i]; });
-  document.querySelectorAll('section .sec-head p:not(.i18n)').forEach((p, i) => { if (t.secDesc[i]) p.textContent = t.secDesc[i]; });
-  document.querySelectorAll('.improve-btn').forEach(b => { b.textContent = t.improveBtn; });
-}
-
-(function() {
-  const _orig = window.setLang || (typeof setLang === 'function' ? setLang : null);
-  if (_orig) { window.setLang = function(l) { _orig(l); applyI18nPatch(l); }; }
-})();
-
-window.addEventListener('load', () => {
-  checkBackend(); initScrollAnimations(); initTopbarShrink();
-
-  // Verificar si puter.js cargó desde CDN — avisar si falló y puter es el proveedor activo
-  if (!window.puter && activeProvider === 'puter') {
-    const msgs = document.getElementById('aiMsgs');
-    if (msgs) {
-      const warn = document.createElement('div');
-      warn.style.cssText = 'padding:10px 14px;background:rgba(255,180,0,.08);border:1px solid rgba(255,180,0,.25);border-radius:10px;font-size:.82rem;color:var(--text2);margin:4px 0';
-      warn.innerHTML = '⚠ <strong>Puter.js no cargó</strong> — puede estar bloqueado por un ad blocker.<br>'
-        + 'Desactivá el bloqueador para <code>localhost:8000</code> o cambiá de proveedor AI.';
-      msgs.appendChild(warn);
-    }
-  }
-
-  const savedLang = localStorage.getItem('guide-lang');
-  if (savedLang && savedLang !== 'es') applyI18nPatch(savedLang);
-});
-</script>
 
 </body>
 </html>

@@ -516,7 +516,134 @@ tutoapp/
         <div class="callout-ico">🔑</div>
         <div><strong>Por qué el proxy:</strong> Las API keys de Claude y Gemini no pueden estar en el código del browser — cualquier persona que abra DevTools las vería. El backend las guarda en <code>.env</code> (que nunca va a Git) y las inyecta en cada request del servidor.</div>
       </div>
-    </section>
+    
+
+Ok, aquí tienes una versión mejorada y más detallada de la sección "Flujo de Datos", manteniendo el estilo y las clases CSS de TutoApp.
+
+```html
+      <h3>Flujo de Datos: Integración de Proveedores AI</h3>
+      <p>TutoApp maneja la comunicación con diferentes proveedores de IA de forma optimizada y segura. La arquitectura diferencia entre proveedores que pueden ser llamados directamente desde el frontend (sin keys sensibles) y aquellos que requieren un proxy backend para proteger las claves de API.</p>
+
+      <div class="mini-card">
+        <h4>1. Flujo Directo con Puter.js (Frontend Puro)</h4>
+        <p>Para proveedores como Puter.js, que ofrecen una integración simplificada a través de su CDN y no exponen claves de API críticas en cada llamada, el flujo es más liviano:</p>
+        <div class="flow-box">
+          <span class="f-browser">[Browser / HTML & Vanilla JS]</span>
+          │
+          │   <span class="f-label">A. El JS en `client/main.js` llama a `puter.ai.chat(...)`</span>
+          │   <span class="c-comment"># Usando la librería JS de Puter.js</span>
+          │
+          ▼
+          <span class="f-external">[Puter.js CDN (External)]</span>
+          │
+          │   <span class="f-label">B. Puter.js se comunica con el modelo seleccionado (ej. Gemini, Claude, etc.)</span>
+          │   <span class="f-label">C. Recibe la respuesta en streaming como un AsyncIterator</span>
+          │
+          ▼
+          <span class="f-browser">[Browser / JS Callback]</span>
+          │
+          │   <span class="f-label">D. El callback `onToken(chunk)` es invocado por Puter.js por cada fragmento recibido</span>
+          │   <span class="c-comment"># Actualiza la UI de TutoApp en tiempo real</span>
+          │
+          ▼
+          <span class="f-display">[UI Renderizada]</span>
+        </div>
+        <p><strong>Ventaja:</strong> Menos latencia al evitar el round-trip al backend local. Ideal para demos o cuando la seguridad de la clave no es una preocupación primordial (como con Puter.js).</p>
+      </div>
+
+      <div class="mini-card">
+        <h4>2. Flujo Proxy con Backend FastAPI (Claude, Gemini, Ollama)</h4>
+        <p>Cuando se utilizan proveedores que requieren claves de API (ej. Anthropic, Google AI) o servicios que se ejecutan localmente pero necesitan una capa de abstracción (ej. Ollama), TutoApp emplea un proxy backend. Esto es fundamental para la seguridad y la gestión centralizada de las configuraciones.</p>
+        <div class="flow-box">
+          <span class="f-browser">[Browser / HTML & Vanilla JS]</span>
+          │
+          │   <span class="f-label">A. El JS en `client/main.js` realiza un `fetch` al endpoint del backend</span>
+          │   <span class="c-comment"># Ejemplo: fetch("/api/gemini", { method: 'POST', body: JSON.stringify({ prompt: "..." }) })</span>
+          │
+          ▼
+          <span class="f-server">[FastAPI Server (`main.py`)]</span>
+          │
+          │   <span class="f-label">B. El endpoint (ej. `/api/gemini`) recibe el request</span>
+          │   <span class="f-label">C. Lee la API key correspondiente desde el archivo `.env` (e.g., `GEMINI_API_KEY`)</span>
+          │   <span class="c-comment"># `python-dotenv` carga las variables de entorno</span>
+          │   <span class="f-label">D. Utiliza `httpx.AsyncClient` para reenviar el request al proveedor AI externo</span>
+          │   <span class="c-comment"># `headers` incluyen la clave de API; `body` contiene el prompt/payload</span>
+          │
+          ▼
+          <span class="f-provider">[Proveedor AI Externo (Google, Anthropic, etc.) / Ollama Local]</span>
+          │
+          │   <span class="f-label">E. El proveedor procesa la solicitud y devuelve la respuesta en streaming.</span>
+          │   <span class="c-comment"># TutoApp usa `stream=True` en `httpx` para recibir chunks sin esperar el final.</span>
+          │
+          ▼
+          <span class="f-server">[FastAPI Streaming Response]</span>
+          │
+          │   <span class="f-label">F. El backend recibe los chunks de datos del proveedor.</span>
+          │   <span class="f-label">G. Utiliza `StreamingResponse` para enviar los chunks al cliente (browser) en tiempo real.</span>
+          │   <span class="c-comment"># `stream_with_generator` y `httpx` `aiter_bytes()` son claves aquí para evitar buffering.</span>
+          │
+          ▼
+          <span class="f-browser">[Browser / JS EventSource / ReadableStream]</span>
+          │
+          │   <span class="f-label">H. El `fetch` en el frontend recibe los chunks como un stream.</span>
+          │   <span class="f-label">I. El manejador `onmessage` o `onToken(chunk)` procesa cada fragmento recibido</span>
+          │   <span class="c-comment"># Actualiza la UI de TutoApp dinámicamente</span>
+          │
+          ▼
+          <span class="f-display">[UI Renderizada]</span>
+        </div>
+
+        <div class="callout tip">
+          <div class="callout-ico">🔑</div>
+          <div>
+            <strong>El Rol Crucial del Proxy Backend:</strong> Las claves de API (como `ANTHROPIC_API_KEY` o `GEMINI_API_KEY`) **nunca** deben exponerse en el código del frontend (HTML/JS). Si estuvieran allí, cualquiera podría verlas en las herramientas de desarrollador del navegador. El backend de TutoApp (`main.py`) actúa como un intermediario seguro:
+            <ol>
+              <li>Lee las claves de un archivo `.env` local (que está listado en `.gitignore` y nunca se sube a control de versiones).</li>
+              <li>Reenvía las solicitudes del navegador a las APIs externas, inyectando la clave de API secreta desde el lado del servidor.</li>
+              <li>Maneja las respuestas en streaming, permitiendo una experiencia de usuario fluida sin largas esperas.</li>
+            </ol>
+            Esto mantiene tus credenciales seguras y tu aplicación funcionando correctamente.
+          </div>
+        </div>
+      </div>
+
+      <div class="mini-card">
+        <h4>3. Flujo con Ollama (Proxy Local Opcional)</h4>
+        <p>Aunque Ollama corre localmente, TutoApp usa un endpoint proxy dedicado (`/api/ollama`) en FastAPI. Esto permite centralizar la lógica de red, aplicar posibles transformaciones o logs, y mantener una interfaz consistente con otros proveedores que sí requieren proxy.</p>
+        <div class="flow-box">
+          <span class="f-browser">[Browser / HTML & Vanilla JS]</span>
+          │
+          │   <span class="f-label">A. `fetch("/api/ollama", { method: 'POST', body: payload })`</span>
+          │
+          ▼
+          <span class="f-server">[FastAPI Server (`main.py`)]</span>
+          │
+          │   <span class="f-label">B. Llama a `http://localhost:11434` (la URL por defecto de Ollama)</span>
+          │   <span class="c-comment"># El `request.url.hostname` en FastAPI se resuelve a localhost</span>
+          │
+          ▼
+          <span class="f-local-service">[Ollama Server (Local)]</span>
+          │
+          │   <span class="f-label">C. Ollama procesa la solicitud y responde en streaming.</span>
+          │
+          ▼
+          <span class="f-server">[FastAPI Streaming Response]</span>
+          │
+          │   <span class="f-label">D. FastAPI reenvía el stream al navegador.</span>
+          │
+          ▼
+          <span class="f-browser">[Browser / JS]</span>
+          │
+          │   <span class="f-label">E. El JS consume el stream y actualiza la UI.</span>
+          │
+          ▼
+          <span class="f-display">[UI Renderizada]</span>
+        </div>
+        <p><strong>Nota:</strong> El proxy para Ollama es más por consistencia y manejo centralizado que por necesidad de seguridad de claves (ya que Ollama no usa claves de API de la misma forma que los servicios cloud).</p>
+      </div>
+```
+
+</section>
 
     <!-- ══════════════════════════════════════════════
          SECCIÓN 3 — BACKEND FASTAPI
@@ -662,7 +789,221 @@ tutoapp/
           </div>
         </div>
       </div>
-    </section>
+    
+
+Entendido. Procederé a generar el contenido HTML para mejorar la sección "Backend FastAPI" de TutoApp, enfocándome en explicar la arquitectura y el rol de FastAPI, así como la interacción con Python y las dependencias.
+
+```html
+      <!-- ENDPOINT: /api/gemini -->
+      <div class="endpoint" id="ep-gemini">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/gemini</span>
+          <span class="ep-desc">Proxy a Google Gemini API</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Similar a Claude, este endpoint toma el body de la API de Gemini (<code>contents</code>, <code>generationConfig</code>, etc.) y añade la API key desde el <code>.env</code> en el header <code>x-api-key</code>. Devuelve la respuesta JSON de Gemini.</p>
+          <div class="has-tb">
+            <div class="code-toolbar">
+      <span class="code-lang-lbl">code</span>
+      <div class="code-btns-row">
+        <button class="code-action-btn" onclick="copyPre('code-3')">📋 Copiar</button>
+        <button class="code-action-btn expl" onclick="explainPre('code-3')">📖 Explicar</button>
+      </div></div><pre id="code-3" style="border-radius: 0px 0px 11px 11px; border-top: medium;"><code><span class="c-comment"># server/main.py — ejemplo simplificado para Gemini</span>
+<span class="c-keyword">from</span> fastapi <span class="c-keyword">import</span> FastAPI, Request, HTTPException
+<span class="c-keyword">from</span> fastapi.responses <span class="c-keyword">import</span> StreamingResponse
+<span class="c-keyword">import</span> httpx
+<span class="c-keyword">import</span> os
+
+<span class="c-comment"># ... (otras importaciones y setup)</span>
+
+<span class="c-comment"># Asumiendo que tienes una función para cargar la API key del .env</span>
+<span class="c-keyword">def</span> <span class="c-function">get_gemini_key</span>():
+    <span class="c-keyword">return</span> os.getenv(<span class="c-str">"GEMINI_API_KEY"</span>)
+
+gemini_client = httpx.AsyncClient() <span class="c-comment"># Cliente HTTP asíncrono</span>
+<span class="c-keyword">async def</span> <span class="c-function">proxy_gemini</span>(request: Request):
+    <span class="c-keyword">if</span> <span class="c-keyword">not</span> get_gemini_key():
+        <span class="c-keyword">raise</span> HTTPException(status_code=400, detail=<span class="c-str">"Gemini API Key not configured"</span>)
+    
+    json_data = <span class="c-keyword">await</span> request.json()
+    headers = {
+        <span class="c-str">"x-goog-api-key"</span>: get_gemini_key(),
+        <span class="c-str">"Content-Type"</span>: <span class="c-str">"application/json"</span>
+    }
+    
+    <span class="c-comment"># URL de la API de Gemini</span>
+    <span class="c-keyword">url</span> = <span class="c-str">"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"</span>
+    
+    <span class="c-keyword">try</span>:
+        <span class="c-comment"># Realiza la petición a la API de Gemini</span>
+        response = <span class="c-keyword">await</span> gemini_client.post(url, json=json_data, headers=headers)
+        response.raise_for_status() <span class="c-comment"># Lanza excepción para errores HTTP (4xx, 5xx)</span>
+        
+        <span class="c-keyword">return</span> response.json() <span class="c-comment"># Devuelve la respuesta JSON</span>
+        
+    <span class="c-keyword">except</span> httpx.HTTPStatusError <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> HTTPException(status_code=e.response.status_code, detail=e.response.text)
+    <span class="c-keyword">except</span> <span class="c-keyword">Exception</span> <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> HTTPException(status_code=500, detail=str(e))
+
+<span class="c-comment"># Registrar el endpoint en la app FastAPI</span>
+app.add_api_route(<span class="c-str">"/api/gemini"</span>, proxy_gemini, methods=[<span class="c-str">"POST"</span>])</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT: /api/ollama -->
+      <div class="endpoint" id="ep-ollama">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/ollama</span>
+          <span class="ep-desc">Proxy a Ollama local (localhost:11434)</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Este endpoint es un proxy directo a tu instancia local de Ollama. Dado que Ollama no requiere una API key para ser accedido localmente, este proxy simplemente reenvía las peticiones (típicamente a <code>/api/generate</code> o <code>/api/chat</code>) y devuelve la respuesta. Es crucial que Ollama esté corriendo en <code>localhost:11434</code>.</p>
+          <div class="has-tb">
+            <div class="code-toolbar">
+      <span class="code-lang-lbl">code</span>
+      <div class="code-btns-row">
+        <button class="code-action-btn" onclick="copyPre('code-4')">📋 Copiar</button>
+        <button class="code-action-btn expl" onclick="explainPre('code-4')">📖 Explicar</button>
+      </div></div><pre id="code-4" style="border-radius: 0px 0px 11px 11px; border-top: medium;"><code><span class="c-comment"># server/main.py — ejemplo simplificado para Ollama</span>
+<span class="c-keyword">from</span> fastapi <span class="c-keyword">import</span> FastAPI, Request, HTTPException
+<span class="c-keyword">from</span> fastapi.responses <span class="c-keyword">import</span> StreamingResponse
+<span class="c-keyword">import</span> httpx
+
+<span class="c-comment"># ... (otras importaciones y setup)</span>
+
+ollama_client = httpx.AsyncClient(base_url=<span class="c-str">"http://localhost:11434"</span>) <span class="c-comment"># Cliente configurado para Ollama</span>
+
+<span class="c-keyword">async def</span> <span class="c-function">proxy_ollama</span>(request: Request):
+    <span class="c-comment"># Extraer el path y la query de la request original</span>
+    path = request.url.path.<span class="c-method">replace</span>(<span class="c-str">"/api/ollama"</span>, <span class="c-str">""</span>) <span class="c-comment"># Elimina el prefijo /api/ollama</span>
+    url = httpx.URL(path=path, query=request.url.query.encode(<span class="c-str">"utf-8"</span>))
+    
+    json_data = <span class="c-keyword">await</span> request.json()
+    
+    <span class="c-comment"># Reenvía la petición a Ollama</span>
+    <span class="c-keyword">try</span>:
+        <span class="c-comment"># Usamos stream=True para obtener un iterador de chunks</span>
+        <span class="c-keyword">req</span> = ollama_client.build_request(
+            request.method, url, json=json_data, headers=request.headers,
+            params=request.query_params
+        )
+        prepped = <span class="c-keyword">await</span> ollama_client.prepare_request(req)
+        <span class="c-comment"># Si la petición original era SSE, mantenemos el stream</span>
+        is_stream = request.headers.get(<span class="c-str">"accept"</span>, <span class="c-str">""</span>).<span class="c-method">find</span>(<span class="c-str">"text/event-stream"</span>) != -1
+        
+        rp = <span class="c-keyword">await</span> ollama_client.send(prepped, stream=is_stream)
+        
+        <span class="c-keyword">if</span> is_stream:
+            <span class="c-comment"># Si es stream, devolvemos un StreamingResponse</span>
+            <span class="c-keyword">async def</span> <span class="c-function">iter_stream</span>():
+                <span class="c-keyword">async for</span> chunk <span class="c-keyword">in</span> rp.aiter_bytes():
+                    <span class="c-keyword">yield</span> chunk
+            <span class="c-keyword">return</span> StreamingResponse(iter_stream(), media_type=rp.headers[<span class="c-str">"content-type"</span>])
+        <span class="c-keyword">else</span>:
+            <span class="c-comment"># Si no es stream, devolvemos la respuesta JSON</span>
+            <span class="c-keyword">return</span> rp.json()
+
+    <span class="c-keyword">except</span> httpx.RequestError <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> HTTPException(status_code=504, detail=f<span class="c-str">"Ollama is unreachable: {e}"</span>)
+    <span class="c-keyword">except</span> httpx.HTTPStatusError <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> HTTPException(status_code=e.response.status_code, detail=e.response.text)
+    <span class="c-keyword">except</span> <span class="c-keyword">Exception</span> <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> HTTPException(status_code=500, detail=str(e))
+
+<span class="c-comment"># Registrar el endpoint en la app FastAPI</span>
+<span class="c-comment"># Permitimos cualquier subpath bajo /api/ollama para flexibilidad</span>
+app.add_api_route(<span class="c-str">"/api/ollama/{path:path}"</span>, proxy_ollama, methods=[<span class="c-str">"POST"</span>, <span class="c-str">"GET"</span>, <span class="c-str">"PUT"</span>, <span class="c-str">"DELETE"</span>, <span class="c-str">"PATCH"</span>, <span class="c-str">"OPTIONS"</span>])</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENDPOINT: /api/save-section -->
+      <div class="endpoint" id="ep-save">
+        <div class="ep-head">
+          <span class="ep-method post">POST</span>
+          <span class="ep-path">/api/save-section</span>
+          <span class="ep-desc">Persistencia de contenido AI en HTML</span>
+        </div>
+        <div class="ep-body">
+          <p style="font-size:.88rem;color:var(--text2)">Este endpoint es el mecanismo de guardado. Recibe un objeto JSON con <code>file</code> (el nombre del archivo HTML, ej. <code>index.html</code>) y <code>content</code> (el nuevo HTML a insertar). Utiliza una whitelist (<code>_ALLOWED_FILES</code>) para prevenir escrituras arbitrarias en el sistema de archivos. El contenido se inserta dentro de un tag específico con un ID para facilitar su localización.</p>
+          <div class="has-tb">
+            <div class="code-toolbar">
+      <span class="code-lang-lbl">code</span>
+      <div class="code-btns-row">
+        <button class="code-action-btn" onclick="copyPre('code-5')">📋 Copiar</button>
+        <button class="code-action-btn expl" onclick="explainPre('code-5')">📖 Explicar</button>
+      </div></div><pre id="code-5" style="border-radius: 0px 0px 11px 11px; border-top: medium;"><code><span class="c-comment"># server/main.py — función save_section</span>
+<span class="c-keyword">from</span> fastapi <span class="c-keyword">import</span> FastAPI, Request, HTTPException, Depends
+<span class="c-keyword">from</span> fastapi.responses <span class="c-keyword">import</span> JSONResponse
+<span class="c-keyword">import</span> os
+<span class="c-keyword">import</span> re
+
+<span class="c-comment"># Whitelist de archivos permitidos para escritura</span>
+_ALLOWED_FILES = {<span class="c-str">"index.html"</span>, <span class="c-str">"backend.html"</span>, <span class="c-str">"frontend.html"</span>, <span class="c-str">"providers.html"</span>, <span class="c-str">"run.html"</span>}
+
+<span class="c-keyword">async def</span> <span class="c-function">save_section</span>(request: Request):
+    <span class="c-keyword">try</span>:
+        data = <span class="c-keyword">await</span> request.json()
+        filename = data.get(<span class="c-str">"file"</span>)
+        content = data.get(<span class="c-str">"content"</span>)
+        section_id = data.get(<span class="c-str">"section_id"</span>) <span class="c-comment"># ej. "backend"</span>
+
+        <span class="c-keyword">if</span> <span class="c-keyword">not</span> filename <span class="c-keyword">or</span> <span class="c-keyword">not</span> content <span class="c-keyword">or</span> <span class="c-keyword">not</span> section_id:
+            <span class="c-keyword">raise</span> HTTPException(status_code=400, detail=<span class="c-str">"Missing file, content, or section_id"</span>)
+        
+        <span class="c-keyword">if</span> filename <span class="c-keyword">not</span> <span class="c-keyword">in</span> _ALLOWED_FILES:
+            <span class="c-keyword">raise</span> HTTPException(status_code=403, detail=f<span class="c-str">"File not allowed: {filename}"</span>)
+
+        filepath = os.path.join(<span class="c-str">"client"</span>, filename)
+        
+        <span class="c-keyword">with</span> open(filepath, <span class="c-str">'r'</span>, encoding=<span class="c-str">'utf-8'</span>) <span class="c-keyword">as</span> f:
+            html_content = f.read()
+            
+        <span class="c-comment"># Patrón para encontrar la sección a reemplazar</span>
+        <span class="c-comment"># Busca un tag div con el ID dado, y reemplaza su contenido interno</span>
+        pattern = re.compile(f<span class="c-str">f'<div id="{section_id}">.*?</div>'</span>, re.DOTALL)
+        
+        <span class="c-comment"># Creamos el nuevo div con el contenido generado por AI</span>
+        new_section_html = f<span class="c-str">f'<div id="{section_id}">{content}</div>'</span>
+        
+        <span class="c-comment"># Reemplazamos la sección antigua con la nueva</span>
+        new_html_content, num_replacements = pattern.subn(new_section_html, html_content)
+        
+        <span class="c-keyword">if</span> num_replacements == <span class="c-num">0</span>:
+             <span class="c-comment"># Si no se encontró la sección, podrías insertarla al final o lanzar error</span>
+             <span class="c-comment"># Aquí, optamos por lanzar un error para indicar un problema de template</span>
+            <span class="c-keyword">raise</span> HTTPException(status_code=404, detail=f<span class="c-str">"Section ID '{section_id}' not found in {filename}"</span>)
+
+        <span class="c-keyword">with</span> open(filepath, <span class="c-str">'w'</span>, encoding=<span class="c-str">'utf-8'</span>) <span class="c-keyword">as</span> f:
+            f.write(new_html_content)
+            
+        <span class="c-keyword">return</span> JSONResponse(content={<span class="c-str">"message"</span>: <span class="c-str">"Section saved successfully"</span>})
+        
+    <span class="c-keyword">except</span> HTTPException <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> e
+    <span class="c-keyword">except</span> <span class="c-keyword">Exception</span> <span class="c-keyword">as</span> e:
+        <span class="c-keyword">raise</span> HTTPException(status_code=500, detail=str(e))
+
+<span class="c-comment"># Registrar el endpoint en la app FastAPI</span>
+app.add_api_route(<span class="c-str">"/api/save-section"</span>, save_section, methods=[<span class="c-str">"POST"</span>])</code></pre>
+          </div>
+          <div class="mini-card">
+            <h4>FastAPI como Orquestador</h4>
+            <p>FastAPI actúa como el "director de orquesta" de TutoApp. No genera contenido AI directamente, sino que coordina las solicitudes del frontend (los HTMLs) hacia los diferentes proveedores de AI (Claude, Gemini, Ollama) y maneja la persistencia de los resultados. Su ligereza y enfoque en la API (ASGI) lo hacen ideal para este rol.</p>
+          </div>
+          <div class="callout" style="background-color: var(--bg-attention); color: var(--text-attention);">
+            <h5>Python y Arquitectura</h5>
+            <p>El uso de Python con FastAPI permite una rápida iteración y prototipado. La arquitectura es deliberadamente simple: un backend minimalista (sin base de datos ni ORM) que expone APIs para interactuar con servicios externos (AI) y para manejar la lógica de persistencia de datos (guardar HTML). Las dependencias son mínimas (FastAPI, Uvicorn, httpx, python-dotenv), lo que facilita el despliegue y la gestión.</p>
+          </div>
+        </div>
+      </div>
+```
+
+</section>
 
     <!-- ══════════════════════════════════════════════
          SECCIÓN 4 — FRONTEND
@@ -933,14 +1274,36 @@ _ALLOWED_FILES = {
 ───────────────────────────────────────────────────────────────── */
 let currentLang = 'es';
 
+/* setLang(l): cambia el idioma activo del documento.
+   PARÁMETRO: l = 'es' | 'en'
+   QUÉ HACE:
+     1. Actualiza currentLang y data-lang en <html>
+     2. Aplica traducciones a todos los .i18n (data-es / data-en)
+     3. Activa el botón del idioma seleccionado (clase .on)
+   POR QUÉ innerHTML: soporta traducciones con HTML embebido.
+   Los valores son hardcoded → no hay riesgo de XSS.
+   ERROR HANDLING: try/catch por elemento para máxima robustez. */
 function setLang(l) {
   currentLang = l;
   document.documentElement.setAttribute('data-lang', l);
-  try { localStorage.setItem('guide-lang', l); } catch(e) {}
+  try { localStorage.setItem('guide-lang', l); } catch(e) { /* localStorage deshabilitado */ }
+
+  /* Aplicar traducciones a todos los elementos .i18n */
   document.querySelectorAll('.i18n').forEach(el => {
-    const v = el.dataset[l];
-    if (v !== undefined) el.textContent = v;
+    try {
+      const v = el.dataset[l]; // data-es o data-en
+      if (v === undefined) return; // sin traducción → no tocar
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = v;
+      } else {
+        el.innerHTML = v; // innerHTML permite <strong>, <code>, etc.
+      }
+    } catch(err) {
+      console.warn('[setLang] Error en elemento:', el, err);
+    }
   });
+
+  /* Activar el botón del idioma seleccionado */
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('on', b.dataset.lang === l);
   });

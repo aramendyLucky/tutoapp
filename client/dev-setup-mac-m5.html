@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   ╔══════════════════════════════════════════════════════════════════════════════╗
-  ║  DEV SETUP MAC M5 — DE 0 A 100 · GUÍA VIVA CON IA INTEGRADA               ║
+  ║  DEV SETUP MAC M5 — DE 0 A 100 · GUÍA TUTOR MODO · SENIOR DEV GUIDE       ║
   ║  Versión 2.0 — Mayo 2026                                                    ║
   ║                                                                              ║
   ║  NOVEDADES SOBRE LA VERSIÓN 1:                                              ║
@@ -30,7 +30,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title data-es="Dev Setup Mac M5 — De 0 a 100" data-en="Dev Setup Mac M5 — From Zero to Hero">Dev Setup Mac M5 — De 0 a 100</title>
+  <title data-es="Mac M5 Dev Setup — Guía Tutor Completa" data-en="Mac M5 Dev Setup — Complete Tutor Guide">Mac M5 Dev Setup — Guía Tutor Completa</title>
   <!-- Fuentes: Syne (headers), DM Sans (body), JetBrains Mono (código) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -744,6 +744,12 @@
     </div>
 
     <!-- Fases — cada link tiene checkbox de completado -->
+    <!-- Caja de bienvenida para principiantes en el sidebar -->
+    <div style="background:rgba(56,217,169,.08);border:1px solid rgba(56,217,169,.2);border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <div style="font-size:11px;font-weight:800;color:var(--acc);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">🎓 Modo Tutor</div>
+      <div style="font-size:.8rem;color:var(--text2);line-height:1.5">Hacé clic en ✓ al completar cada fase. La barra de arriba muestra tu progreso total.</div>
+    </div>
+
     <div class="nav-head">Setup Phases</div>
     <div class="phase-link" onclick="goPhase(0)">
       <div class="ph-check" id="chk-0" onclick="event.stopPropagation();markPhase(0)"></div>
@@ -800,6 +806,10 @@
       <span class="ph-num" style="background:var(--p10)">10</span>
       Ollama Offline
     </div>
+    <div class="phase-link" onclick="document.getElementById('phase-errores').scrollIntoView({behavior:'smooth'})">
+      <span class="ph-num" style="background:#ff4d6d">🔥</span>
+      <span>Errores Comunes</span>
+    </div>
     <div id="sidebar-extra-phases"></div>
 
     <div class="s-sep"></div>
@@ -824,7 +834,34 @@
   ══════════════════════════════════════════════════════ -->
   <main class="content">
 
-    <!-- HERO -->
+    <!-- ══ PRE-HERO: PARA EL LECTOR TOTAL PRINCIPIANTE ══════════════ -->
+    <div style="background:linear-gradient(135deg,rgba(108,123,255,.08),rgba(56,217,169,.08));border:1px solid var(--border2);border-radius:16px;padding:24px 28px;margin-bottom:24px">
+      <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;margin-bottom:10px;color:var(--acc)">
+        👋 ¿Primera vez con Mac y programación? Empezá acá
+      </div>
+      <p style="font-size:.9rem;color:var(--text2);margin-bottom:14px">
+        Esta guía asume que <strong>sabés cero</strong> de programación en Mac. Cada comando está explicado en detalle. Si algo falla, usá el <strong>🤖 Asistente AI</strong> (botón arriba a la derecha) — pegá el error y te dice cómo solucionarlo.
+      </p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:.82rem;font-weight:700;margin-bottom:5px">📺 ¿Qué es Terminal?</div>
+          <div style="font-size:.79rem;color:var(--text2)">Es la "línea de comandos" — una ventana donde escribís texto para controlar el Mac. Mucho más poderosa que hacer clic en íconos.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:.82rem;font-weight:700;margin-bottom:5px">📦 ¿Qué es un "package"?</div>
+          <div style="font-size:.79rem;color:var(--text2)">Un programa o librería. En Mac los instalamos con <code>brew install</code> en vez de buscar un .exe en una web.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:.82rem;font-weight:700;margin-bottom:5px">🔑 Sudo</div>
+          <div style="font-size:.79rem;color:var(--text2)">Cuando ves <code>sudo</code> antes de un comando, es "hacer algo como administrador". Te va a pedir tu contraseña de usuario Mac.</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px">
+          <div style="font-size:.82rem;font-weight:700;margin-bottom:5px">💡 Cómo leer los comandos</div>
+          <div style="font-size:.79rem;color:var(--text2)">Los textos en <code>mono</code> son comandos para copiar y pegar en Terminal. Reemplazá "tu@email.com" con tus datos reales.</div>
+        </div>
+      </div>
+    </div>
+
     <div class="hero">
       <div class="hero-badge">
         <span class="i18n" data-es="Guía Viva · AI Integrada · Mayo 2026" data-en="Living Guide · AI Integrated · May 2026">Guía Viva · AI Integrada · Mayo 2026</span>
@@ -833,7 +870,28 @@
         <em class="i18n" data-es="MacBook Pro M5" data-en="MacBook Pro M5">MacBook Pro M5</em><br>
         <span class="i18n" data-es="Dev Setup de 0 a 100" data-en="Dev Setup from Zero to Hero">Dev Setup de 0 a 100</span>
       </h1>
-      <p class="i18n" data-es="Todas las herramientas, configuraciones y atajos para convertir tu Mac nuevo en una máquina de producción profesional. Con AI integrada para resolver errores, generar configs y agregar fases." data-en="All tools, configurations and shortcuts to turn your new Mac into a professional production machine. With integrated AI to fix errors, generate configs and add phases.">
+      <p class="i18n"
+        data-es="Bienvenido a tu nuevo MacBook Pro M5. Esta guía te lleva de mano desde que sacás la Mac de la caja hasta tener un entorno de desarrollo profesional completo. Sin conocimiento previo requerido — cada paso explica el QUÉ y el POR QUÉ."
+        data-en="Welcome to your new MacBook Pro M5. This guide takes you step by step from unboxing to a complete professional development environment. No prior knowledge required — each step explains the WHAT and the WHY.">
+        Bienvenido a tu nuevo MacBook Pro M5. Esta guía te lleva de mano desde que sacás la Mac de la caja hasta tener un entorno de desarrollo profesional completo. Sin conocimiento previo requerido.</p>
+
+      <!-- Stats row — quick overview for beginners -->
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
+        <div style="background:rgba(56,217,169,.1);border:1px solid rgba(56,217,169,.2);border-radius:10px;padding:8px 14px;font-size:.82rem">
+          ⏱ <strong>~3-4 horas</strong> total
+        </div>
+        <div style="background:rgba(108,123,255,.1);border:1px solid rgba(108,123,255,.2);border-radius:10px;padding:8px 14px;font-size:.82rem">
+          📦 <strong>11 fases</strong> · instalaciones paso a paso
+        </div>
+        <div style="background:rgba(64,208,128,.1);border:1px solid rgba(64,208,128,.2);border-radius:10px;padding:8px 14px;font-size:.82rem">
+          🤖 <strong>AI integrada</strong> · resuelve errores al instante
+        </div>
+        <div style="background:rgba(255,159,80,.1);border:1px solid rgba(255,159,80,.2);border-radius:10px;padding:8px 14px;font-size:.82rem">
+          💡 <strong>Modo tutor</strong> · explicaciones de Senior Dev
+        </div>
+      </div>
+      <!-- Original p was here, replaced above -->
+      <p style="display:none"
         Todas las herramientas, configuraciones y atajos para convertir tu Mac nuevo en una máquina de producción profesional.
       </p>
       <!-- Tags de acción rápida -->
@@ -873,6 +931,61 @@
       <div class="callout info">
         <div class="callout-ico">ℹ️</div>
         <div class="i18n" data-es="Ejecutá todos estos comandos en Terminal.app antes de empezar. Si algo falla, preguntale a la AI." data-en="Run all these commands in Terminal.app before starting. If something fails, ask the AI.">Ejecutá todos estos comandos en Terminal.app antes de empezar. Si algo falla, preguntale a la AI.</div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Por qué hacer esto primero?</strong><br>
+          Antes de instalar cualquier herramienta, verificamos que el Mac esté en condiciones óptimas.
+          Si instalás cosas sobre un sistema con poco espacio o incompatibilidades, los errores son difíciles de diagnosticar.
+          Estos comandos te dan un "checkup" completo en 2 minutos.
+        </div>
+      </div>
+
+      <div class="g2" style="margin:14px 0">
+        <div class="mini-card">
+          <h4>✅ Lo que vas a verificar</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px;margin:0">
+            <li>Arquitectura del procesador (ARM64 = Apple Silicon ✓)</li>
+            <li>Espacio disponible en disco (mínimo 25 GB)</li>
+            <li>Versión de macOS (15+ recomendado)</li>
+            <li>Instalar Rosetta 2 para apps antiguas</li>
+            <li>Cifrado del disco activado</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>⚠️ Si algo falla</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px;margin:0">
+            <li>uname -m muestra x86_64 → usá el modo Rosetta, no es M5</li>
+            <li>Poco espacio → borrá descargas y vaciá Papelera primero</li>
+            <li>macOS desactualizado → ve a System Settings → General → Software Update</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="mt">🍎 ¿Qué significa Apple Silicon M5?</h3>
+      <p style="font-size:.88rem;color:var(--text2)">El M5 es el procesador que diseñó Apple. La diferencia clave: es arquitectura <strong>ARM</strong> (como los procesadores de iPhone), no Intel x86_64. Esto importa porque:</p>
+      <div class="g2" style="margin:10px 0 16px">
+        <div class="mini-card">
+          <h4>✅ Ventajas ARM/M5</h4>
+          <ul style="font-size:.82rem;color:var(--text2);padding-left:14px;line-height:1.9">
+            <li>Compilaciones de código 3-4x más rápidas</li>
+            <li>Batería que dura 20+ horas bajo carga</li>
+            <li>Sin ventiladores en algunos modelos (silencioso)</li>
+            <li>AI local (Ollama) mucho más eficiente</li>
+            <li>La mayoría de herramientas ya tienen versión ARM nativa</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>⚠️ Lo que cambia para developers</h4>
+          <ul style="font-size:.82rem;color:var(--text2);padding-left:14px;line-height:1.9">
+            <li>Homebrew instala en <code>/opt/homebrew/</code> (no <code>/usr/local/</code>)</li>
+            <li>Algunas imágenes Docker antiguas son solo x86 → usás Rosetta</li>
+            <li>Python/Node preinstalados son del sistema → no los toques</li>
+            <li>Siempre verificá que instalás la versión "arm64" o "Apple Silicon"</li>
+          </ul>
+        </div>
       </div>
 
       <div class="code-wrap has-toolbar">
@@ -923,6 +1036,26 @@
         </div>
       </div>
 
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Qué es Homebrew y por qué lo necesito?</strong><br>
+          En Windows tenés el instalador .exe. En Mac, los developers usan <strong>Homebrew</strong> — el "gestor de paquetes" universal.
+          Con un solo comando <code>brew install nombre-del-programa</code> instalás cualquier herramienta sin buscar sitios web, sin instaladores gráficos, sin riesgo de descargar la versión equivocada. Es el primer paso obligatorio de cualquier Mac de desarrollo.
+          <br><br>
+          <strong>¿Y Xcode Command Line Tools?</strong><br>
+          macOS viene "limpio" sin compiladores de código. Las Xcode CLI Tools instalan el compilador C/C++, Make, Git básico, y las librerías del sistema que Homebrew y casi todo lo demás necesita internamente. Sin esto, el 80% de las instalaciones fallan silenciosamente.
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-ico">⏱</div>
+        <div>
+          <strong>Tiempo estimado: 10-15 minutos</strong><br>
+          Las Xcode CLI Tools son ~2GB. Homebrew tarda menos de 1 minuto. Necesitás conexión a internet y <strong>no cerrar la terminal</strong> durante la instalación.
+        </div>
+      </div>
+
       <div class="code-wrap has-toolbar">
         <div class="code-toolbar">
           <span class="code-lang-badge">bash · xcode + homebrew</span>
@@ -963,6 +1096,45 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 2 — TERMINAL + ZSH
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">📖 Cómo usar Homebrew — Comandos esenciales</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · homebrew commands</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-brew-usage')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-brew-usage')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-brew-usage"><code><span class="c"># ── Los 8 comandos de Homebrew que vas a usar siempre ─────────</span>
+
+<span class="cmd">brew install</span> nombre       <span class="c"># instalar una herramienta CLI</span>
+<span class="cmd">brew install --cask</span> nombre <span class="c"># instalar una app con interfaz gráfica (.app)</span>
+<span class="cmd">brew uninstall</span> nombre      <span class="c"># desinstalar</span>
+<span class="cmd">brew upgrade</span>               <span class="c"># actualizar TODO lo instalado</span>
+<span class="cmd">brew upgrade</span> nombre        <span class="c"># actualizar solo un paquete</span>
+<span class="cmd">brew list</span>                  <span class="c"># ver todo lo que instalaste</span>
+<span class="cmd">brew search</span> nombre         <span class="c"># buscar si algo existe en Homebrew</span>
+<span class="cmd">brew info</span> nombre           <span class="c"># ver versión, dependencias e info del paquete</span>
+<span class="cmd">brew doctor</span>                <span class="c"># diagnosticar problemas con Homebrew</span>
+<span class="cmd">brew cleanup</span>               <span class="c"># liberar espacio borrando versiones viejas</span>
+
+<span class="c"># ── Diferencia entre install y install --cask ─────────────────</span>
+<span class="c"># brew install git        → instala herramienta CLI (sin ícono en /Applications)</span>
+<span class="c"># brew install --cask cursor → instala app gráfica (crea ícono en /Applications)</span>
+
+<span class="c"># ── Ejemplo práctico: buscar e instalar curl ──────────────────</span>
+<span class="cmd">brew search</span> curl           <span class="c"># busca "curl" → muestra paquetes disponibles</span>
+<span class="cmd">brew info</span> curl             <span class="c"># muestra: versión 8.x.x, homepage, dependencias</span>
+<span class="cmd">brew install</span> curl          <span class="c"># instala curl</span>
+<span class="cmd">curl --version</span>             <span class="c"># verifica: curl 8.x.x (libcurl/8.x.x)</span></code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">💡</div>
+        <div><strong>Actualizar todo una vez por semana:</strong> Corré <code>brew update && brew upgrade && brew cleanup</code> los lunes para mantener todo actualizado. El <code>&&</code> encadena comandos — si uno falla, los siguientes no corren.</div>
+      </div>
+
+
     <section id="phase-2">
       <div class="phase-header" style="--phase-color:var(--p2)">
         <div class="phase-badge" style="background:var(--p2)">2</div>
@@ -979,6 +1151,49 @@
           <button class="ph-btn done-btn" id="done-2" onclick="markPhase(2)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Por qué cambiar la terminal que ya viene en Mac?</strong><br>
+          La Terminal.app que viene con macOS funciona, pero es básica. <strong>iTerm2</strong> agrega splits de pantalla, colores, perfiles, autocompletado visual y docenas de mejoras.
+          <strong>Oh My Zsh</strong> es un framework que convierte tu shell en una herramienta poderosa: plugins para autocompletado, historial inteligente, detección del directorio git y mucho más.
+          <strong>Powerlevel10k</strong> es el tema visual que muestra rama de Git, estado del directorio, hora y info relevante en el prompt — en milisegundos.
+          <br><br>
+          Como developer, vas a pasar horas en la terminal. Vale la pena tenerla configurada bien desde el principio.
+        </div>
+      </div>
+
+      <div class="g2" style="margin:14px 0">
+        <div class="mini-card">
+          <h4>📦 Qué se instala</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px;margin:0">
+            <li><strong>iTerm2</strong> — emulador de terminal avanzado</li>
+            <li><strong>Oh My Zsh</strong> — framework para el shell Zsh</li>
+            <li><strong>Powerlevel10k</strong> — tema visual con info de Git</li>
+            <li><strong>zsh-autosuggestions</strong> — sugiere comandos del historial</li>
+            <li><strong>zsh-syntax-highlighting</strong> — colorea comandos válidos/inválidos</li>
+            <li><strong>zsh-z</strong> — navegar a carpetas frecuentes con solo escribir su nombre</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>🔑 Después de instalar</h4>
+          <ul style="font-size:.84rem;color:var(--text2);padding-left:16px;margin:0">
+            <li>Abrí iTerm2 (no Terminal.app)</li>
+            <li>Se abrirá el wizard de Powerlevel10k — seguí los pasos visuales</li>
+            <li>Elegí la fuente <strong>MesloLGS NF</strong> en iTerm2 → Preferences → Profiles → Text</li>
+            <li>Reiniciá la terminal con <code>exec zsh</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-ico">⚠️</div>
+        <div>
+          <strong>Error frecuente: "los íconos se ven como cuadrados"</strong><br>
+          Necesitás instalar la fuente <strong>MesloLGS NF</strong> y configurarla en iTerm2. El comando de instalación está incluido abajo. Si no lo hacés, verás caracteres extraños en el prompt.
         </div>
       </div>
 
@@ -1061,6 +1276,70 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 3 — GIT + GITHUB CLI
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">⚡ .zshrc — Tu archivo de configuración</h3>
+      <p style="font-size:.87rem;color:var(--text2)">El archivo <code>~/.zshrc</code> se ejecuta cada vez que abrís una terminal. Es donde guardás tus atajos, configuraciones y variables. El <code>~</code> significa "tu carpeta home".</p>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · .zshrc recomendado</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-zshrc')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-zshrc')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-zshrc"><code><span class="c"># ── Abrir el .zshrc en VS Code para editar ────────────────────</span>
+<span class="cmd">code ~/.zshrc</span>
+
+<span class="c"># ══════════════════════════════════════════════════════════════</span>
+<span class="c"># CONTENIDO RECOMENDADO PARA TU ~/.zshrc</span>
+<span class="c"># Copiar y pegar al final del archivo, luego guardar</span>
+<span class="c"># ══════════════════════════════════════════════════════════════</span>
+
+<span class="c"># ── Navegación más rápida ─────────────────────────────────────</span>
+<span class="cmd">alias</span> <span class="k">ls</span>=<span class="s">"eza --icons"</span>         <span class="c"># ls con íconos y colores</span>
+<span class="cmd">alias</span> <span class="k">ll</span>=<span class="s">"eza -la --icons"</span>    <span class="c"># lista detallada con ocultos</span>
+<span class="cmd">alias</span> <span class="k">lt</span>=<span class="s">"eza --tree --level=2"</span> <span class="c"># árbol de directorios</span>
+<span class="cmd">alias</span> <span class="k">cat</span>=<span class="s">"bat"</span>               <span class="c"># cat con syntax highlighting</span>
+<span class="cmd">alias</span> <span class="k">..</span>=<span class="s">"cd .."</span>              <span class="c"># subir un directorio</span>
+<span class="cmd">alias</span> <span class="k">...</span>=<span class="s">"cd ../.."</span>          <span class="c"># subir dos directorios</span>
+<span class="cmd">alias</span> <span class="k">~</span>=<span class="s">"cd ~"</span>               <span class="c"># ir al home</span>
+
+<span class="c"># ── Git shortcuts ─────────────────────────────────────────────</span>
+<span class="cmd">alias</span> <span class="k">gs</span>=<span class="s">"git status"</span>
+<span class="cmd">alias</span> <span class="k">ga</span>=<span class="s">"git add ."</span>
+<span class="cmd">alias</span> <span class="k">gc</span>=<span class="s">"git commit -m"</span>
+<span class="cmd">alias</span> <span class="k">gp</span>=<span class="s">"git push"</span>
+<span class="cmd">alias</span> <span class="k">gl</span>=<span class="s">"git log --oneline --graph --decorate"</span>
+<span class="cmd">alias</span> <span class="k">gco</span>=<span class="s">"git checkout"</span>
+<span class="cmd">alias</span> <span class="k">gnb</span>=<span class="s">"git checkout -b"</span>  <span class="c"># crear nueva rama</span>
+
+<span class="c"># ── Node / npm shortcuts ──────────────────────────────────────</span>
+<span class="cmd">alias</span> <span class="k">ni</span>=<span class="s">"npm install"</span>
+<span class="cmd">alias</span> <span class="k">nr</span>=<span class="s">"npm run"</span>
+<span class="cmd">alias</span> <span class="k">nrd</span>=<span class="s">"npm run dev"</span>
+<span class="cmd">alias</span> <span class="k">nrb</span>=<span class="s">"npm run build"</span>
+
+<span class="c"># ── Docker shortcuts ──────────────────────────────────────────</span>
+<span class="cmd">alias</span> <span class="k">dc</span>=<span class="s">"docker compose"</span>
+<span class="cmd">alias</span> <span class="k">dcu</span>=<span class="s">"docker compose up -d"</span>
+<span class="cmd">alias</span> <span class="k">dcd</span>=<span class="s">"docker compose down"</span>
+<span class="cmd">alias</span> <span class="k">dcl</span>=<span class="s">"docker compose logs -f"</span>  <span class="c"># ver logs en tiempo real</span>
+
+<span class="c"># ── Funciones útiles ──────────────────────────────────────────</span>
+<span class="c"># mkcd: crear carpeta y entrar a ella en un comando</span>
+<span class="cmd">mkcd</span>() { <span class="cmd">mkdir -p</span> <span class="s">"$1"</span> && <span class="cmd">cd</span> <span class="s">"$1"</span>; }
+
+<span class="c"># port: ver qué proceso usa un puerto</span>
+<span class="cmd">port</span>() { <span class="cmd">lsof -i</span> :<span class="s">"$1"</span>; }
+
+<span class="c"># kilport: matar proceso en un puerto</span>
+<span class="cmd">killport</span>() { <span class="cmd">kill -9 $(lsof -t -i:</span><span class="s">"$1"</span>); }
+
+<span class="c"># ── Aplicar cambios sin cerrar la terminal ────────────────────</span>
+<span class="c"># Después de editar .zshrc, correr:</span>
+<span class="cmd">source ~/.zshrc</span>   <span class="c"># recarga la configuración</span></code></pre>
+      </div>
+
+
     <section id="phase-3">
       <div class="phase-header" style="--phase-color:var(--p3)">
         <div class="phase-badge" style="background:var(--p3)">3</div>
@@ -1076,6 +1355,19 @@
           <button class="ph-btn done-btn" id="done-3" onclick="markPhase(3)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Qué es Git y por qué es tan importante?</strong><br>
+          Git es el sistema de control de versiones que usa el 95% de los developers del mundo. Imaginaló como un "historial de cambios con viaje en el tiempo" para tu código. Con Git podés:
+          ver qué cambió en cada archivo, volver a cualquier punto anterior, trabajar en paralelo con otros developers sin pisarse, y mantener un historial completo de todo lo que hiciste.
+          <br><br>
+          <strong>GitHub</strong> es el servicio en la nube donde se guardan los repositorios Git. <strong>GitHub CLI (gh)</strong> te permite hacer todo desde la terminal sin abrir el navegador — crear repos, abrir pull requests, revisar issues.
+          <br><br>
+          <strong>SSH keys</strong>: en lugar de escribir usuario y contraseña cada vez que hacés push/pull, usás un par de llaves criptográficas. La privada queda en tu Mac, la pública va a GitHub. Más seguro y más cómodo.
         </div>
       </div>
 
@@ -1122,6 +1414,55 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 4 — LENGUAJES DE PROGRAMACIÓN
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">📖 Flujo de trabajo Git para principiantes</h3>
+      <p style="font-size:.87rem;color:var(--text2)">El flujo diario de trabajo con Git tiene 5 comandos que vas a usar todo el tiempo. Memorizalos y el resto viene solo.</p>
+
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · git daily workflow</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-git-flow')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-git-flow')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-git-flow"><code><span class="c">━━━ CREAR UN PROYECTO NUEVO ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">mkdir</span> mi-proyecto && <span class="cmd">cd</span> mi-proyecto
+<span class="cmd">git init</span>               <span class="c"># inicializa repositorio Git en esta carpeta</span>
+<span class="cmd">gh repo create</span> mi-proyecto --public --source=. --push
+<span class="c"># ↑ crea el repo en GitHub y sube el código en un solo comando</span>
+
+<span class="c">━━━ FLUJO DIARIO (5 comandos) ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">git status</span>             <span class="c"># ver qué archivos cambiaron</span>
+<span class="cmd">git add .</span>              <span class="c"># marcar TODOS los cambios para guardar</span>
+<span class="cmd">git add archivo.js</span>     <span class="c"># marcar solo un archivo específico</span>
+<span class="cmd">git commit -m</span> <span class="s">"mensaje"</span> <span class="c"># guardar los cambios con descripción</span>
+<span class="cmd">git push</span>               <span class="c"># subir al repositorio en GitHub</span>
+<span class="cmd">git pull</span>               <span class="c"># traer cambios del repositorio remoto</span>
+
+<span class="c">━━━ RAMAS (BRANCHES) — trabajar en features sin romper main ━━━━━━━━</span>
+<span class="cmd">git checkout -b</span> nueva-feature  <span class="c"># crear y cambiar a nueva rama</span>
+<span class="cmd">git branch</span>                     <span class="c"># ver en qué rama estás</span>
+<span class="cmd">git checkout main</span>              <span class="c"># volver a la rama principal</span>
+<span class="cmd">git merge nueva-feature</span>        <span class="c"># traer los cambios a main</span>
+
+<span class="c">━━━ DESHACER ERRORES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">git restore archivo.js</span>     <span class="c"># descartar cambios en un archivo (CUIDADO: irreversible)</span>
+<span class="cmd">git stash</span>                  <span class="c"># guardar cambios temporalmente sin commitear</span>
+<span class="cmd">git stash pop</span>              <span class="c"># recuperar cambios del stash</span>
+<span class="cmd">git log --oneline</span>          <span class="c"># ver historial de commits</span>
+
+<span class="c">━━━ .gitignore — archivos que Git NO debe guardar ━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">echo</span> <span class="s">"node_modules/"</span> >> .gitignore   <span class="c"># nunca subir las dependencias</span>
+<span class="cmd">echo</span> <span class="s">".env"</span> >> .gitignore            <span class="c"># NUNCA subir contraseñas/keys</span>
+<span class="cmd">echo</span> <span class="s">".DS_Store"</span> >> .gitignore       <span class="c"># basura de Mac</span></code></pre>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-ico">🚨</div>
+        <div><strong>NUNCA hagas push de un .env con contraseñas o API keys.</strong> Si accidentalmente lo subiste, considerá esas keys comprometidas — cambialas inmediatamente. GitHub escanea repos públicos buscando keys y las desactiva automáticamente. Siempre agregá <code>.env</code> al <code>.gitignore</code> antes del primer commit.</div>
+      </div>
+
+
     <section id="phase-4">
       <div class="phase-header" style="--phase-color:var(--p4)">
         <div class="phase-badge" style="background:var(--p4)">4</div>
@@ -1138,6 +1479,37 @@
           <button class="ph-btn done-btn" id="done-4" onclick="markPhase(4)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Por qué usar gestores de versiones en lugar de instalar directo?</strong><br>
+          El problema con instalar Node.js o Python "directo" es que un día un proyecto va a necesitar Node 18, y otro Node 22.
+          Con los gestores de versiones (<strong>nvm</strong> para Node, <strong>pyenv</strong> para Python, <strong>rbenv</strong> para Ruby, <strong>SDKMAN</strong> para Java)
+          podés tener múltiples versiones instaladas y cambiar entre ellas con un comando. Esto es estándar en cualquier entorno profesional.
+          <br><br>
+          <strong>Instalá solo los lenguajes que vas a usar</strong>. No hay que instalar todos — si tu stack es Node + Python, skip Java y Ruby.
+        </div>
+      </div>
+
+      <div class="g2" style="margin:12px 0 16px">
+        <div class="mini-card">
+          <h4>🔵 Node.js — Frontend / Backend JS</h4>
+          <p style="font-size:.83rem;color:var(--text2);margin:0">Imprescindible para React, Next.js, Vue, Express, y cualquier proyecto JS/TS. nvm te permite tener Node 18, 20 y 22 instalados simultáneamente.</p>
+        </div>
+        <div class="mini-card">
+          <h4>🟡 Python — Data Science / AI / Backend</h4>
+          <p style="font-size:.83rem;color:var(--text2);margin:0">El lenguaje más usado en AI/ML. pyenv evita conflictos con el Python del sistema (que macOS usa internamente — no tocarlo).</p>
+        </div>
+        <div class="mini-card">
+          <h4>🔵 Go — Backend de alto rendimiento</h4>
+          <p style="font-size:.83rem;color:var(--text2);margin:0">Lenguaje de Google. Ideal para APIs, microservicios y herramientas CLI. Compila a binario nativo — muy rápido en Apple Silicon.</p>
+        </div>
+        <div class="mini-card">
+          <h4>🟠 Rust — Sistemas y rendimiento extremo</h4>
+          <p style="font-size:.83rem;color:var(--text2);margin:0">El lenguaje de moda para herramientas de desarrollo. Muchas herramientas modernas (ripgrep, bat, eza) están escritas en Rust.</p>
         </div>
       </div>
 
@@ -1194,6 +1566,82 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 5 — VS CODE
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">✅ Verificar cada instalación</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · verify installs</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-verify-langs')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-verify-langs')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-verify-langs"><code><span class="c"># Correr estos comandos después de instalar cada lenguaje</span>
+<span class="c"># Si el comando responde con una versión, está instalado correctamente</span>
+
+<span class="c">── Node.js ───────────────────────────────────────────────────────</span>
+<span class="cmd">node --version</span>          <span class="c"># → v22.x.x</span>
+<span class="cmd">npm --version</span>           <span class="c"># → 10.x.x</span>
+<span class="cmd">nvm current</span>             <span class="c"># → v22.x.x (confirma que nvm lo maneja)</span>
+
+<span class="c">── Python ────────────────────────────────────────────────────────</span>
+<span class="cmd">python3 --version</span>       <span class="c"># → Python 3.13.x (¡no 3.9 del sistema!)</span>
+<span class="cmd">pyenv version</span>           <span class="c"># → 3.13.0 (set by ~/.pyenv/version)</span>
+<span class="cmd">pip3 --version</span>          <span class="c"># → pip 24.x</span>
+<span class="cmd">which python3</span>           <span class="c"># → /Users/vos/.pyenv/shims/python3 (NO /usr/bin)</span>
+
+<span class="c">── Go ────────────────────────────────────────────────────────────</span>
+<span class="cmd">go version</span>              <span class="c"># → go version go1.23.x darwin/arm64</span>
+
+<span class="c">── Rust ──────────────────────────────────────────────────────────</span>
+<span class="cmd">rustc --version</span>         <span class="c"># → rustc 1.8x.x</span>
+<span class="cmd">cargo --version</span>         <span class="c"># → cargo 1.8x.x</span>
+
+<span class="c">── Si un comando muestra la versión vieja del sistema ────────────</span>
+<span class="cmd">source ~/.zshrc</span>         <span class="c"># recarga la config (a veces soluciona el problema)</span>
+<span class="cmd">which node</span>              <span class="c"># debe mostrar ~/.nvm/versions/node/... no /usr/local/bin</span></code></pre>
+      </div>
+
+      <h3 class="mt">🚀 Tu primer proyecto Node.js</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · first project</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-first-project')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-first-project')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-first-project"><code><span class="c"># Crear tu primer servidor web en Node.js — 5 pasos</span>
+
+<span class="c"># 1. Crear carpeta y entrar</span>
+<span class="cmd">mkdir</span> mi-primer-servidor && <span class="cmd">cd</span> mi-primer-servidor
+
+<span class="c"># 2. Inicializar proyecto Node</span>
+<span class="cmd">npm init -y</span>     <span class="c"># crea package.json con configuración por defecto</span>
+
+<span class="c"># 3. Instalar Express (framework web)</span>
+<span class="cmd">npm install express</span>
+
+<span class="c"># 4. Crear el servidor — correr en terminal:</span>
+<span class="cmd">cat</span> > server.js <span class="s"><<'EOF'
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('¡Hola desde mi primer servidor!');
+});
+
+app.listen(3000, () => {
+  console.log('Servidor en http://localhost:3000');
+});
+EOF</span>
+
+<span class="c"># 5. Correr el servidor</span>
+<span class="cmd">node server.js</span>
+<span class="c"># Abrir en el browser: http://localhost:3000</span>
+<span class="c"># Para detenerlo: Ctrl+C en la terminal</span></code></pre>
+      </div>
+
+
     <section id="phase-5">
       <div class="phase-header" style="--phase-color:var(--p5)">
         <div class="phase-badge" style="background:var(--p5)">5</div>
@@ -1210,6 +1658,26 @@
           <button class="ph-btn done-btn" id="done-5" onclick="markPhase(5)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Por qué VS Code?</strong><br>
+          VS Code es el editor de código más usado del mundo (74% de los developers según Stack Overflow 2025). Creado por Microsoft, es gratuito, open source, y tiene un ecosistema de extensiones enorme.
+          En 2026 está profundamente integrado con AI — el 80% de las herramientas de AI coding funcionan como extensiones de VS Code.
+          <br><br>
+          <strong>Cursor vs VS Code:</strong> Cursor es un fork de VS Code con AI más integrada (ver Fase 9). Si sos principiante, empezá con VS Code — es más fácil de entender. Podés migrar a Cursor después.
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">💡</div>
+        <div>
+          <strong>Tip de Senior Dev — Extensiones esenciales vs opcionales</strong><br>
+          No instalés las 25 extensiones desde el día 1. Empezá con las <strong>ESENCIAL</strong>: Prettier (formato automático), ESLint (errores en tiempo real), GitLens (historial de Git), y el lenguaje que usás.
+          Agregá el resto según los necesites. Demasiadas extensiones ralentizan VS Code al arrancar.
         </div>
       </div>
 
@@ -1269,6 +1737,77 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 6 — DOCKER + KUBERNETES
     ═══════════════════════════════════════════════════ -->
+    
+      <!-- VS Code Settings.json recomendado -->
+      <h3 class="mt" style="margin-top:24px">⚙️ settings.json recomendado</h3>
+      <p style="font-size:.88rem;color:var(--text2)">Abrí VS Code → <kbd>Cmd+Shift+P</kbd> → "Open User Settings (JSON)" → pegá esto:</p>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">json · settings.json</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-vscode-settings')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-vscode-settings')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-vscode-settings"><code><span class="c">{</span>
+  <span class="c">// ── EDITOR ────────────────────────────────────────────────────</span>
+  <span class="k">"editor.fontSize"</span>: <span class="n">14</span>,
+  <span class="k">"editor.tabSize"</span>: <span class="n">2</span>,               <span class="c">// 2 espacios = estándar JS/TS</span>
+  <span class="k">"editor.wordWrap"</span>: <span class="s">"on"</span>,            <span class="c">// líneas largas se cortan visualmente</span>
+  <span class="k">"editor.formatOnSave"</span>: <span class="k">true</span>,       <span class="c">// Prettier formatea al guardar</span>
+  <span class="k">"editor.defaultFormatter"</span>: <span class="s">"esbenp.prettier-vscode"</span>,
+  <span class="k">"editor.inlineSuggest.enabled"</span>: <span class="k">true</span>, <span class="c">// AI suggestions inline</span>
+  <span class="k">"editor.minimap.enabled"</span>: <span class="k">false</span>,   <span class="c">// desactivar minimap (ocupa espacio)</span>
+  <span class="k">"editor.bracketPairColorization.enabled"</span>: <span class="k">true</span>,
+
+  <span class="c">// ── TERMINAL ───────────────────────────────────────────────────</span>
+  <span class="k">"terminal.integrated.defaultProfile.osx"</span>: <span class="s">"zsh"</span>,
+  <span class="k">"terminal.integrated.fontFamily"</span>: <span class="s">"MesloLGS NF"</span>, <span class="c">// fuente del p10k</span>
+  <span class="k">"terminal.integrated.fontSize"</span>: <span class="n">13</span>,
+
+  <span class="c">// ── FILES ──────────────────────────────────────────────────────</span>
+  <span class="k">"files.autoSave"</span>: <span class="s">"afterDelay"</span>,   <span class="c">// guardado automático</span>
+  <span class="k">"files.autoSaveDelay"</span>: <span class="n">1000</span>,
+  <span class="k">"files.exclude"</span>: {
+    <span class="k">"**/.DS_Store"</span>: <span class="k">true</span>,           <span class="c">// ocultar basura de Mac</span>
+    <span class="k">"**/node_modules"</span>: <span class="k">true</span>
+  },
+
+  <span class="c">// ── GIT ────────────────────────────────────────────────────────</span>
+  <span class="k">"git.autofetch"</span>: <span class="k">true</span>,            <span class="c">// trae cambios remotos automático</span>
+  <span class="k">"git.confirmSync"</span>: <span class="k">false</span>,
+
+  <span class="c">// ── EXPLORER ───────────────────────────────────────────────────</span>
+  <span class="k">"explorer.confirmDelete"</span>: <span class="k">false</span>,
+  <span class="k">"workbench.colorTheme"</span>: <span class="s">"One Dark Pro"</span>
+<span class="c">}</span></code></pre>
+      </div>
+
+      <!-- Atajos de teclado importantes de VS Code -->
+      <h3 class="mt" style="margin-top:24px">⌨️ Atajos esenciales de VS Code</h3>
+      <div class="g2">
+        <div class="mini-card">
+          <h4>Navegación</h4>
+          <ul style="font-size:.82rem;color:var(--text2);padding-left:14px;line-height:2">
+            <li><kbd>Cmd+P</kbd> — abrir cualquier archivo</li>
+            <li><kbd>Cmd+Shift+P</kbd> — paleta de comandos</li>
+            <li><kbd>Cmd+`</kbd> — abrir/cerrar terminal</li>
+            <li><kbd>Cmd+B</kbd> — mostrar/ocultar sidebar</li>
+            <li><kbd>Cmd+\</kbd> — dividir editor en dos</li>
+          </ul>
+        </div>
+        <div class="mini-card">
+          <h4>Edición</h4>
+          <ul style="font-size:.82rem;color:var(--text2);padding-left:14px;line-height:2">
+            <li><kbd>Opt+↑/↓</kbd> — mover línea arriba/abajo</li>
+            <li><kbd>Opt+Shift+↓</kbd> — duplicar línea</li>
+            <li><kbd>Cmd+/</kbd> — comentar/descomentar</li>
+            <li><kbd>Cmd+D</kbd> — seleccionar siguiente igual</li>
+            <li><kbd>F2</kbd> — renombrar variable en todo el proyecto</li>
+          </ul>
+        </div>
+      </div>
+
     <section id="phase-6">
       <div class="phase-header" style="--phase-color:var(--p6)">
         <div class="phase-badge" style="background:var(--p6)">6</div>
@@ -1285,6 +1824,42 @@
           <button class="ph-btn done-btn" id="done-6" onclick="markPhase(6)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Qué es Docker y por qué lo necesitan todos los developers?</strong><br>
+          Docker te permite "empaquetar" una aplicación con todas sus dependencias en un <strong>contenedor</strong> — como una caja sellada que funciona igual en cualquier máquina.
+          El problema clásico del desarrollo es "en mi máquina funciona" — con Docker, si funciona en tu contenedor, funciona en producción.
+          <br><br>
+          <strong>Casos de uso inmediatos para vos:</strong><br>
+          • Correr bases de datos (PostgreSQL, Redis) sin instalarlas en el sistema<br>
+          • Levantar proyectos de otros developers con un solo comando<br>
+          • Aislar dependencias de distintos proyectos<br>
+          • Simular el entorno de producción localmente
+          <br><br>
+          <strong>Kubernetes (K8s)</strong> es para orquestar múltiples contenedores en producción — lo usás cuando tu app crece. Para empezar, enfocate en Docker.
+        </div>
+      </div>
+
+      <div class="g2" style="margin:12px 0 16px">
+        <div class="mini-card">
+          <h4>🐳 Docker en la práctica</h4>
+          <p style="font-size:.83rem;color:var(--text2);margin:0">El comando más útil: <code>docker compose up</code> — levanta todos los servicios de un proyecto (app + DB + cache) en segundos.</p>
+        </div>
+        <div class="mini-card">
+          <h4>☸️ Kubernetes — ¿cuándo lo necesito?</h4>
+          <p style="font-size:.83rem;color:var(--text2);margin:0">Cuando tenés múltiples servicios en producción y necesitás auto-scaling, alta disponibilidad y rolling updates. Para proyectos personales: opcional.</p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-ico">💻</div>
+        <div>
+          <strong>Docker Desktop en Apple Silicon</strong><br>
+          Docker Desktop usa virtualización ligera en Mac. En M5 es muy eficiente — mucho mejor que en versiones anteriores. Asegurate de habilitarlo en <strong>Settings → General → Use Virtualization Framework</strong> y activar <strong>VirtioFS</strong> para máxima velocidad de I/O.
         </div>
       </div>
 
@@ -1327,6 +1902,100 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 7 — BASES DE DATOS
     ═══════════════════════════════════════════════════ -->
+    
+      <h3 class="mt" style="margin-top:22px">📄 docker-compose.yml — ejemplo para proyecto web</h3>
+      <p style="font-size:.88rem;color:var(--text2)">El comando <code>docker compose up</code> en la carpeta de tu proyecto levanta todo esto automáticamente:</p>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">yaml · docker-compose.yml</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-compose')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-compose')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-compose"><code><span class="c"># docker-compose.yml — stack típico: app + postgres + redis</span>
+<span class="c"># Guardar en la raíz del proyecto</span>
+<span class="c"># Usar con: docker compose up -d</span>
+
+<span class="k">version</span>: <span class="s">'3.9'</span>
+
+<span class="k">services</span>:
+
+  <span class="c">## ── Base de datos PostgreSQL ──────────────────────────────────</span>
+  <span class="k">db</span>:
+    <span class="k">image</span>: postgres:17
+    <span class="k">environment</span>:
+      <span class="k">POSTGRES_USER</span>: dev
+      <span class="k">POSTGRES_PASSWORD</span>: dev123     <span class="c"># solo para desarrollo local</span>
+      <span class="k">POSTGRES_DB</span>: mi_app
+    <span class="k">ports</span>:
+      - <span class="s">"5432:5432"</span>                  <span class="c"># accesible en localhost:5432</span>
+    <span class="k">volumes</span>:
+      - pgdata:/var/lib/postgresql/data  <span class="c"># los datos persisten al reiniciar</span>
+
+  <span class="c">## ── Cache Redis ───────────────────────────────────────────────</span>
+  <span class="k">redis</span>:
+    <span class="k">image</span>: redis:7-alpine
+    <span class="k">ports</span>:
+      - <span class="s">"6379:6379"</span>
+
+  <span class="c">## ── Tu aplicación (si es Node.js) ─────────────────────────────</span>
+  <span class="k">app</span>:
+    <span class="k">build</span>: .                           <span class="c"># busca Dockerfile en el directorio actual</span>
+    <span class="k">ports</span>:
+      - <span class="s">"3000:3000"</span>
+    <span class="k">environment</span>:
+      <span class="k">DATABASE_URL</span>: postgresql://dev:dev123@db:5432/mi_app
+      <span class="k">REDIS_URL</span>: redis://redis:6379
+    <span class="k">depends_on</span>:
+      - db
+      - redis
+
+<span class="k">volumes</span>:
+  pgdata:                              <span class="c"># volumen persistente para PostgreSQL</span></code></pre>
+      </div>
+
+      <h3 class="mt">📋 Comandos Docker esenciales</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · docker commands</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-docker-cmds')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-docker-cmds')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-docker-cmds"><code><span class="c">━━━ CONTENEDORES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">docker ps</span>                      <span class="c"># ver contenedores en ejecución</span>
+<span class="cmd">docker ps -a</span>                   <span class="c"># ver TODOS (incluyendo detenidos)</span>
+<span class="cmd">docker stop nombre</span>             <span class="c"># detener un contenedor</span>
+<span class="cmd">docker start nombre</span>            <span class="c"># iniciar un contenedor detenido</span>
+<span class="cmd">docker rm nombre</span>               <span class="c"># eliminar contenedor (debe estar detenido)</span>
+<span class="cmd">docker logs nombre</span>             <span class="c"># ver logs del contenedor</span>
+<span class="cmd">docker logs -f nombre</span>          <span class="c"># logs en tiempo real (Ctrl+C para salir)</span>
+<span class="cmd">docker exec -it nombre bash</span>    <span class="c"># entrar a la terminal del contenedor</span>
+
+<span class="c">━━━ IMÁGENES ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">docker images</span>                  <span class="c"># ver imágenes descargadas</span>
+<span class="cmd">docker pull postgres:17</span>        <span class="c"># descargar imagen sin correrla</span>
+<span class="cmd">docker rmi nombre:tag</span>          <span class="c"># eliminar imagen</span>
+
+<span class="c">━━━ DOCKER COMPOSE (lo más usado en desarrollo) ━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">docker compose up -d</span>           <span class="c"># levantar todos los servicios en background</span>
+<span class="cmd">docker compose down</span>            <span class="c"># bajar todos los servicios</span>
+<span class="cmd">docker compose logs -f</span>         <span class="c"># ver logs de todos los servicios</span>
+<span class="cmd">docker compose ps</span>              <span class="c"># estado de los servicios</span>
+<span class="cmd">docker compose restart nombre</span>  <span class="c"># reiniciar solo un servicio</span>
+<span class="cmd">docker compose exec db bash</span>    <span class="c"># entrar al contenedor "db"</span>
+<span class="cmd">docker compose down -v</span>         <span class="c"># bajar Y borrar volúmenes (⚠ borra datos)</span>
+
+<span class="c">━━━ POSTGRES CON DOCKER (sin instalarlo en el sistema) ━━━━━━━━━━━</span>
+<span class="cmd">docker run -d</span>   --name mi-postgres   -e POSTGRES_PASSWORD=mipassword   -e POSTGRES_DB=mi_base_datos   -p <span class="n">5432</span>:<span class="n">5432</span>   postgres:<span class="n">17</span>
+
+<span class="c"># Conectarse al postgres recién creado:</span>
+<span class="cmd">docker exec -it</span> mi-postgres <span class="cmd">psql -U postgres</span></code></pre>
+      </div>
+
+
     <section id="phase-7">
       <div class="phase-header" style="--phase-color:var(--p7)">
         <div class="phase-badge" style="background:var(--p7)">7</div>
@@ -1342,6 +2011,30 @@
           <button class="ph-btn done-btn" id="done-7" onclick="markPhase(7)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Qué base de datos necesito?</strong><br>
+          Depende de tu proyecto. Guía rápida:<br>
+          • <strong>PostgreSQL</strong> — la más recomendada para proyectos nuevos. Relacional, robusta, gratuita, usada por Supabase, Railway y la mayoría de los cloud providers. <em>Si no sabés qué elegir, elegí Postgres.</em><br>
+          • <strong>MySQL</strong> — alternativa a PostgreSQL. Popular en proyectos legacy y WordPress.<br>
+          • <strong>Redis</strong> — base de datos en memoria. Se usa para cache, sesiones, colas de trabajo. No reemplaza a PostgreSQL — las complementa.<br>
+          • <strong>MongoDB</strong> — base de datos de documentos (JSON). Buena para datos no estructurados y prototipos rápidos.
+          <br><br>
+          <strong>Recomendación para empezar:</strong> instalá solo <strong>PostgreSQL + Redis</strong>. Son los más usados en proyectos modernos.
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">💡</div>
+        <div>
+          <strong>Tip: Usá Docker para las bases de datos</strong><br>
+          En lugar de instalar PostgreSQL en el sistema, podés correrla en Docker:
+          <code>docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:17</code>.
+          Esto mantiene el sistema más limpio y podés levantar/bajar la DB con un comando.
         </div>
       </div>
 
@@ -1386,6 +2079,60 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 8 — DEV TOOLS CLI
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">🔌 Conectarse a las bases de datos</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · database connections</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-db-connect')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-db-connect')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-db-connect"><code><span class="c">━━━ POSTGRESQL — comandos psql ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">psql postgres</span>              <span class="c"># abrir shell de postgres (usuario postgres)</span>
+<span class="cmd">psql -U usuario -d base_de_datos</span>   <span class="c"># conectarse como usuario específico</span>
+
+<span class="c"># Dentro del shell psql (comandos que empiezan con \)</span>
+\l                         <span class="c"># listar todas las bases de datos</span>
+\c nombre_db               <span class="c"># conectarse a una base de datos</span>
+\dt                        <span class="c"># listar todas las tablas</span>
+\d nombre_tabla            <span class="c"># ver estructura de una tabla</span>
+\q                         <span class="c"># salir del shell</span>
+
+<span class="c"># Crear base de datos desde terminal</span>
+<span class="cmd">createdb</span> mi_proyecto       <span class="c"># crea la DB directamente</span>
+<span class="cmd">dropdb</span> mi_proyecto         <span class="c"># elimina la DB (¡CUIDADO: irreversible!)</span>
+
+<span class="c">━━━ REDIS ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">redis-cli</span>                  <span class="c"># abrir shell de Redis</span>
+<span class="cmd">redis-cli ping</span>             <span class="c"># → PONG (confirma que Redis está corriendo)</span>
+<span class="cmd">redis-cli set</span> clave valor  <span class="c"># guardar un valor</span>
+<span class="cmd">redis-cli get</span> clave        <span class="c"># recuperar un valor</span>
+<span class="cmd">redis-cli flushall</span>         <span class="c"># borrar TODO (usar solo en desarrollo)</span>
+
+<span class="c">━━━ MONGODB ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">mongosh</span>                    <span class="c"># abrir shell de MongoDB</span>
+show dbs                   <span class="c"># listar bases de datos</span>
+use mi_proyecto            <span class="c"># cambiar/crear base de datos</span>
+db.coleccion.find()        <span class="c"># ver documentos en una colección</span>
+
+<span class="c">━━━ STRING DE CONEXIÓN (para usar en tu código) ━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># PostgreSQL: guardar en .env</span>
+DATABASE_URL=postgresql://usuario:password@localhost:5432/mi_base_datos
+
+<span class="c"># Redis: guardar en .env</span>
+REDIS_URL=redis://localhost:6379
+
+<span class="c"># MongoDB: guardar en .env</span>
+MONGODB_URI=mongodb://localhost:27017/mi_proyecto</code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">🎨</div>
+        <div><strong>TablePlus — Interfaz visual para todas las bases de datos:</strong> En lugar de usar la terminal para explorar la base de datos, abrí TablePlus → New Connection → elegí el tipo → completá host/usuario/password → Connect. Es como un "Excel" para ver y editar tu DB visualmente.</div>
+      </div>
+
+
     <section id="phase-8">
       <div class="phase-header" style="--phase-color:var(--p8)">
         <div class="phase-badge" style="background:var(--p8)">8</div>
@@ -1401,6 +2148,17 @@
           <button class="ph-btn done-btn" id="done-8" onclick="markPhase(8)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Por qué "reemplazar" ls, cat y grep?</strong><br>
+          Los comandos básicos de Unix son de los años 70. En 2026 existen alternativas modernas que hacen lo mismo pero mejor:
+          <code>eza</code> muestra iconos y colores donde <code>ls</code> muestra texto plano. <code>bat</code> muestra código con syntax highlighting donde <code>cat</code> muestra texto sin formato. <code>ripgrep</code> busca en código 10x más rápido que <code>grep</code>.
+          <br><br>
+          Son herramientas que usás decenas de veces por día. Vale absolutamente la pena el minuto que tarda instalarlas.
         </div>
       </div>
 
@@ -1450,6 +2208,55 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 9 — AI CODING TOOLS
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">🔍 fzf — El comando más útil que nunca habías escuchado</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · fzf + modern tools</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-modern-tools')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-modern-tools')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-modern-tools"><code><span class="c">━━━ FZF — Fuzzy Finder interactivo ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># fzf convierte cualquier lista en un buscador interactivo</span>
+<span class="cmd">fzf</span>                    <span class="c"># buscar en archivos del directorio actual</span>
+<span class="cmd">history | fzf</span>         <span class="c"># buscar en tu historial de comandos</span>
+<span class="cmd">code $(fzf)</span>           <span class="c"># buscar archivo y abrirlo en VS Code</span>
+
+<span class="c"># Ctrl+R con fzf: busca en historial interactivamente (ya instalado con zsh-z)</span>
+
+<span class="c">━━━ RIPGREP (rg) — grep pero 10x más rápido ━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">rg</span> <span class="s">"texto a buscar"</span>     <span class="c"># busca en todos los archivos del directorio</span>
+<span class="cmd">rg</span> <span class="s">"texto"</span> --type js   <span class="c"># solo en archivos .js</span>
+<span class="cmd">rg</span> <span class="s">"TODO"</span>              <span class="c"># encontrar todos los TODOs del proyecto</span>
+<span class="cmd">rg</span> <span class="s">"password"</span> -i       <span class="c"># case insensitive</span>
+
+<span class="c">━━━ BAT — cat con syntax highlighting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">bat</span> archivo.js          <span class="c"># muestra el archivo con colores y número de línea</span>
+<span class="cmd">bat package.json</span>        <span class="c"># perfecto para ver JSON formateado</span>
+
+<span class="c">━━━ EZA — ls moderno ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">eza --icons</span>             <span class="c"># lista con íconos</span>
+<span class="cmd">eza -la --icons</span>         <span class="c"># lista detallada con ocultos e íconos</span>
+<span class="cmd">eza --tree</span>              <span class="c"># árbol de directorios</span>
+
+<span class="c">━━━ HTTPIE — curl pero amigable ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">http GET https://api.ejemplo.com/users</span>
+<span class="cmd">http POST https://api.ejemplo.com/login</span> email=<span class="s">"a@b.com"</span> password=<span class="s">"123"</span>
+<span class="cmd">http https://api.github.com/users/octocat</span>   <span class="c"># JSON formateado automáticamente</span>
+
+<span class="c">━━━ JQ — procesar JSON desde terminal ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">curl -s https://api.github.com/users/octocat</span> | <span class="cmd">jq</span> <span class="s">'.'</span>        <span class="c"># pretty print</span>
+<span class="cmd">curl -s https://api.github.com/users/octocat</span> | <span class="cmd">jq</span> <span class="s">'.name'</span>    <span class="c"># solo el campo name</span>
+<span class="cmd">cat data.json</span> | <span class="cmd">jq</span> <span class="s">'.[].email'</span>  <span class="c"># extraer email de un array</span>
+
+<span class="c">━━━ DELTA — diffs hermosos ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="c"># Configurar delta como diff viewer de git (agregar a ~/.gitconfig):</span>
+<span class="cmd">git config --global core.pager delta</span>
+<span class="cmd">git diff</span>                <span class="c"># ahora muestra diffs con syntax highlighting</span></code></pre>
+      </div>
+
+
     <section id="phase-9">
       <div class="phase-header" style="--phase-color:var(--p9)">
         <div class="phase-badge" style="background:var(--p9)">9</div>
@@ -1466,6 +2273,29 @@
           <button class="ph-btn done-btn" id="done-9" onclick="markPhase(9)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>AI Coding en 2026 — lo que cambió todo</strong><br>
+          En 2024, las herramientas de AI sugerían la "siguiente línea". En 2026 implementan features completas, escriben tests, refactorizan código, explican errores y hacen commits. Los developers que las usan a diario hacen merge de un 60% más de pull requests.
+          <br><br>
+          <strong>¿Por dónde empezar?</strong><br>
+          • Si sos principiante: empezá con <strong>GitHub Copilot</strong> (free tier, 2000 completions/mes). Es la más simple.<br>
+          • Si querés el mejor agente: <strong>Claude Code</strong> para proyectos complejos.<br>
+          • Si querés un IDE AI completo: <strong>Cursor</strong> (fork de VS Code, $20/mes).<br>
+          • Si querés gratis sin internet: <strong>Continue.dev + Ollama</strong> (ver Fase 10).
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-ico">💡</div>
+        <div>
+          <strong>Tip de Senior Dev — No dependas 100% de la AI</strong><br>
+          Las herramientas de AI son multiplicadores de productividad, no reemplazos del entendimiento.
+          Cuando la AI genera código, leelo y entendelo antes de aceptarlo. Si no entendés algo, preguntale a la misma AI que lo explique. Usala para aprender más rápido, no para copiar sin entender.
         </div>
       </div>
 
@@ -1506,6 +2336,68 @@
     <!-- ═══════════════════════════════════════════════════
          FASE 10 — OLLAMA OFFLINE STACK
     ═══════════════════════════════════════════════════ -->
+      <h3 class="mt">🚀 Primeros pasos con cada herramienta</h3>
+      <div class="code-wrap has-toolbar">
+        <div class="code-toolbar">
+          <span class="code-lang-badge">bash · ai tools first steps</span>
+          <div class="code-btns">
+            <button class="code-btn" onclick="copyCode('code-ai-start')">📋 Copiar</button>
+            <button class="code-btn explain" onclick="explainCode('code-ai-start')">📖 Explicar</button>
+          </div>
+        </div>
+        <pre id="code-ai-start"><code><span class="c">━━━ GITHUB COPILOT (empezar acá si sos principiante) ━━━━━━━━━━━━━━</span>
+<span class="c"># 1. Crear cuenta en github.com (gratis)</span>
+<span class="c"># 2. Ir a github.com/features/copilot → Start for Free</span>
+<span class="c"># 3. En VS Code: instalar extensión "GitHub Copilot"</span>
+<span class="c"># 4. Cmd+Shift+P → "GitHub Copilot: Sign In"</span>
+<span class="c"># ✓ Copilot sugerirá código mientras escribís — Tab para aceptar</span>
+
+<span class="c">━━━ CLAUDE CODE ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">npm install -g @anthropic-ai/claude-code</span>   <span class="c"># instalar</span>
+<span class="cmd">claude</span>                    <span class="c"># iniciar en el proyecto actual</span>
+
+<span class="c"># Primeros comandos útiles dentro de Claude Code:</span>
+<span class="c"># "Explicame qué hace este proyecto"     → entiende tu codebase</span>
+<span class="c"># "Creá un componente Button en React"   → genera el archivo</span>
+<span class="c"># "Agregá tests para la función login"   → escribe los tests</span>
+<span class="c"># "Refactorizá el archivo utils.js"      → mejora el código</span>
+
+<span class="c">━━━ CURSOR ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</span>
+<span class="cmd">brew install --cask cursor</span>  <span class="c"># instalar</span>
+<span class="c"># 1. Abrí Cursor (reemplaza VS Code)</span>
+<span class="c"># 2. "Import extensions from VS Code" → trae todas tus extensiones</span>
+<span class="c"># 3. Cmd+K → editar línea actual con AI</span>
+<span class="c"># 4. Cmd+L → abrir chat lateral</span>
+<span class="c"># 5. Cmd+Shift+I → Composer (editar múltiples archivos)</span>
+
+<span class="c">━━━ CONTINUE.DEV (para usar con Ollama, $0 offline) ━━━━━━━━━━━━━━</span>
+<span class="cmd">code --install-extension continue.continue</span>
+<span class="c"># 1. Asegurate que Ollama corre: open -a Ollama</span>
+<span class="c"># 2. Editar ~/.continue/config.json:</span>
+{
+  "models": [{
+    "provider": "ollama",
+    "model": "qwen2.5-coder:7b",
+    "title": "Qwen Coder"
+  }]
+}
+<span class="c"># 3. En VS Code: Cmd+Shift+L → abre chat de Continue</span>
+<span class="c"># 4. Seleccioná código → Cmd+Shift+L → "Explain this code"</span></code></pre>
+      </div>
+
+      <div class="callout tip">
+        <div class="callout-ico">🧠</div>
+        <div>
+          <strong>Cómo hablarle bien a la AI para obtener mejor código:</strong>
+          <ul style="margin:6px 0 0;padding-left:18px;font-size:.85rem">
+            <li>❌ Malo: "arreglá esto"</li>
+            <li>✅ Bien: "Esta función Node.js devuelve undefined en vez del usuario. El error es: TypeError: Cannot read property 'id' of undefined. La función es: [código]"</li>
+            <li>Siempre incluí: qué esperabas, qué pasó, el código relevante y el error exacto</li>
+          </ul>
+        </div>
+      </div>
+
+
     <section id="phase-10">
       <div class="phase-header" style="--phase-color:var(--p10)">
         <div class="phase-badge" style="background:var(--p10)">10</div>
@@ -1522,6 +2414,17 @@
           <button class="ph-btn done-btn" id="done-10" onclick="markPhase(10)">
             <span class="i18n" data-es="Completar" data-en="Complete">Completar</span>
           </button>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-ico">🎓</div>
+        <div>
+          <strong>¿Por qué correr AI localmente si hay ChatGPT y Claude online?</strong><br>
+          Tres razones concretas:<br>
+          1. <strong>Privacidad</strong> — tu código nunca sale de tu Mac. Para proyectos con datos sensibles o NDA es importante.<br>
+          2. <strong>Costo $0</strong> — sin límites de tokens, sin factura mensual. Una vez descargado el modelo, funciona sin internet para siempre.<br>
+          3. <strong>El M5 es excepcionalmente bueno para esto</strong> — la Unified Memory Architecture de Apple Silicon comparte RAM entre CPU y GPU. Un Mac con 24GB puede correr modelos de 14B parámetros que en PC necesitarían una GPU de $1500+.
         </div>
       </div>
 
@@ -1572,6 +2475,80 @@
           <strong class="i18n" data-es="¡Setup completo!" data-en="Setup complete!">¡Setup completo!</strong>
           <span class="i18n" data-es=" Tu Mac M5 ahora es una máquina de desarrollo profesional con AI local incluida. Marcá todas las fases como completadas y usá el Asistente AI para cualquier duda." data-en=" Your Mac M5 is now a professional development machine with local AI included. Mark all phases as complete and use the AI Assistant for any questions."> Tu Mac M5 ahora es una máquina de desarrollo profesional con AI local incluida.</span>
         </div>
+      </div>
+    </section>
+
+    <!-- ERRORES COMUNES -->
+    <section id="phase-errores">
+      <div class="phase-header" style="--phase-color:#ff4d6d">
+        <div class="phase-badge" style="background:#ff4d6d">🔥</div>
+        <div class="phase-header-info">
+          <h2>Errores Comunes y Soluciones</h2>
+          <p>Los 15 errores más frecuentes al configurar un Mac de desarrollo — con solución exacta</p>
+          <div class="phase-meta">
+            <span class="phase-meta-item">Referencia rápida</span>
+            <span class="phase-meta-item">Consultá cuando algo falla</span>
+          </div>
+        </div>
+        <div class="phase-actions">
+          <button class="ph-btn" onclick="openImprove('phase-errores','Errores Comunes')">✨</button>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <h4>❌ "command not found: brew"</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Homebrew está instalado pero no en el PATH. Correr:</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile && source ~/.zprofile</code>
+        </div>
+        <div class="card">
+          <h4>❌ "xcrun: error: invalid active developer path"</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Las Xcode CLI Tools se desinstalaron después de una actualización de macOS.</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">xcode-select --install</code>
+        </div>
+        <div class="card">
+          <h4>❌ "EACCES: permission denied" en npm install -g</h4>
+          <p style="font-size:.83rem;color:var(--text2)">El npm global no tiene permisos. Solución: usar nvm (que ya instalaste) en lugar del npm del sistema.</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">nvm use --lts && npm install -g nombre-paquete</code>
+        </div>
+        <div class="card">
+          <h4>❌ "docker: Cannot connect to Docker daemon"</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Docker Desktop no está corriendo.</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">open -a Docker  # abrí Docker Desktop y esperá el ícono en la barra de menú</code>
+        </div>
+        <div class="card">
+          <h4>❌ "Port 3000 is already in use"</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Hay un proceso usando ese puerto. Ver cuál y matarlo:</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">lsof -i :3000<br>kill -9 $(lsof -t -i:3000)</code>
+        </div>
+        <div class="card">
+          <h4>❌ "python: command not found" (solo python3 funciona)</h4>
+          <p style="font-size:.83rem;color:var(--text2)">En macOS moderno, el ejecutable se llama <code>python3</code>. Crear alias:</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">echo 'alias python="python3"' >> ~/.zshrc && source ~/.zshrc</code>
+        </div>
+        <div class="card">
+          <h4>❌ "zsh: command not found: code" (VS Code)</h4>
+          <p style="font-size:.83rem;color:var(--text2)">El comando <code>code</code> no está en el PATH. Abrir VS Code → Cmd+Shift+P → "Shell Command: Install 'code' command in PATH"</p>
+        </div>
+        <div class="card">
+          <h4>❌ Ollama dice "CPU" en vez de "GPU"</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Si instalaste via .dmg (app), las variables de entorno en .zshrc no aplican. Usar launchctl:</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">launchctl setenv OLLAMA_FLASH_ATTENTION 1<br>launchctl setenv OLLAMA_KV_CACHE_TYPE q8_0<br># Reiniciar Ollama desde el ícono del menú bar</code>
+        </div>
+        <div class="card">
+          <h4>❌ git push falla: "Authentication failed"</h4>
+          <p style="font-size:.83rem;color:var(--text2)">GitHub ya no acepta contraseñas por HTTPS. Usar SSH (ya configurado en Fase 3) o autenticarse con GitHub CLI:</p>
+          <code style="font-size:.78rem;display:block;margin-top:6px">gh auth login  # sigue los pasos en el browser</code>
+        </div>
+        <div class="card">
+          <h4>❌ "The authenticity of host can't be established" (SSH)</h4>
+          <p style="font-size:.83rem;color:var(--text2)">Primera vez que conectás a GitHub por SSH. Escribir "yes" — es normal y esperado la primera vez.</p>
+        </div>
+      </div>
+
+      <div class="callout tip" style="margin-top:18px">
+        <div class="callout-ico">🤖</div>
+        <div><strong>Para cualquier error no listado acá:</strong> Copiá el error completo y pegalo en el <strong>Asistente AI</strong> (botón arriba a la derecha) en modo <strong>🔴 Fix</strong>. La AI analiza el error y te da los pasos exactos para solucionarlo en tu Mac M5.</div>
       </div>
     </section>
 
@@ -1693,42 +2670,53 @@ let completedPhases = new Set(); // Fases completadas
 // Número total de fases base
 const TOTAL_PHASES = 11;
 
-/* ─── 1. SISTEMA DE IDIOMA ─────────────────────────────────────
-   setLang(lang):
-   - Cambia el atributo data-lang en <html>
-   - Recorre todos los elementos .i18n y swapea textContent
-   - Actualiza placeholder del input si corresponde
-   - Guarda en localStorage
+/* ─── 1. SISTEMA DE IDIOMA ─────────────────────────────────────────
+   setLang(lang): cambia el idioma activo de toda la guía.
+   PARÁMETRO: lang = 'es' | 'en'
+   QUÉ HACE:
+     1. Actualiza currentLang y data-lang en <html>
+     2. Aplica traducciones a todos los .i18n (data-es / data-en)
+     3. Actualiza el <title> del documento
+     4. Activa el botón del idioma seleccionado (clase .on)
+     5. Actualiza el contexto del modo AI activo
+   ERROR HANDLING: cada elemento en try/catch para máxima robustez.
+   POR QUÉ innerHTML: permite traducciones con HTML (negrita, código).
+   Los valores son hardcoded en el HTML → no hay riesgo de XSS.
 ─────────────────────────────────────────────────────────────── */
 function setLang(lang) {
   currentLang = lang;
   document.documentElement.setAttribute('data-lang', lang);
-  try { localStorage.setItem('guide-lang', lang); } catch(e) {}
+  try { localStorage.setItem('guide-lang', lang); } catch(e) { /* localStorage deshabilitado */ }
 
-  // Actualizar todos los elementos con clase .i18n
+  /* Actualizar todos los elementos con clase .i18n */
   document.querySelectorAll('.i18n').forEach(el => {
-    const val = el.dataset[lang];
-    if (val !== undefined) {
-      // Si el elemento es un input/textarea, cambiar placeholder
+    try {
+      const val = el.dataset[lang]; // data-es o data-en según el idioma
+      if (val === undefined) return; // sin traducción → mantener contenido actual
       if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        /* inputs/textareas: cambiar placeholder (no textContent) */
         el.placeholder = val;
       } else {
-        el.textContent = val;
+        /* innerHTML para soportar HTML en traducciones (ej: <strong>, <code>) */
+        el.innerHTML = val;
       }
+    } catch(err) {
+      console.warn('[setLang] Error en elemento:', el, err);
     }
   });
 
-  // Actualizar también el <title>
+  /* Actualizar también el <title> del documento si tiene traducción */
   const titleEl = document.querySelector('title');
   if (titleEl && titleEl.dataset[lang]) titleEl.textContent = titleEl.dataset[lang];
 
-  // Actualizar botones de idioma
+  /* Activar el botón del idioma seleccionado.
+     data-lang="es" | data-lang="en" en cada .lang-btn */
   document.querySelectorAll('.lang-btn').forEach(b => {
     b.classList.toggle('on', b.dataset.lang === lang);
   });
 
-  // Actualizar contexto del modo actual
-  updateModeContext();
+  /* Actualizar el contexto del modo AI (label + placeholder del input) */
+  try { updateModeContext(); } catch(e) { /* panel no inicializado aún */ }
 }
 
 /* ─── 2. SISTEMA DE TEMAS ──────────────────────────────────── */
