@@ -85,11 +85,17 @@ echo ""
 echo "  [3]  MacBook Pro M5  -  Tips y Atajos"
 echo "       Shortcuts, Terminal, Seguridad"
 echo ""
-echo "  [4]  Abrir las 3 guias juntas"
+echo "  [4]  Tutorial Mac 2026"
+echo "       Guia completa de configuracion macOS"
+echo ""
+echo "  [5]  Arquitectura Tecnica"
+echo "       Como funciona TutoApp por dentro"
+echo ""
+echo "  [6]  >>> Abrir las 5 guias juntas <<<"
 echo ""
 echo "  [0]  Solo iniciar servidor (sin abrir browser)"
 echo ""
-read -p "  Tu eleccion [0-4]: " opcion
+read -p "  Tu eleccion [0-6]: " opcion
 
 # ── 7. Arrancar servidor en segundo plano ───────────────────────────────
 # "&" al final = proceso en segundo plano (no bloquea el script)
@@ -123,15 +129,29 @@ case "$opcion" in
     1) open_url "http://localhost:8000/ai-coding-tools.html" ;;
     2) open_url "http://localhost:8000/dev-setup-mac-m5.html" ;;
     3) open_url "http://localhost:8000/macbook-pro-m5-guia.html" ;;
-    4)
+    4) open_url "http://localhost:8000/tutorial_mac_2026.html" ;;
+    5) open_url "http://localhost:8000/arquitectura-tecnica.html" ;;
+    6)
         open_url "http://localhost:8000/ai-coding-tools.html"
         sleep 1
         open_url "http://localhost:8000/dev-setup-mac-m5.html"
         sleep 1
         open_url "http://localhost:8000/macbook-pro-m5-guia.html"
+        sleep 1
+        open_url "http://localhost:8000/tutorial_mac_2026.html"
+        sleep 1
+        open_url "http://localhost:8000/arquitectura-tecnica.html"
         ;;
-    0) echo "  Servidor corriendo. Abrilo en: http://localhost:8000" ;;
-    *) open_url "http://localhost:8000" ;;
+    0)
+        echo ""
+        echo "  Servidor corriendo. Para abrir manualmente:"
+        echo "    http://localhost:8000/ai-coding-tools.html"
+        echo "    http://localhost:8000/dev-setup-mac-m5.html"
+        echo "    http://localhost:8000/macbook-pro-m5-guia.html"
+        echo "    http://localhost:8000/tutorial_mac_2026.html"
+        echo "    http://localhost:8000/arquitectura-tecnica.html"
+        ;;
+    *) open_url "http://localhost:8000/ai-coding-tools.html" ;;
 esac
 
 echo ""
